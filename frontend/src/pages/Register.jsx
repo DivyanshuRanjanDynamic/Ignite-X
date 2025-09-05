@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Brain, MapPin, GraduationCap, User, ArrowRight, ArrowLeft, CheckCircle } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 function Register() {
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,20 +29,27 @@ function Register() {
   const handleNext = () => setStep(step + 1);
   const handleBack = () => setStep(step - 1);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    console.log("User Data:", formData);
+    
+    setIsLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      console.log("User Data:", formData);
+      setIsLoading(false);
+      // Navigate to dashboard or show success message
+    }, 2000);
   };
 
   const stepTitles = [
-    "👤 Basic Info",
-    "🎓 Education & Skills",
-    "📍 Location & Interests",
-    "📄 Resume & Security",
+    { title: "Basic Info", icon: User, description: "Personal details" },
+    { title: "Education & Skills", icon: GraduationCap, description: "Academic background" },
+    { title: "Location & Interests", icon: MapPin, description: "Preferences" },
+    { title: "Security", icon: Brain, description: "Account setup" },
   ];
 
   const domains = [
@@ -70,35 +79,84 @@ function Register() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-100 to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-orange-50">
       <Navbar />
 
-      {/* Progress Tracker */}
-      <div className="flex justify-center mt-6 mb-2">
-        <div className="flex space-x-4">
-          {stepTitles.map((title, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div
-                className={`w-10 h-10 flex items-center justify-center rounded-full ${
-                  step === index + 1
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-600"
-                }`}
-              >
-                {index + 1}
-              </div>
-              <span className="text-sm mt-1 text-gray-700 text-center">
-                {title}
-              </span>
+      {/* Header */}
+      <div className="text-center py-8 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto"
+        >
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+              <Brain className="w-6 h-6 text-blue-600" />
             </div>
-          ))}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Join PM Internship AI</h1>
+          </div>
+          <p className="text-gray-600 text-lg">
+            Create your profile to get personalized internship recommendations
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Progress Tracker */}
+      <div className="flex justify-center mb-8 px-4">
+        <div className="flex space-x-2 md:space-x-8 max-w-4xl w-full">
+          {stepTitles.map((stepInfo, index) => {
+            const Icon = stepInfo.icon;
+            const isActive = step === index + 1;
+            const isCompleted = step > index + 1;
+            
+            return (
+              <motion.div 
+                key={index} 
+                className="flex flex-col items-center flex-1"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div
+                  className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-300 ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-lg scale-110"
+                      : isCompleted
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200 text-gray-600"
+                  }`}
+                >
+                  {isCompleted ? (
+                    <CheckCircle className="w-6 h-6" />
+                  ) : (
+                    <Icon className="w-6 h-6" />
+                  )}
+                </div>
+                <div className="text-center mt-2">
+                  <span className={`text-sm font-medium ${
+                    isActive ? "text-blue-600" : "text-gray-600"
+                  }`}>
+                    {stepInfo.title}
+                  </span>
+                  <p className="text-xs text-gray-500 mt-1 hidden md:block">
+                    {stepInfo.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
       {/* Form Card */}
-      <div className="flex flex-1 items-center justify-center px-6 py-6 md:px-16">
-        <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 relative overflow-hidden">
-          <form onSubmit={handleSubmit}>
+      <div className="flex flex-1 items-center justify-center px-4 py-6 md:px-8">
+        <motion.div 
+          className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-blue-100 relative overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <form onSubmit={handleSubmit} className="p-8 md:p-12">
             <AnimatePresence mode="wait">
               {/* STEP 1: Basic Info */}
               {step === 1 && (
@@ -108,45 +166,73 @@ function Register() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.5 }}
-                  className="space-y-5"
+                  className="space-y-6"
                 >
-                  <h2 className="text-2xl font-bold text-blue-700 mb-4">
-                    👤 Basic Information
-                  </h2>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                  <div className="flex justify-end">
+                  <div className="text-center mb-8">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <User className="w-8 h-8 text-blue-600" />
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                      Basic Information
+                    </h2>
+                    <p className="text-gray-600">Tell us about yourself</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your full name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end pt-4">
                     <button
                       type="button"
                       onClick={handleNext}
-                      className="px-6 py-2 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
+                      className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition flex items-center"
                     >
-                      Continue →
+                      Continue
+                      <ArrowRight className="w-5 h-5 ml-2" />
                     </button>
                   </div>
                 </motion.div>
@@ -315,68 +401,120 @@ function Register() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.5 }}
-                  className="space-y-5"
+                  className="space-y-6"
                 >
-                  <h2 className="text-2xl font-bold text-blue-700 mb-4">
-                    📄 Upload Resume (Optional)
-                  </h2>
-                  <p className="text-gray-600 mb-3">
-                    Don’t have a resume? No worries — you can{" "}
-                    <span className="text-blue-600 font-semibold">
-                      create one easily
-                    </span>{" "}
-                    after signup!
-                  </p>
-                  <input
-                    type="file"
-                    name="resume"
-                    accept=".pdf,.doc,.docx"
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded-xl mb-4"
-                  />
+                  <div className="text-center mb-8">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Brain className="w-8 h-8 text-green-600" />
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                      Complete Your Profile
+                    </h2>
+                    <p className="text-gray-600">Final step to get your AI recommendations</p>
+                  </div>
 
-                  <h3 className="text-lg font-semibold text-blue-600">
-                    🔑 Secure Your Account
-                  </h3>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 mb-3"
-                    required
-                  />
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-400 mb-3"
-                    required
-                  />
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                        📄 Upload Resume (Optional)
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        Don't have a resume? No worries — you can{" "}
+                        <span className="text-blue-600 font-semibold">
+                          create one easily
+                        </span>{" "}
+                        after signup!
+                      </p>
+                      <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition">
+                        <input
+                          type="file"
+                          name="resume"
+                          accept=".pdf,.doc,.docx"
+                          onChange={handleChange}
+                          className="hidden"
+                          id="resume-upload"
+                        />
+                        <label htmlFor="resume-upload" className="cursor-pointer">
+                          <div className="text-gray-400 mb-2">
+                            <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                          </div>
+                          <p className="text-gray-600">Click to upload or drag and drop</p>
+                          <p className="text-sm text-gray-400">PDF, DOC, DOCX (Max 10MB)</p>
+                        </label>
+                      </div>
+                    </div>
 
-                  <div className="flex justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        🔑 Secure Your Account
+                      </h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Password
+                          </label>
+                          <input
+                            type="password"
+                            name="password"
+                            placeholder="Create a strong password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Confirm Password
+                          </label>
+                          <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm your password"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between pt-6">
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="px-6 py-2 bg-gray-300 rounded-xl shadow hover:bg-gray-400 transition"
+                      className="px-6 py-3 bg-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-400 transition flex items-center"
                     >
-                      ← Back
+                      <ArrowLeft className="w-5 h-5 mr-2" />
+                      Back
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-2 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition"
+                      disabled={isLoading}
+                      className="px-8 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                     >
-                      ✅ Finish
+                      {isLoading ? (
+                        <div className="flex items-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          Creating Account...
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <CheckCircle className="w-5 h-5 mr-2" />
+                          Complete Registration
+                        </div>
+                      )}
                     </button>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </form>
-        </div>
+        </motion.div>
       </div>
 
       <Footer />
