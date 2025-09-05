@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown,Globe } from "lucide-react";
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
 
   return (
     <nav className="bg-blue-600 text-white shadow-md relative">
@@ -26,24 +27,26 @@ function Navbar() {
               </button>
               {featuresOpen && (
                 <div className="absolute mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg">
-                  <Link
-                    to="#smart-matching"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Smart Matching
-                  </Link>
-                  <Link
-                    to="#equal-access"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Equal Access
-                  </Link>
-                  <Link
-                    to="#skill-growth"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Skill Growth
-                  </Link>
+                  <Link to="#smart-matching" className="block px-4 py-2 hover:bg-gray-100">Smart Matching</Link>
+                  <Link to="#equal-access" className="block px-4 py-2 hover:bg-gray-100">Equal Access</Link>
+                  <Link to="#skill-growth" className="block px-4 py-2 hover:bg-gray-100">Skill Growth</Link>
+                </div>
+              )}
+            </div>
+
+            {/* Language Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setLanguageOpen(!languageOpen)}
+                className="flex items-center gap-1 hover:text-gray-200"
+              >
+                <Globe size={18} /> Language <ChevronDown size={14} />
+              </button>
+              {languageOpen && (
+                <div className="absolute mt-2 w-32 bg-white text-gray-800 rounded-lg shadow-lg">
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">English</button>
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">हिंदी</button>
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">বাংলা</button>
                 </div>
               )}
             </div>
@@ -58,29 +61,14 @@ function Navbar() {
               </button>
               {loginOpen && (
                 <div className="absolute mt-2 w-40 bg-white text-gray-800 rounded-lg shadow-lg">
-                  <Link
-                    to="/login"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Student Login
-                  </Link>
-                  <Link
-                    to="/admin-login"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Admin Login
-                  </Link>
+                  <Link to="/login" className="block px-4 py-2 hover:bg-gray-100">Student Login</Link>
+                  <Link to="/admin-login" className="block px-4 py-2 hover:bg-gray-100">Admin Login</Link>
                 </div>
               )}
             </div>
 
             {/* Register Button */}
-            <Link
-              to="/register"
-              className="px-4 py-2 bg-blue-800 rounded-lg hover:bg-blue-700"
-            >
-              Register
-            </Link>
+            <Link to="/register" className="px-4 py-2 bg-blue-800 rounded-lg hover:bg-blue-700">Register</Link>
           </div>
 
           {/* Mobile Hamburger */}
@@ -106,15 +94,26 @@ function Navbar() {
             </button>
             {featuresOpen && (
               <div className="ml-4 space-y-1">
-                <Link to="#smart-matching" className="block py-1">
-                  Smart Matching
-                </Link>
-                <Link to="#equal-access" className="block py-1">
-                  Equal Access
-                </Link>
-                <Link to="#skill-growth" className="block py-1">
-                  Skill Growth
-                </Link>
+                <Link to="#smart-matching" className="block py-1">Smart Matching</Link>
+                <Link to="#equal-access" className="block py-1">Equal Access</Link>
+                <Link to="#skill-growth" className="block py-1">Skill Growth</Link>
+              </div>
+            )}
+          </div>
+
+          {/* Language dropdown in mobile */}
+          <div>
+            <button
+              onClick={() => setLanguageOpen(!languageOpen)}
+              className="flex items-center gap-1 w-full py-2"
+            >
+              Language <ChevronDown size={14} />
+            </button>
+            {languageOpen && (
+              <div className="ml-4 space-y-1 bg-white text-gray-800 rounded-lg mt-2">
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">English</button>
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">हिंदी</button>
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">বাংলা</button>
               </div>
             )}
           </div>
@@ -129,26 +128,14 @@ function Navbar() {
             </button>
             {loginOpen && (
               <div className="ml-4 space-y-1 bg-white text-gray-800 rounded-lg mt-2">
-                <Link to="/login" className="block px-4 py-2 hover:bg-gray-100">
-                  Student Login
-                </Link>
-                <Link
-                  to="/admin-login"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  Admin Login
-                </Link>
+                <Link to="/login" className="block px-4 py-2 hover:bg-gray-100">Student Login</Link>
+                <Link to="/admin-login" className="block px-4 py-2 hover:bg-gray-100">Admin Login</Link>
               </div>
             )}
           </div>
 
           {/* Register */}
-          <Link
-            to="/register"
-            className="block px-4 py-2 bg-blue-800 rounded-lg hover:bg-blue-700"
-          >
-            Register
-          </Link>
+          <Link to="/register" className="block px-4 py-2 bg-blue-800 rounded-lg hover:bg-blue-700">Register</Link>
         </div>
       )}
     </nav>
@@ -156,3 +143,6 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+
