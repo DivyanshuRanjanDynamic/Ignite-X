@@ -40,8 +40,24 @@ function Register() {
     // Simulate API call
     setTimeout(() => {
       console.log("User Data:", formData);
+      
+      // Set authentication state in localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userType', 'student');
+      localStorage.setItem('userName', formData.name || formData.email.split('@')[0]);
+      
+      // Dispatch custom event to notify navbar of auth change
+      window.dispatchEvent(new CustomEvent('authStateChanged', {
+        detail: { 
+          isAuthenticated: true, 
+          userType: 'student', 
+          userName: formData.name || formData.email.split('@')[0] 
+        }
+      }));
+      
       setIsLoading(false);
-      // Navigate to dashboard or show success message
+      // Navigate to dashboard
+      window.location.href = "/student-dashboard";
     }, 2000);
   };
 

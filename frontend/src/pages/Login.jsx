@@ -20,6 +20,17 @@ function Login() {
     // Simulate API call
     setTimeout(() => {
       console.log("Login:", { email, password, rememberMe });
+      
+      // Set authentication state in localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userType', 'student');
+      localStorage.setItem('userName', email.split('@')[0]); // Use email prefix as username
+      
+      // Dispatch custom event to notify navbar of auth change
+      window.dispatchEvent(new CustomEvent('authStateChanged', {
+        detail: { isAuthenticated: true, userType: 'student', userName: email.split('@')[0] }
+      }));
+      
       setIsLoading(false);
       navigate("/student-dashboard");
     }, 1500);

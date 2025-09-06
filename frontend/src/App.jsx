@@ -26,6 +26,10 @@ import Notifications from "./pages/student/Notifications";
 import StudentProgress from "./pages/student/StudentProgress";
 import ApplyForm from "./pages/student/ApplyForm";
 import InternshipDetails from "./pages/student/InternshipDetails";
+import RecommendedInternships from "./pages/student/RecommendedInternships";
+import AppliedInternships from "./pages/student/AppliedInternships";
+import RequiredSkills from "./pages/student/RequiredSkills";
+import ResumeUpload from "./pages/student/ResumeUpload";
 
 function App() {
   return (
@@ -37,16 +41,20 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
 
-      {/* Student Dashboard Layout with Nested Pages */}
-      <Route path="/student-dashboard" element={<StudentDashboard />}>
-        <Route index element={<Dashboard />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="recommendation" element={<Recommendation />} />
-        <Route path="applications" element={<Applications />} />
-        <Route path="chatbot" element={<Chatbot />} />
-        <Route path="notifications" element={<Notifications />} />
-        <Route path="progress" element={<StudentProgress />} />
-      </Route>
+                  {/* Student Dashboard Layout with Nested Pages */}
+            <Route path="/student-dashboard" element={<StudentDashboard />}>
+              <Route index element={<RecommendedInternships />} />
+              <Route path="recommended-internships" element={<RecommendedInternships />} />
+              <Route path="applied-internships" element={<AppliedInternships />} />
+              <Route path="required-skills" element={<RequiredSkills />} />
+              <Route path="resume-upload" element={<ResumeUpload />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="recommendation" element={<Recommendation />} />
+              <Route path="applications" element={<Applications />} />
+              <Route path="chatbot" element={<Chatbot />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="progress" element={<StudentProgress />} />
+            </Route>
 
       {/* Admin Dashboard with nested routes */}
       <Route path="/admin" element={<AdminLayout />}>

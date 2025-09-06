@@ -224,7 +224,7 @@ export default function Dashboard() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + index * 0.1 }}
               className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition cursor-pointer"
-              onClick={() => navigate(`/internship-details/${rec.id}`)}
+                              onClick={() => navigate(`/internship/${rec.id}`)}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">

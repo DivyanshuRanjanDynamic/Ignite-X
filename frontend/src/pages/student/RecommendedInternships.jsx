@@ -1,17 +1,18 @@
-// src/pages/student/Recommendation.jsx
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  MapPin, Briefcase, Clock, Bookmark, Eye, Brain, Star, 
-  Filter, RefreshCw, TrendingUp, Users, Award 
+  MapPin, Briefcase, Clock, Star, Filter, 
+  RefreshCw, TrendingUp, Users, Award, Brain,
+  ArrowRight, Bookmark, Eye, CheckCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function Recommendation() {
+export default function RecommendedInternships() {
   const navigate = useNavigate();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("all");
 
+  // Mock data for PM Internship Scheme
   const recommendations = [
     {
       id: 1,
@@ -24,7 +25,8 @@ export default function Recommendation() {
       match: 95,
       description: "Work on digital transformation projects and e-governance initiatives.",
       skills: ["Digital Literacy", "Communication", "Project Management"],
-      category: "government"
+      category: "government",
+      status: "Available"
     },
     {
       id: 2,
@@ -37,7 +39,8 @@ export default function Recommendation() {
       match: 92,
       description: "Assist in rural development programs and community outreach initiatives.",
       skills: ["Community Work", "Research", "Communication"],
-      category: "social"
+      category: "social",
+      status: "Available"
     },
     {
       id: 3,
@@ -50,7 +53,8 @@ export default function Recommendation() {
       match: 88,
       description: "Support skill development programs and vocational training initiatives.",
       skills: ["Teaching", "Training", "Education"],
-      category: "education"
+      category: "education",
+      status: "Available"
     },
     {
       id: 4,
@@ -63,7 +67,8 @@ export default function Recommendation() {
       match: 85,
       description: "Assist in public health campaigns and healthcare awareness programs.",
       skills: ["Healthcare", "Communication", "Community Work"],
-      category: "healthcare"
+      category: "healthcare",
+      status: "Available"
     },
     {
       id: 5,
@@ -76,7 +81,8 @@ export default function Recommendation() {
       match: 82,
       description: "Support women empowerment initiatives and child development programs.",
       skills: ["Social Work", "Communication", "Research"],
-      category: "social"
+      category: "social",
+      status: "Available"
     },
     {
       id: 6,
@@ -89,7 +95,8 @@ export default function Recommendation() {
       match: 80,
       description: "Work on environmental conservation projects and climate change initiatives.",
       skills: ["Environmental Science", "Research", "Project Management"],
-      category: "environment"
+      category: "environment",
+      status: "Available"
     }
   ];
 
@@ -108,14 +115,13 @@ export default function Recommendation() {
 
   const handleRefreshRecommendations = async () => {
     setIsRefreshing(true);
-    // Simulate API call
     setTimeout(() => {
       setIsRefreshing(false);
     }, 2000);
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -126,10 +132,10 @@ export default function Recommendation() {
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
               <Brain className="w-8 h-8 mr-3 text-blue-600" />
-              AI-Powered Recommendations
+              Recommended Internships
             </h1>
             <p className="text-gray-600 mt-2">
-              Personalized internship suggestions based on your profile and preferences
+              AI-powered internship suggestions based on your profile and preferences
             </p>
           </div>
           <button
@@ -215,7 +221,7 @@ export default function Recommendation() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 + index * 0.1 }}
-            className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl hover:scale-[1.02] transition transform duration-300 ease-in-out border border-gray-100"
+            className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl hover:scale-[1.02] transition transform duration-300 border border-gray-100"
           >
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
@@ -283,9 +289,7 @@ export default function Recommendation() {
               >
                 Apply Now
               </button>
-              <button
-                className="flex items-center justify-center gap-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm hover:bg-gray-300 transition"
-              >
+              <button className="flex items-center justify-center gap-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm hover:bg-gray-300 transition">
                 <Bookmark className="w-4 h-4" />
               </button>
               <button
@@ -314,10 +318,3 @@ export default function Recommendation() {
     </div>
   );
 }
-
-
-
-
-
-
-
