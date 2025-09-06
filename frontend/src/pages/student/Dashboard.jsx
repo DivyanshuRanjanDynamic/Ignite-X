@@ -262,36 +262,36 @@ export default function Dashboard() {
         transition={{ delay: 0.4 }}
       >
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {actions.map((action, idx) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {actions.map((action, idx) => (
             <motion.div
-              key={idx}
+            key={idx}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 + idx * 0.1 }}
-              onClick={() => navigate(action.path)}
+            onClick={() => navigate(action.path)}
               className="cursor-pointer bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl hover:scale-[1.02] transition transform duration-300 ease-in-out group border border-gray-100"
-            >
+          >
               <div className="flex items-start justify-between mb-4">
-                <div
+            <div
                   className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-r ${action.color} text-white shadow-md group-hover:scale-110 transition`}
-                >
-                  {action.icon}
+            >
+              {action.icon}
                 </div>
                 {action.badge && (
                   <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">
                     {action.badge}
                   </span>
                 )}
-              </div>
+            </div>
 
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-700 transition">
-                {action.name}
-              </h3>
-              <p className="text-gray-600 text-sm">{action.desc}</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-700 transition">
+              {action.name}
+            </h3>
+            <p className="text-gray-600 text-sm">{action.desc}</p>
             </motion.div>
-          ))}
-        </div>
+        ))}
+      </div>
       </motion.div>
     </div>
   );

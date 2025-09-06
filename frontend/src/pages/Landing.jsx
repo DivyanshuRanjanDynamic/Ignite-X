@@ -4,7 +4,8 @@ import {
   Target, TrendingUp, Shield, Zap, BookOpen, Briefcase,
   BarChart3, Globe, Smartphone, Award, Clock, UserCheck,
   Calendar, MessageCircle, FileText, Eye, Heart, Share2,
-  Play, Download, ExternalLink, Filter, Search, Bell
+  Play, Download, ExternalLink, Filter, Search, Bell,
+  Bookmark, DollarSign
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -20,7 +21,10 @@ export default function LandingPage() {
       stipend: "₹12,000", 
       duration: "3 Months",
       category: "Government",
-      match: "95%"
+      match: "95%",
+      matchBadge: "Excellent Match",
+      description: "Work on digital transformation projects and e-governance initiatives.",
+      skills: ["Digital Literacy", "Communication", "Project Management"]
     },
     { 
       id: 2, 
@@ -30,7 +34,10 @@ export default function LandingPage() {
       stipend: "₹10,000", 
       duration: "6 Months",
       category: "Social Impact",
-      match: "92%"
+      match: "92%",
+      matchBadge: "Excellent Match",
+      description: "Assist in rural development programs and community outreach initiatives.",
+      skills: ["Community Work", "Research", "Communication"]
     },
     { 
       id: 3, 
@@ -40,7 +47,10 @@ export default function LandingPage() {
       stipend: "₹8,000", 
       duration: "4 Months",
       category: "Education",
-      match: "88%"
+      match: "88%",
+      matchBadge: "Good Match",
+      description: "Support skill development programs and vocational training initiatives.",
+      skills: ["Teaching", "Training", "Education"]
     },
   ];
 
@@ -186,7 +196,7 @@ export default function LandingPage() {
             >
               Get Started Free
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Link> 
+            </Link>
             <a
               href="#features"
               className="px-8 py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition text-lg font-semibold"
@@ -816,7 +826,7 @@ export default function LandingPage() {
           Discover exciting opportunities in the PM Internship Scheme
         </motion.p>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {featuredInternships.map((internship, index) => (
             <motion.div
               key={internship.id}
@@ -825,63 +835,93 @@ export default function LandingPage() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -4 }}
-              className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group"
+              className="bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group"
             >
-              {/* Simple Header */}
-              <div className="bg-blue-600 text-white p-4 rounded-t-xl">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Briefcase className="w-5 h-5" />
-                    <span className="font-semibold">PM Internship Scheme</span>
-                  </div>
-                  <div className="flex items-center space-x-1 bg-white bg-opacity-20 px-2 py-1 rounded">
-                    <Star className="w-3 h-3 text-yellow-300" />
-                    <span className="text-xs font-semibold">{internship.match}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Content */}
+              {/* Card Content */}
               <div className="p-6">
-                {/* Title and Department */}
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                {internship.title}
-              </h3>
-                  <p className="text-gray-600 font-medium">{internship.company}</p>
+                {/* Header Section */}
+                <div className="mb-6">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {internship.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-3">{internship.company}</p>
+                    </div>
+                    <div className="flex items-center space-x-1 text-green-600">
+                      <Star className="w-4 h-4 fill-current" />
+                      <span className="text-sm font-semibold">{internship.match}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Match Badge */}
+                  <div className="mb-4">
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                      internship.matchBadge === "Excellent Match" 
+                        ? "bg-green-100 text-green-800" 
+                        : "bg-blue-100 text-blue-800"
+                    }`}>
+                      {internship.matchBadge}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Basic Details */}
+                {/* Details Section with Icons */}
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center text-gray-700">
-                    <MapPin className="w-4 h-4 mr-2 text-blue-600" />
-                    <span>{internship.location}</span>
+                    <MapPin className="w-4 h-4 mr-3 text-red-500" />
+                    <span className="text-sm">{internship.location}</span>
                   </div>
                   <div className="flex items-center text-gray-700">
-                    <Clock className="w-4 h-4 mr-2 text-blue-600" />
-                    <span>{internship.duration}</span>
+                    <Briefcase className="w-4 h-4 mr-3 text-blue-500" />
+                    <span className="text-sm">{internship.category}</span>
                   </div>
                   <div className="flex items-center text-gray-700">
-                    <Award className="w-4 h-4 mr-2 text-blue-600" />
-                    <span className="font-semibold text-gray-900">{internship.stipend}</span>
+                    <Clock className="w-4 h-4 mr-3 text-green-500" />
+                    <span className="text-sm">{internship.duration}</span>
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <DollarSign className="w-4 h-4 mr-3 text-orange-500" />
+                    <span className="text-sm font-medium">{internship.stipend}/month</span>
                   </div>
                 </div>
 
-                {/* Category */}
+                {/* Description */}
                 <div className="mb-6">
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
-                    {internship.category}
-                  </span>
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {internship.description}
+                  </p>
                 </div>
 
-                {/* Action Button */}
-              <Link
-                  to="/register"
-                  className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition font-medium"
-              >
-                  Apply Now
-                  <ArrowRight className="w-4 h-4" />
-              </Link>
+                {/* Required Skills */}
+                <div className="mb-6">
+                  <div className="flex flex-wrap gap-2">
+                    {internship.skills.map((skill, skillIndex) => (
+                      <span
+                        key={skillIndex}
+                        className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center space-x-3">
+                  <Link
+                    to="/register"
+                    className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-semibold text-center"
+                  >
+                    Apply Now
+                  </Link>
+                  <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                    <Bookmark className="w-4 h-4 text-gray-600" />
+                  </button>
+                  <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                    <Eye className="w-4 h-4 text-green-600" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           ))}
