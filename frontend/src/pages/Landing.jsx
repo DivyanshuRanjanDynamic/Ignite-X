@@ -225,7 +225,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <img
-                  src="/src/assets/hero1.png"
+                  src="/assets/hero1.png"
                   alt="AI Recommendation Engine"
                   className="w-full h-full object-cover rounded-2xl shadow-lg border-2 border-white group-hover:shadow-xl transition-all duration-300"
                 />
@@ -243,7 +243,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 <img
-                  src="/src/assets/hero2.png"
+                  src="/assets/hero2.png"
                   alt="Collaborative Learning"
                   className="w-full h-full object-cover rounded-xl shadow-md border-2 border-white group-hover:shadow-lg transition-all duration-300"
                 />
@@ -258,7 +258,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <img
-                  src="/src/assets/hero3.png"
+                  src="/assets/hero6.png"
                   alt="Team Collaboration"
                   className="w-full h-full object-cover rounded-xl shadow-md border-2 border-white group-hover:shadow-lg transition-all duration-300"
                 />
@@ -276,7 +276,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <img
-                  src="/src/assets/hero1.png"
+                  src="/assets/hero1.png"
                   alt="AI Recommendation Engine"
                   className="w-full h-64 object-cover rounded-2xl shadow-lg border-2 border-white group-hover:shadow-xl transition-all duration-300"
                 />
@@ -295,7 +295,7 @@ export default function LandingPage() {
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
                   <img
-                    src="/src/assets/hero2.png"
+                    src="/assets/hero2.png"
                     alt="Collaborative Learning"
                     className="w-full h-32 object-cover rounded-xl shadow-md border-2 border-white group-hover:shadow-lg transition-all duration-300"
                   />
@@ -309,7 +309,7 @@ export default function LandingPage() {
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
                   <img
-                    src="/src/assets/hero3.png"
+                    src="/assets/hero3.png"
                     alt="Team Collaboration"
                     className="w-full h-32 object-cover rounded-xl shadow-md border-2 border-white group-hover:shadow-lg transition-all duration-300"
                   />
@@ -326,7 +326,7 @@ export default function LandingPage() {
                   transition={{ duration: 0.8, delay: 0.8 }}
                 >
                   <img
-                    src="/src/assets/hero4.png"
+                    src="/assets/hero4.png"
                     alt="Professional Development"
                     className="w-full h-32 object-cover rounded-xl shadow-md border-2 border-white group-hover:shadow-lg transition-all duration-300"
                   />
@@ -340,7 +340,7 @@ export default function LandingPage() {
                   transition={{ duration: 0.8, delay: 1.0 }}
                 >
                   <img
-                    src="/src/assets/hero5.png"
+                    src="/assets/hero5.png"
                     alt="Learning Environment"
                     className="w-full h-32 object-cover rounded-xl shadow-md border-2 border-white group-hover:shadow-lg transition-all duration-300"
                   />
