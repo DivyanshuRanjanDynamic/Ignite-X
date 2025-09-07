@@ -1,7 +1,13 @@
 // src/pages/student/Applications.jsx
+import { useEffect } from "react";
 import { FileText, Clock, CheckCircle, XCircle } from "lucide-react";
 
 export default function Applications() {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, []);
+
   const applications = [
     {
       id: 1,
@@ -42,36 +48,36 @@ export default function Applications() {
   const getStatusIcon = (status) => {
     switch (status) {
       case "Accepted":
-        return <CheckCircle size={18} className="mr-2 text-green-600" />;
+        return <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-green-600 flex-shrink-0" />;
       case "Rejected":
-        return <XCircle size={18} className="mr-2 text-red-600" />;
+        return <XCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-red-600 flex-shrink-0" />;
       case "Under Review":
-        return <Clock size={18} className="mr-2 text-yellow-600" />;
+        return <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-yellow-600 flex-shrink-0" />;
       default:
-        return <FileText size={18} className="mr-2 text-gray-600" />;
+        return <FileText className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-gray-600 flex-shrink-0" />;
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8">
-      <h2 className="text-2xl font-bold mb-6 text-blue-800">📑 My Applications</h2>
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-blue-800">📑 My Applications</h2>
 
       {applications.length === 0 ? (
-        <p className="text-gray-600">No applications submitted yet.</p>
+        <p className="text-sm sm:text-base text-gray-600 text-center py-8">No applications submitted yet.</p>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {applications.map((app) => (
             <div
               key={app.id}
-              className="bg-white rounded-2xl shadow-md p-6 hover:shadow-2xl hover:scale-105 transition transform duration-300 ease-in-out"
+              className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 hover:shadow-2xl hover:scale-105 transition transform duration-300 ease-in-out"
             >
               {/* Job Title & Company */}
-              <h3 className="text-lg font-semibold text-gray-900">{app.title}</h3>
-              <p className="text-sm text-gray-500 mb-3">{app.company}</p>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 line-clamp-2">{app.title}</h3>
+              <p className="text-xs sm:text-sm text-gray-500 mb-3 line-clamp-1">{app.company}</p>
 
               {/* Status */}
               <div
-                className={`flex items-center px-3 py-1 rounded-lg border w-fit text-sm font-medium ${getStatusStyle(
+                className={`flex items-center px-2 sm:px-3 py-1 rounded-lg border w-fit text-xs sm:text-sm font-medium ${getStatusStyle(
                   app.status
                 )}`}
               >
@@ -80,13 +86,14 @@ export default function Applications() {
               </div>
 
               {/* Date */}
-              <p className="text-gray-600 text-sm mt-3">
+              <p className="text-gray-600 text-xs sm:text-sm mt-3">
                 📅 Applied on: <span className="font-medium">{app.date}</span>
               </p>
 
               {/* View Details Button */}
-              <button className="mt-4 w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-700 hover:shadow-lg hover:scale-105 transition duration-300">
-                View Details
+              <button className="mt-4 w-full bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium shadow hover:bg-blue-700 hover:shadow-lg hover:scale-105 transition duration-300">
+                <span className="hidden sm:inline">View Details</span>
+                <span className="sm:hidden">Details</span>
               </button>
             </div>
           ))}

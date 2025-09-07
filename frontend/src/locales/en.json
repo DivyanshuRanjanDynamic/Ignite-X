@@ -1,0 +1,600 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "My Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "features": "Features",
+    "language": "Language"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "loginAs": "Login as",
+      "student": "Student",
+      "admin": "Admin",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot Password?",
+      "signIn": "Sign In",
+      "signingIn": "Signing In...",
+      "signInAs": "Sign In as {{userType}}",
+      "orContinueWith": "Or continue with",
+      "google": "Google",
+      "github": "GitHub",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one here"
+    },
+    "register": {
+      "title": "Join PM Internship AI",
+      "subtitle": "Create your profile to get personalized internship recommendations powered by AI",
+      "fullName": "Full Name",
+      "confirmPassword": "Confirm Password",
+      "steps": {
+        "basicInfo": {
+          "title": "Personal Details",
+          "description": "Basic information",
+          "heading": "Let's Get Started!",
+          "subheading": "Tell us about yourself to create your personalized profile"
+        },
+        "educationSkills": {
+          "title": "Education & Skills",
+          "description": "Academic & abilities",
+          "heading": "Education & Skills Profile",
+          "subheading": "Help us understand your educational background and skill set"
+        },
+        "locationInterests": {
+          "title": "Location & Preferences",
+          "description": "Career preferences",
+          "heading": "Location & Career Preferences",
+          "subheading": "Share your location and career interests for better matches"
+        },
+        "security": {
+          "title": "Complete Profile",
+          "description": "Final setup",
+          "heading": "Complete Your Profile",
+          "subheading": "Secure your account and add final details"
+        }
+      },
+      "fields": {
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "dateOfBirth": "Date of Birth",
+        "gender": "Gender",
+        "password": "Password",
+        "education": "Education Level",
+        "degree": "Degree/Course",
+        "institution": "Institution/College",
+        "graduationYear": "Graduation Year",
+        "domain": "Preferred Domain",
+        "skills": "Your Skills",
+        "experience": "Experience Level",
+        "state": "State",
+        "city": "City",
+        "interests": "Career Interests",
+        "workPreference": "Work Preference",
+        "resume": "Upload Resume",
+        "profilePhoto": "Profile Photo"
+      },
+      "placeholders": {
+        "fullName": "Enter your full name",
+        "email": "your.email@example.com",
+        "phone": "+91 98765 43210",
+        "password": "Create a strong password (8+ characters)",
+        "confirmPassword": "Confirm your password",
+        "degree": "e.g., Bachelor of Engineering, MBA, etc.",
+        "institution": "Enter your college/university name",
+        "interests": "Tell us about your career goals and interests..."
+      },
+      "options": {
+        "education": {
+          "select": "Select Education Level",
+          "belowTenth": "Below 10th Grade",
+          "tenth": "10th Grade (Matriculation)",
+          "twelfth": "12th Grade (Higher Secondary)",
+          "diploma": "Diploma",
+          "undergraduate": "Undergraduate (Bachelor's)",
+          "postgraduate": "Postgraduate (Master's)",
+          "doctorate": "Doctorate (PhD)",
+          "other": "Other"
+        },
+        "gender": {
+          "select": "Select Gender",
+          "male": "Male",
+          "female": "Female",
+          "other": "Other",
+          "preferNotToSay": "Prefer not to say"
+        },
+        "experience": {
+          "select": "Select Experience Level",
+          "fresher": "Fresher (No experience)",
+          "lessThanYear": "Less than 1 year",
+          "oneToTwo": "1-2 years",
+          "twoToFive": "2-5 years",
+          "moreThanFive": "5+ years"
+        },
+        "workPreference": {
+          "select": "Select Work Preference",
+          "remote": "Remote Work",
+          "onsite": "On-site Work",
+          "hybrid": "Hybrid (Remote + On-site)",
+          "noPreference": "No Preference"
+        },
+        "domains": {
+          "select": "Choose Your Preferred Domain",
+          "technology": "Technology & IT",
+          "healthcare": "Healthcare & Medical",
+          "education": "Education & Training",
+          "finance": "Finance & Banking",
+          "marketing": "Marketing & Sales",
+          "engineering": "Engineering & Manufacturing",
+          "design": "Design & Creative Arts",
+          "agriculture": "Agriculture & Rural Development",
+          "government": "Government & Public Service",
+          "nonprofit": "Non-profit & Social Impact",
+          "media": "Media & Communication",
+          "tourism": "Tourism & Hospitality",
+          "other": "Other"
+        }
+      },
+      "skillCategories": {
+        "technical": "Technical Skills",
+        "creative": "Creative Skills",
+        "business": "Business Skills",
+        "communication": "Communication Skills",
+        "trades": "Trades & Crafts",
+        "other": "Other Skills"
+      },
+      "skills": {
+        "technical": {
+          "webDevelopment": "Web Development",
+          "mobileDevelopment": "Mobile App Development",
+          "dataAnalysis": "Data Analysis",
+          "digitalMarketing": "Digital Marketing",
+          "cyberSecurity": "Cyber Security",
+          "cloudComputing": "Cloud Computing",
+          "artificialIntelligence": "AI/Machine Learning",
+          "softwareTesting": "Software Testing",
+          "databaseManagement": "Database Management",
+          "networking": "Computer Networking"
+        },
+        "creative": {
+          "graphicDesign": "Graphic Design",
+          "uiuxDesign": "UI/UX Design",
+          "videoEditing": "Video Editing",
+          "photography": "Photography",
+          "contentWriting": "Content Writing",
+          "socialMediaManagement": "Social Media Management",
+          "animation": "Animation",
+          "webDesign": "Web Design"
+        },
+        "business": {
+          "projectManagement": "Project Management",
+          "businessAnalysis": "Business Analysis",
+          "sales": "Sales",
+          "customerSupport": "Customer Support",
+          "humanResources": "Human Resources",
+          "accounting": "Accounting",
+          "marketResearch": "Market Research",
+          "entrepreneurship": "Entrepreneurship"
+        },
+        "communication": {
+          "publicSpeaking": "Public Speaking",
+          "writing": "Writing",
+          "translation": "Translation",
+          "teaching": "Teaching/Training",
+          "counseling": "Counseling",
+          "eventManagement": "Event Management"
+        },
+        "trades": {
+          "electricalWork": "Electrical Work",
+          "plumbing": "Plumbing",
+          "carpentry": "Carpentry",
+          "welding": "Welding",
+          "tailoring": "Tailoring",
+          "cooking": "Cooking",
+          "driving": "Driving",
+          "mechanicalRepair": "Mechanical Repair",
+          "beautician": "Beauty & Grooming",
+          "agriculture": "Agriculture/Farming"
+        }
+      },
+      "careerInterests": {
+        "select": "Select your career interests (choose multiple)",
+        "leadership": "Leadership & Management",
+        "innovation": "Innovation & Research",
+        "socialImpact": "Social Impact & Community Service",
+        "entrepreneurship": "Entrepreneurship & Startups",
+        "publicService": "Government & Public Service",
+        "international": "International Work",
+        "workLifeBalance": "Work-Life Balance",
+        "highEarning": "High Earning Potential",
+        "creativity": "Creative Expression",
+        "technology": "Technology & Innovation",
+        "environment": "Environment & Sustainability",
+        "education": "Education & Knowledge Sharing"
+      },
+      "buttons": {
+        "continue": "Continue",
+        "back": "Back",
+        "previous": "Previous",
+        "next": "Next",
+        "completeRegistration": "Complete Registration",
+        "creatingAccount": "Creating Account...",
+        "skipForNow": "Skip for Now"
+      },
+      "validation": {
+        "passwordMismatch": "Passwords do not match!",
+        "invalidEmail": "Please enter a valid email address",
+        "invalidPhone": "Please enter a valid phone number",
+        "requiredField": "This field is required",
+        "passwordTooShort": "Password must be at least 8 characters long",
+        "selectAtLeastOne": "Please select at least one option"
+      },
+      "help": {
+        "passwordStrength": "Use a mix of letters, numbers, and special characters",
+        "skillsHelp": "Select all skills that apply to you. This helps us find better matches.",
+        "resumeOptional": "Resume upload is optional. You can add it later or use our resume builder.",
+        "profilePhotoOptional": "Adding a profile photo helps employers recognize you."
+      },
+      "indianStates": {
+        "select": "Select Your State",
+        "andhraPradesh": "Andhra Pradesh",
+        "arunachalPradesh": "Arunachal Pradesh",
+        "assam": "Assam",
+        "bihar": "Bihar",
+        "chhattisgarh": "Chhattisgarh",
+        "goa": "Goa",
+        "gujarat": "Gujarat",
+        "haryana": "Haryana",
+        "himachalPradesh": "Himachal Pradesh",
+        "jharkhand": "Jharkhand",
+        "karnataka": "Karnataka",
+        "kerala": "Kerala",
+        "madhyaPradesh": "Madhya Pradesh",
+        "maharashtra": "Maharashtra",
+        "manipur": "Manipur",
+        "meghalaya": "Meghalaya",
+        "mizoram": "Mizoram",
+        "nagaland": "Nagaland",
+        "odisha": "Odisha",
+        "punjab": "Punjab",
+        "rajasthan": "Rajasthan",
+        "sikkim": "Sikkim",
+        "tamilNadu": "Tamil Nadu",
+        "telangana": "Telangana",
+        "tripura": "Tripura",
+        "uttarPradesh": "Uttar Pradesh",
+        "uttarakhand": "Uttarakhand",
+        "westBengal": "West Bengal",
+        "andamanNicobar": "Andaman and Nicobar Islands",
+        "chandigarh": "Chandigarh",
+        "delhiNCT": "Delhi (NCT)",
+        "jammuKashmir": "Jammu and Kashmir",
+        "ladakh": "Ladakh",
+        "lakshadweep": "Lakshadweep",
+        "puducherry": "Puducherry"
+      },
+      "graduationYears": {
+        "select": "Select Graduation Year",
+        "2024": "2024",
+        "2025": "2025",
+        "2026": "2026",
+        "2027": "2027",
+        "2028": "2028",
+        "2029": "2029",
+        "2030": "2030",
+        "2023": "2023",
+        "2022": "2022",
+        "2021": "2021",
+        "2020": "2020",
+        "before2020": "Before 2020"
+      }
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "Find Your Perfect",
+      "titleHighlight": "PM Internship",
+      "titleEnd": "Match",
+      "subtitle": "Our AI recommendation engine helps students from rural areas, tribal districts, and remote colleges find the most suitable internships based on their skills, location, and aspirations. No more endless searching!",
+      "getStarted": "Get Started Free",
+      "seeHowItWorks": "See How It Works",
+      "benefits": {
+        "personalizedRecommendations": "3-5 personalized recommendations",
+        "mobileCompatible": "Works on mobile devices",
+        "userFriendly": "Simple, user-friendly interface"
+      }
+    },
+    "stats": {
+      "studentsHelped": "Students Helped",
+      "internshipsAvailable": "Internships Available",
+      "matchAccuracy": "Match Accuracy",
+      "statesCovered": "States Covered"
+    },
+    "features": {
+      "title": "Why Choose Our Platform?",
+      "aiMatching": {
+        "title": "AI-Powered Matching",
+        "description": "Our intelligent algorithm analyzes your skills, location, and preferences to suggest the most relevant internships from hundreds of available opportunities."
+      },
+      "systemIntegration": {
+        "title": "System Integration",
+        "description": "Seamlessly integrates with government portals, educational institutions, and career platforms, ensuring smooth data synchronization and application tracking."
+      },
+      "realTimeAnalytics": {
+        "title": "Real-Time Analytics",
+        "description": "Access up-to-date internship data, application statistics, and success rates anytime, giving you the insights you need for informed career decisions."
+      },
+      "highLevelSecurity": {
+        "title": "High-Level Security",
+        "description": "Your personal data and application information is encrypted using the latest technology, ensuring privacy and security throughout your internship journey."
+      }
+    },
+    "internships": {
+      "featured": "Featured Internships",
+      "viewAll": "View All Internships",
+      "match": "Match",
+      "matchBadges": {
+        "excellent": "Excellent Match",
+        "good": "Good Match",
+        "fair": "Fair Match"
+      },
+      "details": {
+        "location": "Location",
+        "duration": "Duration",
+        "stipend": "Stipend",
+        "category": "Category",
+        "skills": "Skills",
+        "description": "Description",
+        "remote": "Remote",
+        "months": "Months"
+      },
+      "categories": {
+        "government": "Government",
+        "socialImpact": "Social Impact",
+        "education": "Education",
+        "technology": "Technology"
+      },
+      "apply": "Apply Now",
+      "learnMore": "Learn More"
+    },
+    "sections": {
+      "featuresTitle": "Why Choose Our AI Recommendation Engine?",
+      "featuresSubtitle": "Designed specifically for the PM Internship Scheme to help students from all backgrounds",
+      "analyticsTitle": "Real-Time Analytics & Insights",
+      "analyticsSubtitle": "Track your internship journey with comprehensive analytics and personalized insights",
+      "howItWorksTitle": "How Our AI Recommendation Works",
+      "howItWorksSubtitle": "Simple steps to get your personalized internship recommendations",
+      "featuredInternshipsTitle": "Featured Internships",
+      "featuredInternshipsSubtitle": "Discover exciting opportunities in the PM Internship Scheme",
+      "interactiveToolsTitle": "Interactive Tools & Resources",
+      "interactiveToolsSubtitle": "Access powerful tools to enhance your internship application journey",
+      "ctaTitle": "Ready to Find Your Perfect Internship?",
+      "ctaSubtitle": "Join thousands of students who have found their dream internships through our AI-powered platform"
+    },
+    "howItWorks": {
+      "steps": {
+        "step1": {
+          "title": "Create Your Profile",
+          "description": "Tell us about your education, skills, location, and career interests"
+        },
+        "step2": {
+          "title": "AI Analysis",
+          "description": "Our algorithm analyzes your profile against hundreds of internship opportunities"
+        },
+        "step3": {
+          "title": "Get Recommendations",
+          "description": "Receive 3-5 personalized internship recommendations with match percentages"
+        }
+      }
+    },
+    "analytics": {
+      "studentProfile": "Student Profile",
+      "applicationsSubmitted": "Applications Submitted",
+      "underReview": "Under Review",
+      "interview": "Interview",
+      "selected": "Selected",
+      "profileViewsWeek": "Profile views this week",
+      "viewProfile": "View Profile",
+      "applicationActivity": "Application Activity",
+      "changePeriod": "Change Period",
+      "applications": "Applications",
+      "interviews": "Interviews",
+      "activityCalendar": "Activity Calendar",
+      "recentActivity": "Recent Activity",
+      "successInsights": "Success Insights",
+      "applicationSuccessRate": "Applications Success Rate",
+      "interviewConversion": "Interview Conversion",
+      "successRateTrend": "Success Rate Trend",
+      "uniqueFinding": "Unique Finding",
+      "uniqueFindingText": "You have higher success rates when applying to government internships. Your profile matches well with PM Internship Scheme requirements!",
+      "viewDetailedAnalytics": "View Detailed Analytics"
+    },
+    "tools": {
+      "resumeBuilder": {
+        "title": "Resume ATS Tracker",
+        "description": "Create ATS-optimized resumes with our AI-powered builder",
+        "progressIndicator": "Progress Indicator",
+        "templates": "Templates",
+        "atsScore": "ATS Score",
+        "buildResume": "Build Resume"
+      },
+      "skillAssessment": {
+        "title": "Skill Assessment",
+        "description": "Evaluate your skills and get personalized improvement recommendations",
+        "digitalLiteracy": "Digital Literacy",
+        "communication": "Communication",
+        "projectManagement": "Project Management",
+        "takeAssessment": "Take Assessment"
+      },
+      "careerGuidance": {
+        "title": "Career Guidance",
+        "description": "Get personalized career advice and roadmap recommendations",
+        "aiInsight": "AI Insight",
+        "aiInsightText": "Based on your profile, consider focusing on government sector internships for better success rates.",
+        "improveDigitalSkills": "Improve digital skills",
+        "addProjectExperience": "Add project experience",
+        "networkProfessionals": "Network with professionals",
+        "getGuidance": "Get Guidance"
+      }
+    },
+    "cta": {
+      "getStarted": "Get Started",
+      "signIn": "Sign In"
+    },
+    "footer": {
+      "description": "AI-powered internship recommendation engine for the PM Internship Scheme, helping students across India find their perfect career opportunities.",
+      "platform": {
+        "title": "Platform",
+        "howItWorks": "How It Works",
+        "features": "Features",
+        "successStories": "Success Stories",
+        "helpCenter": "Help Center"
+      },
+      "support": {
+        "title": "Support",
+        "helpCenter": "Help Center",
+        "contactUs": "Contact Us",
+        "languageSupport": "Regional Language Support",
+        "faq": "FAQ"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service",
+        "cookiePolicy": "Cookie Policy",
+        "accessibility": "Accessibility"
+      },
+      "copyright": "© {{year}} Ignite-X AI Recommendation Engine. All rights reserved.",
+      "tagline": "Designed for the PM Internship Scheme - Bridging opportunities across India"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "welcome": "Welcome back, {{name}}!",
+      "quickStats": "Quick Statistics",
+      "applications": "Applications",
+      "recommendations": "Recommendations",
+      "profile": "Profile Completion",
+      "recentActivity": "Recent Activity"
+    },
+    "profile": {
+      "title": "My Profile",
+      "personalInfo": "Personal Information",
+      "education": "Education",
+      "skills": "Skills",
+      "experience": "Experience",
+      "preferences": "Preferences",
+      "updateProfile": "Update Profile"
+    },
+    "internships": {
+      "recommended": "Recommended Internships",
+      "applied": "Applied Internships",
+      "saved": "Saved Internships",
+      "viewDetails": "View Details",
+      "apply": "Apply",
+      "alreadyApplied": "Already Applied",
+      "deadline": "Deadline",
+      "location": "Location",
+      "duration": "Duration",
+      "stipend": "Stipend",
+      "company": "Company",
+      "requirements": "Requirements",
+      "description": "Description"
+    },
+    "skills": {
+      "title": "Required Skills",
+      "yourSkills": "Your Skills",
+      "recommendedSkills": "Recommended Skills",
+      "skillGap": "Skill Gap Analysis",
+      "learnSkill": "Learn This Skill",
+      "addSkill": "Add Skill"
+    },
+    "applications": {
+      "title": "My Applications",
+      "status": {
+        "pending": "Pending",
+        "reviewed": "Under Review",
+        "accepted": "Accepted",
+        "rejected": "Rejected",
+        "withdrawn": "Withdrawn"
+      },
+      "appliedOn": "Applied On",
+      "lastUpdate": "Last Update",
+      "viewApplication": "View Application"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markAllRead": "Mark All as Read",
+      "newRecommendation": "New internship recommendation",
+      "applicationUpdate": "Application status updated",
+      "deadlineReminder": "Application deadline reminder"
+    },
+    "chatbot": {
+      "title": "AI Assistant",
+      "placeholder": "Ask me anything about internships...",
+      "send": "Send",
+      "typing": "AI is typing...",
+      "welcome": "Hello! I'm your AI assistant. How can I help you with your internship search today?"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "overview": "Overview",
+      "totalStudents": "Total Students",
+      "totalInternships": "Total Internships",
+      "activeApplications": "Active Applications",
+      "successRate": "Success Rate"
+    },
+    "internships": {
+      "title": "Manage Internships",
+      "addInternship": "Add New Internship",
+      "editInternship": "Edit Internship",
+      "deleteInternship": "Delete Internship"
+    },
+    "users": {
+      "title": "User Management",
+      "students": "Students",
+      "admins": "Administrators",
+      "addUser": "Add User",
+      "editUser": "Edit User"
+    }
+  },
+  "errors": {
+    "pageNotFound": "Page not found",
+    "somethingWentWrong": "Something went wrong",
+    "networkError": "Network error. Please check your connection.",
+    "validationError": "Please check your input and try again"
+  }
+}

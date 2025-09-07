@@ -1,0 +1,389 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "submit": "प्रस्तुत करें",
+    "edit": "संपादित करें",
+    "delete": "हटाएं",
+    "view": "देखें",
+    "search": "खोजें",
+    "filter": "फ़िल्टर",
+    "sort": "क्रमबद्ध करें",
+    "next": "अगला",
+    "previous": "पिछला",
+    "close": "बंद करें",
+    "ok": "ठीक है",
+    "yes": "हां",
+    "no": "नहीं",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "warning": "चेतावनी",
+    "info": "जानकारी"
+  },
+  "navigation": {
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "profile": "मेरी प्रोफ़ाइल",
+    "settings": "सेटिंग्स",
+    "logout": "लॉग आउट",
+    "login": "लॉग इन",
+    "register": "पंजीकरण",
+    "features": "विशेषताएं",
+    "language": "भाषा"
+  },
+  "auth": {
+    "login": {
+      "title": "वापस स्वागत है",
+      "subtitle": "अपने खाते में साइन इन करें",
+      "loginAs": "इस रूप में लॉग इन करें",
+      "student": "छात्र",
+      "admin": "प्रशासक",
+      "email": "ईमेल पता",
+      "emailPlaceholder": "अपना ईमेल दर्ज करें",
+      "password": "पासवर्ड",
+      "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+      "rememberMe": "मुझे याद रखें",
+      "forgotPassword": "पासवर्ड भूल गए?",
+      "signIn": "साइन इन",
+      "signingIn": "साइन इन कर रहे हैं...",
+      "signInAs": "{{userType}} के रूप में साइन इन करें",
+      "orContinueWith": "या इसके साथ जारी रखें",
+      "google": "गूगल",
+      "github": "गिटहब",
+      "noAccount": "खाता नहीं है?",
+      "createAccount": "यहाँ बनाएं"
+    },
+    "register": {
+      "title": "पीएम इंटर्नशिप AI में शामिल हों",
+      "subtitle": "व्यक्तिगत इंटर्नशिप सिफारिशें प्राप्त करने के लिए अपनी प्रोफ़ाइल बनाएं",
+      "fullName": "पूरा नाम",
+      "confirmPassword": "पासवर्ड की पुष्टि करें",
+      "steps": {
+        "basicInfo": {
+          "title": "बुनियादी जानकारी",
+          "description": "व्यक्तिगत विवरण",
+          "heading": "बुनियादी जानकारी",
+          "subheading": "अपने बारे में बताएं"
+        },
+        "educationSkills": {
+          "title": "शिक्षा और कौशल",
+          "description": "शैक्षणिक पृष्ठभूमि"
+        },
+        "locationInterests": {
+          "title": "स्थान और रुचियां",
+          "description": "प्राथमिकताएं"
+        },
+        "security": {
+          "title": "सुरक्षा",
+          "description": "खाता सेटअप"
+        }
+      },
+      "fields": {
+        "email": "ईमेल पता",
+        "phone": "फ़ोन नंबर",
+        "password": "पासवर्ड",
+        "education": "शिक्षा स्तर",
+        "domain": "पसंदीदा डोमेन",
+        "skills": "आपके कौशल",
+        "location": "स्थान",
+        "interests": "करियर रुचियां",
+        "resume": "रिज्यूमे अपलोड करें"
+      },
+      "placeholders": {
+        "fullName": "अपना पूरा नाम दर्ज करें",
+        "email": "अपना ईमेल पता दर्ज करें",
+        "phone": "अपना फ़ोन नंबर दर्ज करें",
+        "password": "एक पासवर्ड बनाएं",
+        "confirmPassword": "अपना पासवर्ड पुष्टि करें",
+        "location": "अपना शहर/राज्य दर्ज करें",
+        "interests": "अपने करियर लक्ष्यों के बारे में बताएं..."
+      },
+      "buttons": {
+        "next": "अगला",
+        "back": "वापस",
+        "createAccount": "खाता बनाएं",
+        "creating": "खाता बनाया जा रहा है..."
+      },
+      "validation": {
+        "passwordMismatch": "पासवर्ड मेल नहीं खाते!"
+      }
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "अपना सही",
+      "titleHighlight": "पीएम इंटर्नशिप",
+      "titleEnd": "मैच खोजें",
+      "subtitle": "हमारा AI सिफारिश इंजन ग्रामीण क्षेत्रों, आदिवासी जिलों और दूरदराज के कॉलेजों के छात्रों को उनके कौशल, स्थान और आकांक्षाओं के आधार पर सबसे उपयुक्त इंटर्नशिप खोजने में मदद करता है। अब कोई और अंतहीन खोज नहीं!",
+      "getStarted": "मुफ्त में शुरू करें",
+      "seeHowItWorks": "देखें कि यह कैसे काम करता है",
+      "benefits": {
+        "personalizedRecommendations": "3-5 व्यक्तिगत सिफारिशें",
+        "mobileCompatible": "मोबाइल उपकरणों पर काम करता है",
+        "userFriendly": "सरल, उपयोगकर्ता-अनुकूल इंटरफेस"
+      }
+    },
+    "stats": {
+      "studentsHelped": "सहायता प्राप्त छात्र",
+      "internshipsAvailable": "उपलब्ध इंटर्नशिप",
+      "matchAccuracy": "मैच सटीकता",
+      "statesCovered": "कवर किए गए राज्य"
+    },
+    "features": {
+      "title": "हमारे प्लेटफॉर्म को क्यों चुनें?",
+      "aiMatching": {
+        "title": "AI-संचालित मैचिंग",
+        "description": "हमारा बुद्धिमान एल्गोरिदम आपके कौशल, स्थान और प्राथमिकताओं का विश्लेषण करके सैकड़ों उपलब्ध अवसरों से सबसे प्रासंगिक इंटर्नशिप सुझाता है।"
+      },
+      "systemIntegration": {
+        "title": "सिस्टम एकीकरण",
+        "description": "सरकारी पोर्टल, शैक्षणिक संस्थानों और करियर प्लेटफॉर्म के साथ निर्बाध रूप से एकीकृत होता है, जो चिकनी डेटा सिंक्रोनाइज़ेशन और आवेदन ट्रैकिंग सुनिश्चित करता है।"
+      },
+      "realTimeAnalytics": {
+        "title": "रीयल-टाइम विश्लेषण",
+        "description": "अद्यतन इंटर्नशिप डेटा, आवेदन आंकड़े और सफलता दरों तक किसी भी समय पहुंच प्राप्त करें, जो आपको सूचित करियर निर्णयों के लिए आवश्यक अंतर्दृष्टि देता है।"
+      },
+      "highLevelSecurity": {
+        "title": "उच्च-स्तरीय सुरक्षा",
+        "description": "आपकी व्यक्तिगत जानकारी और आवेदन जानकारी नवीनतम तकनीक का उपयोग करके एन्क्रिप्टेड है, जो आपकी पूरी इंटर्नशिप यात्रा के दौरान गोपनीयता और सुरक्षा सुनिश्चित करती है।"
+      }
+    },
+    "internships": {
+      "featured": "विशेष इंटर्नशिप",
+      "viewAll": "सभी इंटर्नशिप देखें",
+      "match": "मैच",
+      "matchBadges": {
+        "excellent": "उत्कृष्ट मैच",
+        "good": "अच्छा मैच",
+        "fair": "ठीक मैच"
+      },
+      "details": {
+        "location": "स्थान",
+        "duration": "अवधि",
+        "stipend": "वृत्ति",
+        "category": "श्रेणी",
+        "skills": "कौशल",
+        "description": "विवरण",
+        "remote": "दूरस्थ",
+        "months": "महीने"
+      },
+      "categories": {
+        "government": "सरकारी",
+        "socialImpact": "सामाजिक प्रभाव",
+        "education": "शिक्षा",
+        "technology": "तकनीक"
+      },
+      "apply": "अभी आवेदन करें",
+      "learnMore": "और जानें"
+    },
+    "sections": {
+      "featuresTitle": "हमारा AI सिफारिश इंजन क्यों चुनें?",
+      "featuresSubtitle": "सभी पृष्ठभूमि के छात्रों की मदद के लिए विशेष रूप से पीएम इंटर्नशिप योजना के लिए डिज़ाइन किया गया",
+      "analyticsTitle": "रीयल-टाइम एनालिटिक्स और अंतर्दृष्टि",
+      "analyticsSubtitle": "व्यापक एनालिटिक्स और व्यक्तिगत अंतर्दृष्टि के साथ अपनी इंटर्नशिप यात्रा को ट्रैक करें",
+      "howItWorksTitle": "हमारी AI सिफारिश कैसे काम करती है",
+      "howItWorksSubtitle": "आपकी व्यक्तिगत इंटर्नशिप सिफारिशें प्राप्त करने के सरल चरण",
+      "featuredInternshipsTitle": "विशेष इंटर्नशिप",
+      "featuredInternshipsSubtitle": "पीएम इंटर्नशिप योजना में रोमांचक अवसरों की खोज करें",
+      "interactiveToolsTitle": "इंटरैक्टिव टूल्स और संसाधन",
+      "interactiveToolsSubtitle": "अपनी इंटर्नशिप आवेदन यात्रा को बेहतर बनाने के लिए शक्तिशाली उपकरणों का उपयोग करें",
+      "ctaTitle": "अपनी परफेक्ट इंटर्नशिप खोजने के लिए तैयार हैं?",
+      "ctaSubtitle": "हजारों छात्रों से जुड़ें जिन्होंने हमारे AI-संचालित प्लेटफॉर्म के माध्यम से अपनी सपनों की इंटर्नशिप पाई है"
+    },
+    "howItWorks": {
+      "steps": {
+        "step1": {
+          "title": "अपनी प्रोफ़ाइल बनाएं",
+          "description": "हमें अपनी शिक्षा, कौशल, स्थान और करियर रुचियों के बारे में बताएं"
+        },
+        "step2": {
+          "title": "AI विश्लेषण",
+          "description": "हमारा एल्गोरिदम सैकड़ों इंटर्नशिप अवसरों के विरुद्ध आपकी प्रोफ़ाइल का विश्लेषण करता है"
+        },
+        "step3": {
+          "title": "सिफारिशें प्राप्त करें",
+          "description": "मैच प्रतिशत के साथ 3-5 व्यक्तिगत इंटर्नशिप सिफारिशें प्राप्त करें"
+        }
+      }
+    },
+    "analytics": {
+      "studentProfile": "छात्र प्रोफ़ाइल",
+      "applicationsSubmitted": "प्रस्तुत आवेदन",
+      "underReview": "समीक्षाधीन",
+      "interview": "साक्षात्कार",
+      "selected": "चयनित",
+      "profileViewsWeek": "इस सप्ताह प्रोफ़ाइल दृश्य",
+      "viewProfile": "प्रोफ़ाइल देखें",
+      "applicationActivity": "आवेदन गतिविधि",
+      "changePeriod": "अवधि बदलें",
+      "applications": "आवेदन",
+      "interviews": "साक्षात्कार",
+      "activityCalendar": "गतिविधि कैलेंडर",
+      "recentActivity": "हाल की गतिविधि",
+      "successInsights": "सफलता की अंतर्दृष्टि",
+      "applicationSuccessRate": "आवेदन सफलता दर",
+      "interviewConversion": "साक्षात्कार रूपांतरण",
+      "successRateTrend": "सफलता दर प्रवृत्ति",
+      "uniqueFinding": "अनूठी खोज",
+      "uniqueFindingText": "सरकारी इंटर्नशिप के लिए आवेदन करते समय आपकी सफलता दर अधिक है। आपकी प्रोफ़ाइल पीएम इंटर्नशिप योजना की आवश्यकताओं से अच्छी तरह मेल खाती है!",
+      "viewDetailedAnalytics": "विस्तृत एनालिटिक्स देखें"
+    },
+    "tools": {
+      "resumeBuilder": {
+        "title": "रिज्यूमे ATS ट्रैकर",
+        "description": "हमारे AI-संचालित बिल्डर के साथ ATS-अनुकूलित रिज्यूमे बनाएं",
+        "progressIndicator": "प्रगति सूचक",
+        "templates": "टेम्प्लेट",
+        "atsScore": "ATS स्कोर",
+        "buildResume": "रिज्यूमे बनाएं"
+      },
+      "skillAssessment": {
+        "title": "कौशल आकलन",
+        "description": "अपने कौशल का मूल्यांकन करें और व्यक्तिगत सुधार सिफारिशें प्राप्त करें",
+        "digitalLiteracy": "डिजिटल साक्षरता",
+        "communication": "संवाद",
+        "projectManagement": "परियोजना प्रबंधन",
+        "takeAssessment": "आकलन लें"
+      },
+      "careerGuidance": {
+        "title": "करियर मार्गदर्शन",
+        "description": "व्यक्तिगत करियर सलाह और रोडमैप सिफारिशें प्राप्त करें",
+        "aiInsight": "AI अंतर्दृष्टि",
+        "aiInsightText": "आपकी प्रोफ़ाइल के आधार पर, बेहतर सफलता दर के लिए सरकारी क्षेत्र की इंटर्नशिप पर ध्यान देने पर विचार करें।",
+        "improveDigitalSkills": "डिजिटल कौशल में सुधार करें",
+        "addProjectExperience": "परियोजना अनुभव जोड़ें",
+        "networkProfessionals": "पेशेवरों के साथ नेटवर्क बनाएं",
+        "getGuidance": "मार्गदर्शन प्राप्त करें"
+      }
+    },
+    "cta": {
+      "getStarted": "शुरू करें",
+      "signIn": "साइन इन"
+    },
+    "footer": {
+      "description": "पीएम इंटर्नशिप योजना के लिए AI-संचालित इंटर्नशिप सिफारिश इंजन, जो भारत भर के छात्रों को उनके सही करियर अवसर खोजने में मदद करता है।",
+      "platform": {
+        "title": "प्लेटफॉर्म",
+        "howItWorks": "यह कैसे काम करता है",
+        "features": "विशेषताएं",
+        "successStories": "सफलता की कहानियां",
+        "helpCenter": "सहायता केंद्र"
+      },
+      "support": {
+        "title": "सहायता",
+        "helpCenter": "सहायता केंद्र",
+        "contactUs": "हमसे संपर्क करें",
+        "languageSupport": "क्षेत्रीय भाषा समर्थन",
+        "faq": "अक्सर पूछे जाने वाले प्रश्न"
+      },
+      "legal": {
+        "title": "कानूनी",
+        "privacyPolicy": "गोपनीयता नीति",
+        "termsOfService": "सेवा की शर्तें",
+        "cookiePolicy": "कुकी नीति",
+        "accessibility": "पहुंच"
+      },
+      "copyright": "© {{year}} इग्नाइट-X AI सिफारिश इंजन। सभी अधिकार सुरक्षित।",
+      "tagline": "पीएम इंटर्नशिप योजना के लिए डिज़ाइन किया गया - भारत भर में अवसरों को जोड़ना"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "welcome": "वापस स्वागत है, {{name}}!",
+      "quickStats": "त्वरित आंकड़े",
+      "applications": "आवेदन",
+      "recommendations": "सिफारिशें",
+      "profile": "प्रोफ़ाइल पूर्णता",
+      "recentActivity": "हाल की गतिविधि"
+    },
+    "profile": {
+      "title": "मेरी प्रोफ़ाइल",
+      "personalInfo": "व्यक्तिगत जानकारी",
+      "education": "शिक्षा",
+      "skills": "कौशल",
+      "experience": "अनुभव",
+      "preferences": "प्राथमिकताएं",
+      "updateProfile": "प्रोफ़ाइल अपडेट करें"
+    },
+    "internships": {
+      "recommended": "सुझाई गई इंटर्नशिप",
+      "applied": "आवेदन की गई इंटर्नशिप",
+      "saved": "सहेजी गई इंटर्नशिप",
+      "viewDetails": "विवरण देखें",
+      "apply": "आवेदन करें",
+      "alreadyApplied": "पहले से आवेदन किया गया",
+      "deadline": "अंतिम तिथि",
+      "location": "स्थान",
+      "duration": "अवधि",
+      "stipend": "वृत्ति",
+      "company": "कंपनी",
+      "requirements": "आवश्यकताएं",
+      "description": "विवरण"
+    },
+    "skills": {
+      "title": "आवश्यक कौशल",
+      "yourSkills": "आपके कौशल",
+      "recommendedSkills": "सुझाए गए कौशल",
+      "skillGap": "कौशल अंतर विश्लेषण",
+      "learnSkill": "यह कौशल सीखें",
+      "addSkill": "कौशल जोड़ें"
+    },
+    "applications": {
+      "title": "मेरे आवेदन",
+      "status": {
+        "pending": "लंबित",
+        "reviewed": "समीक्षाधीन",
+        "accepted": "स्वीकृत",
+        "rejected": "अस्वीकृत",
+        "withdrawn": "वापस लिया गया"
+      },
+      "appliedOn": "आवेदन तिथि",
+      "lastUpdate": "अंतिम अपडेट",
+      "viewApplication": "आवेदन देखें"
+    },
+    "notifications": {
+      "title": "सूचनाएं",
+      "markAllRead": "सभी को पढ़े गए के रूप में चिह्नित करें",
+      "newRecommendation": "नई इंटर्नशिप सिफारिश",
+      "applicationUpdate": "आवेदन स्थिति अपडेट",
+      "deadlineReminder": "आवेदन की अंतिम तिथि की याद दिलाना"
+    },
+    "chatbot": {
+      "title": "AI सहायक",
+      "placeholder": "इंटर्नशिप के बारे में कुछ भी पूछें...",
+      "send": "भेजें",
+      "typing": "AI टाइप कर रहा है...",
+      "welcome": "नमस्ते! मैं आपका AI सहायक हूं। आज मैं आपकी इंटर्नशिप खोज में कैसे मदद कर सकता हूं?"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "प्रशासक डैशबोर्ड",
+      "overview": "अवलोकन",
+      "totalStudents": "कुल छात्र",
+      "totalInternships": "कुल इंटर्नशिप",
+      "activeApplications": "सक्रिय आवेदन",
+      "successRate": "सफलता दर"
+    },
+    "internships": {
+      "title": "इंटर्नशिप प्रबंधन",
+      "addInternship": "नई इंटर्नशिप जोड़ें",
+      "editInternship": "इंटर्नशिप संपादित करें",
+      "deleteInternship": "इंटर्नशिप हटाएं"
+    },
+    "users": {
+      "title": "उपयोगकर्ता प्रबंधन",
+      "students": "छात्र",
+      "admins": "प्रशासक",
+      "addUser": "उपयोगकर्ता जोड़ें",
+      "editUser": "उपयोगकर्ता संपादित करें"
+    }
+  },
+  "errors": {
+    "pageNotFound": "पृष्ठ नहीं मिला",
+    "somethingWentWrong": "कुछ गलत हुआ",
+    "networkError": "नेटवर्क त्रुटि। कृपया अपना कनेक्शन जांचें।",
+    "validationError": "कृपया अपना इनपुट जांचें और पुनः प्रयास करें"
+  }
+}

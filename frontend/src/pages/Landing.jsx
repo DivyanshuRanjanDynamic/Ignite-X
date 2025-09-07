@@ -5,12 +5,36 @@ import {
   BarChart3, Globe, Smartphone, Award, Clock, UserCheck,
   Calendar, MessageCircle, FileText, Eye, Heart, Share2,
   Play, Download, ExternalLink, Filter, Search, Bell,
-  Bookmark, DollarSign
+  Bookmark, DollarSign, ChevronUp,
+  Bubbles
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLandingTranslation } from '../hooks/useTranslation.jsx';
 import Navbar from "../components/Navbar";
 
 export default function LandingPage() {
+  const { t, tCommon } = useLandingTranslation();
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Handle scroll to show/hide scroll to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.pageYOffset > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+  
   // Sample featured internships aligned with PM Internship Scheme
   const featuredInternships = [
     { 
@@ -55,16 +79,16 @@ export default function LandingPage() {
   ];
 
   const stats = [
-    { number: "50K+", label: "Students Helped", icon: Users, color: "text-blue-600" },
-    { number: "500+", label: "Internships Available", icon: Briefcase, color: "text-green-600" },
-    { number: "95%", label: "Match Accuracy", icon: Target, color: "text-purple-600" },
-    { number: "28", label: "States Covered", icon: MapPin, color: "text-orange-600" }
+    { number: "50K+", label: t('stats.studentsHelped'), icon: Users, color: "text-blue-600" },
+    { number: "500+", label: t('stats.internshipsAvailable'), icon: Briefcase, color: "text-green-600" },
+    { number: "95%", label: t('stats.matchAccuracy'), icon: Target, color: "text-purple-600" },
+    { number: "28", label: t('stats.statesCovered'), icon: MapPin, color: "text-orange-600" }
   ];
 
   const features = [
     {
-      title: "AI-Powered Matching",
-      description: "Our intelligent algorithm analyzes your skills, location, and preferences to suggest the most relevant internships from hundreds of available opportunities.",
+      title: t('features.aiMatching.title'),
+      description: t('features.aiMatching.description'),
       icon: Brain,
       color: "blue",
       visual: (
@@ -79,8 +103,8 @@ export default function LandingPage() {
       )
     },
     {
-      title: "System Integration",
-      description: "Seamlessly integrates with government portals, educational institutions, and career platforms, ensuring smooth data synchronization and application tracking.",
+      title: t('features.systemIntegration.title'),
+      description: t('features.systemIntegration.description'),
       icon: Globe,
       color: "purple",
       visual: (
@@ -101,8 +125,8 @@ export default function LandingPage() {
       )
     },
     {
-      title: "Real-Time Analytics",
-      description: "Access up-to-date internship data, application statistics, and success rates anytime, giving you the insights you need for informed career decisions.",
+      title: t('features.realTimeAnalytics.title'),
+      description: t('features.realTimeAnalytics.description'),
       icon: BarChart3,
       color: "green",
       visual: (
@@ -128,8 +152,8 @@ export default function LandingPage() {
       )
     },
     {
-      title: "High-Level Security",
-      description: "Your personal data and application information is encrypted using the latest technology, ensuring privacy and security throughout your internship journey.",
+      title: t('features.highLevelSecurity.title'),
+      description: t('features.highLevelSecurity.description'),
       icon: Shield,
       color: "orange",
       visual: (
@@ -154,54 +178,52 @@ export default function LandingPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-10 py-16 md:py-24 gap-10">
+      <section className="flex flex-col-reverse lg:flex-row items-center justify-between px-4 sm:px-6 md:px-10 py-12 sm:py-16 md:py-24 gap-8 lg:gap-12">
         {/* Text */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex-1"
+          className="flex-1 text-center lg:text-left"
         >
          
-          <h1 className="text-4xl md:text-6xl font-extrabold text-blue-700 leading-tight">
-            Find Your Perfect <br />
-            <span className="text-orange-600">PM Internship</span> Match
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-700 leading-tight">
+            {t('hero.title')} <br className="hidden sm:block" />
+            <span className="text-orange-600">{t('hero.titleHighlight')}</span> {t('hero.titleEnd')}
           </h1>
-          <p className="mt-6 text-lg text-gray-700 max-w-lg">
-            Our AI recommendation engine helps students from rural areas, tribal districts, 
-            and remote colleges find the most suitable internships based on their skills, 
-            location, and aspirations. No more endless searching!
+          <p className="mt-4 sm:mt-6 text-base sm:text-lg text-gray-700 max-w-2xl mx-auto lg:mx-0">
+            {t('hero.subtitle')}
           </p>
           
           {/* Key Benefits */}
-          <div className="mt-6 space-y-2">
-            <div className="flex items-center text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-              <span>3-5 personalized recommendations</span>
+          <div className="mt-6 sm:mt-8 space-y-2 sm:space-y-3">
+            <div className="flex items-center text-gray-700 justify-center lg:justify-start">
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2 flex-shrink-0" />
+              <span className="text-sm sm:text-base">{t('hero.benefits.personalizedRecommendations')}</span>
             </div>
-            <div className="flex items-center text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-              <span>Works on mobile devices</span>
+            <div className="flex items-center text-gray-700 justify-center lg:justify-start">
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2 flex-shrink-0" />
+              <span className="text-sm sm:text-base">{t('hero.benefits.mobileCompatible')}</span>
             </div>
-            <div className="flex items-center text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-              <span>Simple, user-friendly interface</span>
+            <div className="flex items-center text-gray-700 justify-center lg:justify-start">
+              <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2 flex-shrink-0" />
+              <span className="text-sm sm:text-base">{t('hero.benefits.userFriendly')}</span>
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Link
               to="/register"
-              className="px-8 py-4 rounded-xl bg-blue-600 text-white text-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
+              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-blue-600 text-white text-base sm:text-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center"
             >
-              Get Started Free
-              <ArrowRight className="w-5 h-5 ml-2" />
+              {t('hero.getStarted')}
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
             </Link>
             <a
               href="#features"
-              className="px-8 py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition text-lg font-semibold"
+              className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition text-base sm:text-lg font-semibold text-center"
             >
-              See How It Works
+              {t('hero.seeHowItWorks')}
             </a>
           </div>
         </motion.div>
@@ -382,8 +404,8 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="px-6 md:px-10 py-12 bg-white">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+      <section className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 bg-white">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -395,11 +417,11 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon className={`w-8 h-8 ${stat.color}`} />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4">
+                  <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${stat.color}`} />
                 </div>
-                <div className={`text-3xl md:text-4xl font-bold ${stat.color}`}>{stat.number}</div>
-                <div className="text-gray-600 mt-1">{stat.label}</div>
+                <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${stat.color}`}>{stat.number}</div>
+                <div className="text-gray-600 mt-1 text-sm sm:text-base">{stat.label}</div>
               </motion.div>
             );
           })}
@@ -407,27 +429,27 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section with Image-Type Cards */}
-      <section id="features" className="px-6 md:px-10 py-20 bg-gray-50">
+      <section id="features" className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 md:py-20 bg-gray-50">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
         >
-          Why Choose Our AI Recommendation Engine?
+          {t('sections.featuresTitle')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center text-gray-600 mb-14 max-w-2xl mx-auto"
+          className="text-center text-gray-600 mb-8 sm:mb-12 md:mb-14 max-w-2xl mx-auto text-sm sm:text-base"
         >
-          Designed specifically for the PM Internship Scheme to help students from all backgrounds
+          {t('sections.featuresSubtitle')}
         </motion.p>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-7xl mx-auto">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -438,30 +460,30 @@ export default function LandingPage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.02, y: -5 }}
-                className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300"
+                className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-100 hover:shadow-xl transition-all duration-300"
               >
                 {/* Visual Section */}
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                   {feature.visual}
                 </div>
 
                 {/* Content Section */}
-                <div className="flex items-start space-x-4">
-                  <div className={`w-12 h-12 bg-${feature.color}-100 rounded-lg flex items-center justify-center flex-shrink-0`}>
-                    <Icon className={`w-6 h-6 text-${feature.color}-600`} />
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-${feature.color}-100 rounded-lg flex items-center justify-center flex-shrink-0`}>
+                    <Icon className={`w-5 h-5 sm:w-6 sm:h-6 text-${feature.color}-600`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed mb-4">
+                    <p className="text-gray-600 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
                       {feature.description}
                     </p>
                     <a 
                       href="#" 
                       className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm"
                     >
-                      Learn more <ArrowRight className="w-4 h-4 ml-1" />
+                     learn more <ArrowRight className="w-4 h-4 ml-1" />
                     </a>
                   </div>
                 </div>
@@ -472,34 +494,34 @@ export default function LandingPage() {
       </section>
 
       {/* Analytics Dashboard Section */}
-      <section className="px-6 md:px-10 py-20 bg-white">
+      <section className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 md:py-20 bg-white">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
         >
-          Real-Time Analytics & Insights
+          {t('sections.analyticsTitle')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center text-gray-600 mb-14 max-w-2xl mx-auto"
+          className="text-center text-gray-600 mb-8 sm:mb-12 md:mb-14 max-w-2xl mx-auto text-sm sm:text-base"
         >
-          Track your internship journey with comprehensive analytics and personalized insights
+          {t('sections.analyticsSubtitle')}
         </motion.p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto">
           {/* User Profile & Application Overview */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true }}
-            className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300"
+            className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 hover:shadow-xl transition-all duration-300"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
@@ -508,7 +530,7 @@ export default function LandingPage() {
                   <UserCheck className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Student Profile</h3>
+                  <h3 className="font-semibold text-gray-900">{t('analytics.studentProfile')}</h3>
                   <p className="text-sm text-gray-500">@student_user</p>
                 </div>
               </div>
@@ -520,20 +542,20 @@ export default function LandingPage() {
             {/* Application Count */}
             <div className="mb-6">
               <div className="text-3xl font-bold text-blue-600 mb-1">12</div>
-              <div className="text-sm text-gray-600">Applications Submitted</div>
+              <div className="text-sm text-gray-600">{t('analytics.applicationsSubmitted')}</div>
             </div>
 
             {/* Application Status Tabs */}
             <div className="mb-4">
               <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
                 <button className="flex-1 py-2 px-3 text-xs font-medium bg-white text-blue-600 rounded-md shadow-sm">
-                  Under Review
+                  {t('analytics.underReview')}
                 </button>
                 <button className="flex-1 py-2 px-3 text-xs font-medium text-gray-600">
-                  Interview
+                  {t('analytics.interview')}
                 </button>
                 <button className="flex-1 py-2 px-3 text-xs font-medium text-gray-600">
-                  Selected
+                  {t('analytics.selected')}
                 </button>
               </div>
             </div>
@@ -565,7 +587,7 @@ export default function LandingPage() {
 
             {/* Profile Views Chart */}
             <div className="mb-4">
-              <div className="text-xs text-gray-500 mb-2">Profile views this week</div>
+              <div className="text-xs text-gray-500 mb-2">{t('analytics.profileViewsWeek')}</div>
               <div className="flex items-end space-x-1 h-12">
                 <div className="w-3 bg-blue-200 rounded-t" style={{ height: '60%' }}></div>
                 <div className="w-3 bg-blue-300 rounded-t" style={{ height: '80%' }}></div>
@@ -580,7 +602,7 @@ export default function LandingPage() {
             {/* Quick Actions */}
             <div className="flex space-x-2">
               <button className="flex-1 py-2 px-3 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition">
-                View Profile
+                {t('analytics.viewProfile')}
               </button>
               <button className="px-3 py-2 border border-gray-300 text-gray-600 text-xs rounded-lg hover:bg-gray-50 transition">
                 <Share2 className="w-3 h-3" />
@@ -599,11 +621,11 @@ export default function LandingPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-semibold text-gray-900">Application Activity</h3>
+                <h3 className="font-semibold text-gray-900">{t('analytics.applicationActivity')}</h3>
                 <p className="text-sm text-gray-500">From 15 Nov - 15 Dec, 2024</p>
               </div>
               <button className="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-medium rounded-lg hover:bg-blue-200 transition">
-                Change Period
+                {t('analytics.changePeriod')}
               </button>
             </div>
 
@@ -611,21 +633,21 @@ export default function LandingPage() {
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center">
                 <div className="text-2xl font-bold text-purple-600">8</div>
-                <div className="text-xs text-gray-600">Applications</div>
+                <div className="text-xs text-gray-600">{t('analytics.applications')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">3</div>
-                <div className="text-xs text-gray-600">Interviews</div>
+                <div className="text-xs text-gray-600">{t('analytics.interviews')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">1</div>
-                <div className="text-xs text-gray-600">Selected</div>
+                <div className="text-xs text-gray-600">{t('analytics.selected')}</div>
               </div>
             </div>
 
             {/* Activity Calendar */}
             <div className="mb-4">
-              <div className="text-xs text-gray-500 mb-2">Activity Calendar</div>
+              <div className="text-xs text-gray-500 mb-2">{t('analytics.activityCalendar')}</div>
               <div className="grid grid-cols-7 gap-1">
                 {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
                   <div key={index} className="text-center text-xs text-gray-500 py-1">{day}</div>
@@ -644,7 +666,7 @@ export default function LandingPage() {
 
             {/* Recent Activity */}
             <div className="space-y-2">
-              <div className="text-xs text-gray-500 mb-2">Recent Activity</div>
+              <div className="text-xs text-gray-500 mb-2">{t('analytics.recentActivity')}</div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2 text-xs">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -673,7 +695,7 @@ export default function LandingPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-semibold text-gray-900">Success Insights</h3>
+                <h3 className="font-semibold text-gray-900">{t('analytics.successInsights')}</h3>
                 <p className="text-sm text-gray-500">Posted on Dec 10, 2024 - 2:30pm</p>
               </div>
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -685,7 +707,7 @@ export default function LandingPage() {
             <div className="space-y-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-600">Applications Success Rate</div>
+                  <div className="text-sm text-gray-600">{t('analytics.applicationSuccessRate')}</div>
                   <div className="text-2xl font-bold text-green-600">85%</div>
                 </div>
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
@@ -695,7 +717,7 @@ export default function LandingPage() {
               
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-600">Interview Conversion</div>
+                  <div className="text-sm text-gray-600">{t('analytics.interviewConversion')}</div>
                   <div className="text-2xl font-bold text-blue-600">+12%</div>
                 </div>
                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -706,7 +728,7 @@ export default function LandingPage() {
 
             {/* Growth Chart */}
             <div className="mb-4">
-              <div className="text-xs text-gray-500 mb-2">Success Rate Trend</div>
+              <div className="text-xs text-gray-500 mb-2">{t('analytics.successRateTrend')}</div>
               <div className="flex items-end space-x-1 h-16">
                 <div className="w-4 bg-gray-200 rounded-t" style={{ height: '40%' }}></div>
                 <div className="w-4 bg-gray-300 rounded-t" style={{ height: '60%' }}></div>
@@ -719,16 +741,15 @@ export default function LandingPage() {
 
             {/* Unique Finding */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-              <div className="text-xs font-medium text-blue-800 mb-1">Unique Finding</div>
+              <div className="text-xs font-medium text-blue-800 mb-1">{t('analytics.uniqueFinding')}</div>
               <div className="text-xs text-blue-700">
-                You have higher success rates when applying to government internships. 
-                Your profile matches well with PM Internship Scheme requirements!
+                {t('analytics.uniqueFindingText')}
               </div>
             </div>
 
             {/* Action Button */}
             <button className="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-              View Detailed Analytics
+              {t('analytics.viewDetailedAnalytics')}
             </button>
           </motion.div>
         </div>
@@ -743,7 +764,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
         >
-          How Our AI Recommendation Works
+          {t('sections.howItWorksTitle')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: -20 }}
@@ -752,7 +773,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="text-center text-gray-600 mb-14 max-w-2xl mx-auto"
         >
-          Simple steps to get your personalized internship recommendations
+          {t('sections.howItWorksSubtitle')}
         </motion.p>
 
         <div className="max-w-6xl mx-auto">
@@ -760,22 +781,22 @@ export default function LandingPage() {
             {[
               {
                 step: "01",
-                title: "Create Your Profile",
-                description: "Tell us about your education, skills, location, and career interests",
+                title: t('howItWorks.steps.step1.title'),
+                description: t('howItWorks.steps.step1.description'),
                 icon: UserCheck,
                 color: "blue"
               },
               {
                 step: "02", 
-                title: "AI Analysis",
-                description: "Our algorithm analyzes your profile against hundreds of internship opportunities",
+                title: t('howItWorks.steps.step2.title'),
+                description: t('howItWorks.steps.step2.description'),
                 icon: Brain,
                 color: "purple"
               },
               {
                 step: "03",
-                title: "Get Recommendations",
-                description: "Receive 3-5 personalized internship recommendations with match percentages",
+                title: t('howItWorks.steps.step3.title'),
+                description: t('howItWorks.steps.step3.description'),
                 icon: Target,
                 color: "green"
               }
@@ -814,7 +835,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
         >
-          Featured Internships
+          {t('sections.featuredInternshipsTitle')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: -20 }}
@@ -823,7 +844,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="text-center text-gray-600 mb-14 max-w-2xl mx-auto"
         >
-          Discover exciting opportunities in the PM Internship Scheme
+          {t('sections.featuredInternshipsSubtitle')}
         </motion.p>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -844,8 +865,8 @@ export default function LandingPage() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-gray-900 mb-2">
-                        {internship.title}
-                      </h3>
+                {internship.title}
+              </h3>
                       <p className="text-gray-600 text-sm mb-3">{internship.company}</p>
                     </div>
                     <div className="flex items-center space-x-1 text-green-600">
@@ -909,12 +930,12 @@ export default function LandingPage() {
 
                 {/* Action Buttons */}
                 <div className="flex items-center space-x-3">
-                  <Link
+              <Link
                     to="/register"
                     className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-semibold text-center"
-                  >
-                    Apply Now
-                  </Link>
+              >
+                    {t('internships.apply')}
+              </Link>
                   <button className="p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                     <Bookmark className="w-4 h-4 text-gray-600" />
                   </button>
@@ -939,7 +960,7 @@ export default function LandingPage() {
             to="/internships"
             className="inline-flex items-center gap-2 px-8 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300"
           >
-            View All Internships
+            {t('internships.viewAll')}
             <ArrowRight className="w-5 h-5" />
           </Link>
         </motion.div>
@@ -954,7 +975,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4"
         >
-          Interactive Tools & Resources
+          {t('sections.interactiveToolsTitle')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: -20 }}
@@ -963,7 +984,7 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="text-center text-gray-600 mb-14 max-w-2xl mx-auto"
         >
-          Access powerful tools to enhance your internship application journey
+          {t('sections.interactiveToolsSubtitle')}
         </motion.p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -985,15 +1006,15 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Resume ATS Tracker</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('tools.resumeBuilder.title')}</h3>
             <p className="text-sm text-gray-600 mb-4">
-              Create ATS-optimized resumes with our AI-powered builder
+              {t('tools.resumeBuilder.description')}
             </p>
 
             {/* Progress Indicator */}
             <div className="mb-4">
               <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-                <span>Progress Indicator</span>
+                <span>{t('tools.resumeBuilder.progressIndicator')}</span>
                 <span>75%</span>
               </div>
               <div className="w-full h-2 bg-gray-200 rounded-full">
@@ -1005,16 +1026,16 @@ export default function LandingPage() {
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="text-center">
                 <div className="text-lg font-bold text-blue-600">3</div>
-                <div className="text-xs text-gray-500">Templates</div>
+                <div className="text-xs text-gray-500">{t('tools.resumeBuilder.templates')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-green-600">95%</div>
-                <div className="text-xs text-gray-500">ATS Score</div>
+                <div className="text-xs text-gray-500">{t('tools.resumeBuilder.atsScore')}</div>
               </div>
             </div>
 
             <button className="w-full py-2 px-4 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-              Build Resume
+              {t('tools.resumeBuilder.buildResume')}
             </button>
           </motion.div>
 
@@ -1036,15 +1057,15 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Skill Assessment</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('tools.skillAssessment.title')}</h3>
             <p className="text-sm text-gray-600 mb-4">
-              Evaluate your skills and get personalized improvement recommendations
+              {t('tools.skillAssessment.description')}
             </p>
 
             {/* Skill Levels */}
             <div className="space-y-3 mb-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Digital Literacy</span>
+                <span className="text-sm text-gray-700">{t('tools.skillAssessment.digitalLiteracy')}</span>
                 <div className="flex items-center space-x-2">
                   <div className="w-16 h-2 bg-gray-200 rounded-full">
                     <div className="w-12 h-2 bg-green-500 rounded-full"></div>
@@ -1053,7 +1074,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Communication</span>
+                <span className="text-sm text-gray-700">{t('tools.skillAssessment.communication')}</span>
                 <div className="flex items-center space-x-2">
                   <div className="w-16 h-2 bg-gray-200 rounded-full">
                     <div className="w-10 h-2 bg-blue-500 rounded-full"></div>
@@ -1062,7 +1083,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Project Management</span>
+                <span className="text-sm text-gray-700">{t('tools.skillAssessment.projectManagement')}</span>
                 <div className="flex items-center space-x-2">
                   <div className="w-16 h-2 bg-gray-200 rounded-full">
                     <div className="w-8 h-2 bg-purple-500 rounded-full"></div>
@@ -1073,7 +1094,7 @@ export default function LandingPage() {
             </div>
 
             <button className="w-full py-2 px-4 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
-              Take Assessment
+              {t('tools.skillAssessment.takeAssessment')}
             </button>
           </motion.div>
 
@@ -1097,16 +1118,16 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Career Guidance</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('tools.careerGuidance.title')}</h3>
             <p className="text-sm text-gray-600 mb-4">
-              Get personalized career advice and roadmap recommendations
+              {t('tools.careerGuidance.description')}
             </p>
 
             {/* AI Insights */}
             <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-4">
-              <div className="text-xs font-medium text-orange-800 mb-1">AI Insight</div>
+              <div className="text-xs font-medium text-orange-800 mb-1">{t('tools.careerGuidance.aiInsight')}</div>
               <div className="text-xs text-orange-700">
-                Based on your profile, consider focusing on government sector internships for better success rates.
+                {t('tools.careerGuidance.aiInsightText')}
               </div>
             </div>
 
@@ -1114,20 +1135,20 @@ export default function LandingPage() {
             <div className="space-y-2 mb-4">
               <div className="flex items-center space-x-2 text-xs">
                 <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                <span className="text-gray-600">Improve digital skills</span>
+                <span className="text-gray-600">{t('tools.careerGuidance.improveDigitalSkills')}</span>
               </div>
               <div className="flex items-center space-x-2 text-xs">
                 <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                <span className="text-gray-600">Add project experience</span>
+                <span className="text-gray-600">{t('tools.careerGuidance.addProjectExperience')}</span>
               </div>
               <div className="flex items-center space-x-2 text-xs">
                 <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                <span className="text-gray-600">Network with professionals</span>
+                <span className="text-gray-600">{t('tools.careerGuidance.networkProfessionals')}</span>
               </div>
             </div>
 
             <button className="w-full py-2 px-4 bg-orange-600 text-white text-sm font-medium rounded-lg hover:bg-orange-700 transition">
-              Get Guidance
+              {t('tools.careerGuidance.getGuidance')}
             </button>
           </motion.div>
         </div>
@@ -1143,17 +1164,17 @@ export default function LandingPage() {
           className="text-center max-w-4xl mx-auto"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Find Your Perfect Internship?
+          Ready to Find Your Perfect Internship?
           </h2>
           <p className="text-blue-100 mb-8 text-lg">
-            Join thousands of students who have found their dream internships through our AI-powered platform
+          Join thousands of students who have found their dream internships through our AI-powered platform
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/register"
               className="px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold hover:bg-gray-100 transition flex items-center justify-center"
             >
-              Get Started 
+             Get Started
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
             <Link
@@ -1172,51 +1193,68 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Brain className="w-8 h-8 text-blue-400" />
+                <Bubbles className="w-8 h-8 text-blue-400" />
                 <span className="text-2xl font-bold">Ignite-X</span>
               </div>
               <p className="text-gray-400 mb-4">
-                AI-powered internship recommendation engine for the PM Internship Scheme, 
-                helping students across India find their perfect career opportunities.
+                {t('footer.description')}
               </p>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Platform</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.platform.title')}</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>How It Works</li>
-                <li>Features</li>
-                <li>Success Stories</li>
-                <li>Help Center</li>
+                <li>{t('footer.platform.howItWorks')}</li>
+                <li>{t('footer.platform.features')}</li>
+                <li>{t('footer.platform.successStories')}</li>
+                <li>{t('footer.platform.helpCenter')}</li>
               </ul>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Support</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.support.title')}</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Help Center</li>
-                <li>Contact Us</li>
-                <li>Regional Language Support</li>
-                <li>FAQ</li>
+                <li>{t('footer.support.helpCenter')}</li>
+                <li>{t('footer.support.contactUs')}</li>
+                <li>{t('footer.support.languageSupport')}</li>
+                <li>{t('footer.support.faq')}</li>
               </ul>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Legal</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('footer.legal.title')}</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
-                <li>Cookie Policy</li>
-                <li>Accessibility</li>
+                <li>{t('footer.legal.privacyPolicy')}</li>
+                <li>{t('footer.legal.termsOfService')}</li>
+                <li>{t('footer.legal.cookiePolicy')}</li>
+                <li>{t('footer.legal.accessibility')}</li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>© {new Date().getFullYear()} Ignite-X AI Recommendation Engine. All rights reserved.</p>
-            <p className="mt-2 text-sm">Designed for the PM Internship Scheme - Bridging opportunities across India</p>
+           
+            <p className="mt-2 text-sm">© 2025 Ignite-X AI Recommendation Engine. All rights reserved.
+
+Designed for the PM Internship Scheme - Bridging opportunities across India</p>
             
            
             
           </div>
         </div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+          aria-label="Scroll to top"
+        >
+          <ChevronUp className="w-5 h-5 group-hover:animate-bounce" />
+        </motion.button>
+      )}
     </div>
   );
 }
