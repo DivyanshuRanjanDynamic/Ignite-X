@@ -1,0 +1,77 @@
+{
+  "common": {
+    "loading": "లోడ్ అవుతోంది...",
+    "save": "సేవ్",
+    "cancel": "రద్దు",
+    "submit": "సమర్పించు",
+    "edit": "సవరించు",
+    "delete": "తొలగించు",
+    "view": "చూడండి",
+    "search": "వెతుకు",
+    "filter": "ఫిల్టర్",
+    "sort": "క్రమబద్ధీకరించు",
+    "next": "తదుపరి",
+    "previous": "మునుపటి",
+    "close": "మూసివేయి",
+    "ok": "సరే",
+    "yes": "అవును",
+    "no": "కాదు",
+    "error": "లోపం",
+    "success": "విజయం",
+    "warning": "హెచ్చరిక",
+    "info": "సమాచారం"
+  },
+  "navigation": {
+    "home": "హోమ్",
+    "dashboard": "డాష్‌బోర్డ్",
+    "profile": "నా ప్రొఫైల్",
+    "settings": "సెట్టింగ్స్",
+    "logout": "లాగ్ అవుట్",
+    "login": "లాగిన్",
+    "register": "నమోదు",
+    "features": "లక్షణాలు",
+    "language": "భాష"
+  },
+  "auth": {
+    "login": {
+      "title": "తిరిగి స్వాగతం",
+      "subtitle": "మీ ఖాతాలోకి సైన్ ఇన్ చేయండి",
+      "loginAs": "ఇలా లాగిన్ చేయండి",
+      "student": "విద్యార్థి",
+      "admin": "నిర్వాహకుడు",
+      "email": "ఈమెయిల్ చిరునామా",
+      "emailPlaceholder": "మీ ఈమెయిల్ నమోదు చేయండి",
+      "password": "పాస్‌వర్డ్",
+      "passwordPlaceholder": "మీ పాస్‌వర్డ్ నమోదు చేయండి",
+      "rememberMe": "నన్ను గుర్తుంచుకో",
+      "forgotPassword": "పాస్‌వర్డ్ మరచిపోయారా?",
+      "signIn": "సైన్ ఇన్",
+      "signingIn": "సైన్ ఇన్ అవుతోంది...",
+      "signInAs": "{{userType}} గా సైన్ ఇన్ చేయండి",
+      "orContinueWith": "లేదా దీనితో కొనసాగండి",
+      "google": "గూగుల్",
+      "github": "గిట్‌హబ్",
+      "noAccount": "ఖాతా లేదా?",
+      "createAccount": "ఇక్కడ సృష్టించండి"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "welcome": "తిరిగి స్వాగతం, {{name}}!",
+      "quickStats": "త్వరిత గణాంకాలు",
+      "applications": "దరఖాస్తులు",
+      "recommendations": "సిఫారసులు",
+      "profile": "ప్రొఫైల్ పూర్తి",
+      "recentActivity": "ఇటీవలి కార్యకలాపాలు"
+    },
+    "internships": {
+      "recommended": "సిఫార్సు చేసిన ఇంటర్న్‌షిప్‌లు",
+      "applied": "దరఖాస్తు చేసిన ఇంటర్న్‌షిప్‌లు",
+      "viewDetails": "వివరాలు చూడండి",
+      "apply": "దరఖాస్తు చేయండి",
+      "company": "కంపెనీ",
+      "location": "ప్రదేశం",
+      "duration": "కాలవ్యవధి"
+    }
+  }
+}

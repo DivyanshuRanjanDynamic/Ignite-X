@@ -6,7 +6,6 @@ import {
   Building, Users, Award, TrendingUp 
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 function InternshipList() {
   const [search, setSearch] = useState("");
@@ -344,8 +343,6 @@ function InternshipList() {
           </motion.div>
         )}
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -1,0 +1,70 @@
+{
+  "common": {
+    "loading": "লোড হচ্ছে...",
+    "save": "সেভ",
+    "cancel": "বাতিল",
+    "submit": "জমা দিন",
+    "edit": "সম্পাদনা",
+    "delete": "মুছুন",
+    "view": "দেখুন",
+    "search": "অনুসন্ধান",
+    "filter": "ফিল্টার",
+    "sort": "সাজান",
+    "next": "পরবর্তী",
+    "previous": "পূর্ববর্তী",
+    "close": "বন্ধ",
+    "ok": "ঠিক আছে",
+    "yes": "হ্যাঁ",
+    "no": "না",
+    "error": "ত্রুটি",
+    "success": "সফল",
+    "warning": "সতর্কতা",
+    "info": "তথ্য"
+  },
+  "navigation": {
+    "home": "হোম",
+    "dashboard": "ড্যাশবোর্ড",
+    "profile": "আমার প্রোফাইল",
+    "settings": "সেটিংস",
+    "logout": "লগ আউট",
+    "login": "লগ ইন",
+    "register": "নিবন্ধন",
+    "features": "বৈশিষ্ট্য",
+    "language": "ভাষা"
+  },
+  "auth": {
+    "login": {
+      "title": "ফিরে স্বাগতম",
+      "subtitle": "আপনার অ্যাকাউন্টে সাইন ইন করুন",
+      "loginAs": "হিসেবে লগ ইন করুন",
+      "student": "ছাত্র",
+      "admin": "প্রশাসক",
+      "email": "ইমেইল ঠিকানা",
+      "emailPlaceholder": "আপনার ইমেইল প্রবেশ করান",
+      "password": "পাসওয়ার্ড",
+      "passwordPlaceholder": "আপনার পাসওয়ার্ড প্রবেশ করান",
+      "rememberMe": "আমাকে মনে রাখুন",
+      "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+      "signIn": "সাইন ইন",
+      "signingIn": "সাইন ইন করা হচ্ছে...",
+      "signInAs": "{{userType}} হিসেবে সাইন ইন করুন"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "welcome": "ফিরে স্বাগতম, {{name}}!",
+      "quickStats": "দ্রুত পরিসংখ্যান",
+      "applications": "আবেদন",
+      "recommendations": "সুপারিশ",
+      "profile": "প্রোফাইল সম্পূর্ণতা"
+    },
+    "internships": {
+      "recommended": "প্রস্তাবিত ইন্টার্নশিপ",
+      "applied": "আবেদিত ইন্টার্নশিপ",
+      "viewDetails": "বিস্তারিত দেখুন",
+      "apply": "আবেদন করুন",
+      "company": "কোম্পানি",
+      "location": "অবস্থান"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { 
   MapPin, Briefcase, Clock, Star, Filter, 
@@ -6,12 +6,18 @@ import {
   ArrowRight, Bookmark, Eye, CheckCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useStudentTranslation } from '../../hooks/useTranslation.jsx';
 
 export default function RecommendedInternships() {
   const navigate = useNavigate();
+  const [selectedFilter, setSelectedFilter] = useState('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState("all");
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, []);
+ 
   // Mock data for PM Internship Scheme
   const recommendations = [
     {
@@ -121,60 +127,61 @@ export default function RecommendedInternships() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
-              <Brain className="w-8 h-8 mr-3 text-blue-600" />
-              Recommended Internships
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
+              <Brain className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600" />
+              <span className="break-words">Recommended Internships</span>
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
               AI-powered internship suggestions based on your profile and preferences
             </p>
           </div>
           <button
             onClick={handleRefreshRecommendations}
             disabled={isRefreshing}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition disabled:opacity-50"
+            className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition disabled:opacity-50 text-sm sm:text-base min-w-[120px] sm:min-w-[140px]"
           >
-            <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Refresh AI
+            <RefreshCw className={`w-4 h-4 mr-1 sm:mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh AI</span>
+            <span className="sm:hidden">Refresh</span>
           </button>
         </div>
 
         {/* AI Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-sm">AI Match Accuracy</p>
-                <p className="text-2xl font-bold">95%</p>
+                <p className="text-blue-100 text-xs sm:text-sm">AI Match Accuracy</p>
+                <p className="text-xl sm:text-2xl font-bold">95%</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-blue-200" />
+              <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-blue-200" />
             </div>
           </div>
-          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl p-6">
+          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100 text-sm">Total Matches</p>
-                <p className="text-2xl font-bold">{recommendations.length}</p>
+                <p className="text-green-100 text-xs sm:text-sm">Total Matches</p>
+                <p className="text-xl sm:text-2xl font-bold">{recommendations.length}</p>
               </div>
-              <Users className="w-8 h-8 text-green-200" />
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-green-200" />
             </div>
           </div>
-          <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-2xl p-6">
+          <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 text-sm">Success Rate</p>
-                <p className="text-2xl font-bold">87%</p>
+                <p className="text-purple-100 text-xs sm:text-sm">Success Rate</p>
+                <p className="text-xl sm:text-2xl font-bold">87%</p>
               </div>
-              <Award className="w-8 h-8 text-purple-200" />
+              <Award className="w-6 h-6 sm:w-8 sm:h-8 text-purple-200" />
             </div>
           </div>
         </div>
@@ -185,24 +192,25 @@ export default function RecommendedInternships() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
-        <div className="flex items-center mb-4">
-          <Filter className="w-5 h-5 mr-2 text-gray-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Filter by Category</h3>
+        <div className="flex items-center mb-3 sm:mb-4">
+          <Filter className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-gray-600" />
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900">Filter by Category</h3>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {filters.map((filter) => (
             <button
               key={filter.id}
               onClick={() => setSelectedFilter(filter.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+              className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition ${
                 selectedFilter === filter.id
                   ? "bg-blue-600 text-white shadow-lg"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
-              {filter.label} ({filter.count})
+              <span className="hidden sm:inline">{filter.label} ({filter.count})</span>
+              <span className="sm:hidden">{filter.label}</span>
             </button>
           ))}
         </div>
@@ -213,7 +221,7 @@ export default function RecommendedInternships() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
       >
         {filteredRecommendations.map((rec, index) => (
           <motion.div
@@ -221,23 +229,23 @@ export default function RecommendedInternships() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 + index * 0.1 }}
-            className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl hover:scale-[1.02] transition transform duration-300 border border-gray-100"
+            className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 hover:shadow-xl hover:scale-[1.02] transition transform duration-300 border border-gray-100"
           >
             {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">{rec.title}</h3>
-                <p className="text-sm text-gray-600">{rec.company}</p>
+            <div className="flex items-start justify-between mb-3 sm:mb-4">
+              <div className="flex-1 pr-2">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">{rec.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">{rec.company}</p>
               </div>
-              <div className="flex items-center text-green-600">
-                <Star className="w-4 h-4 mr-1" />
-                <span className="text-sm font-medium">{rec.match}%</span>
+              <div className="flex items-center text-green-600 flex-shrink-0">
+                <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="text-xs sm:text-sm font-medium">{rec.match}%</span>
               </div>
             </div>
 
             {/* Match Badge */}
-            <div className="mb-4">
-              <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+            <div className="mb-3 sm:mb-4">
+              <span className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
                 rec.match >= 90 ? 'bg-green-100 text-green-800' :
                 rec.match >= 80 ? 'bg-blue-100 text-blue-800' :
                 'bg-yellow-100 text-yellow-800'
@@ -248,33 +256,33 @@ export default function RecommendedInternships() {
             </div>
 
             {/* Details */}
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2 mb-3 sm:mb-4">
               <div className="flex items-center text-gray-600">
-                <MapPin className="w-4 h-4 mr-2 text-red-500" />
-                <span className="text-sm">{rec.location}</span>
+                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-red-500 flex-shrink-0" />
+                <span className="text-xs sm:text-sm line-clamp-1">{rec.location}</span>
               </div>
               <div className="flex items-center text-gray-600">
-                <Briefcase className="w-4 h-4 mr-2 text-blue-500" />
-                <span className="text-sm">{rec.type}</span>
+                <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-blue-500 flex-shrink-0" />
+                <span className="text-xs sm:text-sm">{rec.type}</span>
               </div>
               <div className="flex items-center text-gray-600">
-                <Clock className="w-4 h-4 mr-2 text-green-500" />
-                <span className="text-sm">{rec.duration}</span>
+                <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-green-500 flex-shrink-0" />
+                <span className="text-xs sm:text-sm">{rec.duration}</span>
               </div>
               <div className="flex items-center text-gray-600">
-                <span className="text-sm font-medium">💰 {rec.stipend}/month</span>
+                <span className="text-xs sm:text-sm font-medium">💰 {rec.stipend}/month</span>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-gray-600 text-sm mb-4 line-clamp-2">{rec.description}</p>
+            <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{rec.description}</p>
 
             {/* Skills */}
-            <div className="mb-4">
+            <div className="mb-3 sm:mb-4">
               <p className="text-xs text-gray-500 mb-2">Required Skills:</p>
               <div className="flex flex-wrap gap-1">
                 {rec.skills.map((skill, idx) => (
-                  <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                  <span key={idx} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-700 text-xs rounded">
                     {skill}
                   </span>
                 ))}
@@ -285,18 +293,20 @@ export default function RecommendedInternships() {
             <div className="flex gap-2">
               <button
                 onClick={() => navigate(`/apply/${rec.id}`)}
-                className="flex-1 flex items-center justify-center gap-1 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+                className="flex-1 flex items-center justify-center gap-1 bg-blue-600 text-white px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-700 transition"
               >
-                Apply Now
+                <span className="hidden sm:inline">Apply Now</span>
+                <span className="sm:hidden">Apply</span>
               </button>
-              <button className="flex items-center justify-center gap-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-sm hover:bg-gray-300 transition">
-                <Bookmark className="w-4 h-4" />
+              <button className="flex items-center justify-center gap-1 bg-gray-200 text-gray-800 px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-gray-300 transition">
+                <Bookmark className="w-3 h-3 sm:w-4 sm:h-4" />
               </button>
               <button
                 onClick={() => navigate(`/internship/${rec.id}`)}
-                className="flex items-center justify-center gap-1 bg-green-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-green-700 transition"
+                className="flex items-center justify-center gap-1 bg-green-600 text-white px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-green-700 transition"
               >
-                <Eye className="w-4 h-4" />
+                <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline ml-1">View</span>
               </button>
             </div>
           </motion.div>
@@ -308,11 +318,11 @@ export default function RecommendedInternships() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-12"
+          className="text-center py-8 sm:py-12"
         >
-          <Brain className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No recommendations found</h3>
-          <p className="text-gray-600">Try adjusting your filters or refresh the AI recommendations.</p>
+          <Brain className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto mb-3 sm:mb-4" />
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">No recommendations found</h3>
+          <p className="text-sm sm:text-base text-gray-600 px-4">Try adjusting your filters or refresh the AI recommendations.</p>
         </motion.div>
       )}
     </div>

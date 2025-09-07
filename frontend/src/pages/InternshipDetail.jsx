@@ -5,7 +5,6 @@ import {
   Users, Award, CheckCircle, ExternalLink, Share2, Bookmark 
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 function InternshipDetail() {
   const { id } = useParams();
@@ -128,7 +127,6 @@ function InternshipDetail() {
             Browse All Internships
           </button>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -360,8 +358,6 @@ function InternshipDetail() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

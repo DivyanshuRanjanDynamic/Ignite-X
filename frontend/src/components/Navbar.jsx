@@ -6,10 +6,15 @@ import {
   BookOpen, Briefcase, FileText, Target, Shield,
   Bubbles
 } from "lucide-react";
+import { useNavTranslation } from '../hooks/useTranslation.jsx';
+import { useLanguageContext } from '../contexts/LanguageContext';
 
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, tCommon } = useNavTranslation();
+  const { availableLanguages, switchLanguage, currentLanguage, isLoading: isLanguageLoading } = useLanguageContext();
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
@@ -24,6 +29,7 @@ function Navbar() {
   const languageRef = useRef(null);
   const profileRef = useRef(null);
   const settingsRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     // Check authentication status
@@ -79,6 +85,13 @@ function Navbar() {
       if (settingsRef.current && !settingsRef.current.contains(event.target)) {
         setSettingsOpen(false);
       }
+      // Close mobile menu when clicking outside on mobile devices
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && window.innerWidth < 768) {
+        setMobileMenuOpen(false);
+        setFeaturesOpen(false);
+        setLanguageOpen(false);
+        setSettingsOpen(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -86,6 +99,13 @@ function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Helper function to close all mobile dropdowns
+  const closeMobileDropdowns = () => {
+    setFeaturesOpen(false);
+    setLanguageOpen(false);
+    setSettingsOpen(false);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
@@ -105,45 +125,84 @@ function Navbar() {
   };
 
   const handleLogin = () => {
+    setMobileMenuOpen(false); // Close mobile menu
     navigate('/login');
   };
 
   const handleRegister = () => {
+    setMobileMenuOpen(false); // Close mobile menu
     navigate('/register');
   };
 
-  const handleLanguageChange = (language) => {
+  const handleLanguageChange = async (languageCode) => {
     setLanguageOpen(false);
-    // Here you would implement language change logic
-    console.log(`Language changed to: ${language}`);
+    try {
+      await switchLanguage(languageCode);
+      console.log(`Language changed to: ${languageCode}`);
+    } catch (error) {
+      console.error('Failed to change language:', error);
+    }
   };
 
   const handleFeatureClick = (feature) => {
     setFeaturesOpen(false);
+    setMobileMenuOpen(false); // Close mobile menu when navigating
     // Navigate to specific sections or pages
     switch (feature) {
       case 'smart-matching':
-        navigate('/student-dashboard/recommended-internships');
+        if (userType === 'admin') {
+          navigate('/admin/internship-data');
+        } else {
+          navigate('/student-dashboard/recommended-internships');
+        }
         break;
       case 'skill-growth':
-        navigate('/student-dashboard/required-skills');
+        if (userType === 'admin') {
+          navigate('/admin/user-management');
+        } else {
+          navigate('/student-dashboard/required-skills');
+        }
         break;
       case 'applications':
-        navigate('/student-dashboard/applied-internships');
+        if (userType === 'admin') {
+          navigate('/admin/overview');
+        } else {
+          navigate('/student-dashboard/applied-internships');
+        }
+        break;
+      case 'equal-access':
+        if (userType === 'admin') {
+          navigate('/admin/overview');
+        } else {
+          navigate('/student-dashboard/recommended-internships');
+        }
         break;
       default:
-        navigate('/#features');
+        if (isAuthenticated) {
+          navigate(userType === 'admin' ? '/admin' : '/student-dashboard');
+        } else {
+          navigate('/#features');
+        }
     }
   };
 
   const handleSettingsClick = (setting) => {
     setSettingsOpen(false);
+    setMobileMenuOpen(false); // Close mobile menu when navigating
     switch (setting) {
       case 'profile':
-        navigate('/student-dashboard/profile');
+        if (userType === 'admin') {
+          navigate('/admin/profile');
+        } else {
+          navigate('/student-dashboard/profile');
+        }
         break;
       case 'notifications':
-        navigate('/student-dashboard/notifications');
+        if (userType === 'admin') {
+          navigate('/admin/settings');
+        } else {
+          navigate('/student-dashboard/notifications');
+        }
         break;
       case 'privacy':
         navigate('/privacy');
@@ -157,12 +216,21 @@ function Navbar() {
 
   const handleProfileClick = (action) => {
     setProfileOpen(false);
+    setMobileMenuOpen(false); // Close mobile menu when navigating
     switch (action) {
       case 'profile':
-        navigate('/student-dashboard/profile');
+        if (userType === 'admin') {
+          navigate('/admin/profile');
+        } else {
+          navigate('/student-dashboard/profile');
+        }
         break;
       case 'dashboard':
-        navigate('/student-dashboard');
+        if (userType === 'admin') {
+          navigate('/admin/overview');
+        } else {
+          navigate('/student-dashboard/recommended-internships');
+        }
         break;
       case 'logout':
         handleLogout();
@@ -175,66 +243,64 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 hover:opacity-90 transition-opacity">
-            <Bubbles className="w-8 h-8" />
-            <span className="text-2xl font-bold">Ignite-X</span>
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-90 transition-opacity flex-shrink-0">
+            <Bubbles className="w-6 h-6 sm:w-8 sm:h-8" />
+            <span className="text-lg sm:text-xl md:text-2xl font-bold">Ignite-X</span>
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
-            {/* Features Dropdown */}
-            <div className="relative" ref={featuresRef}>
-              <button
-                onClick={() => setFeaturesOpen(!featuresOpen)}
-                className="flex items-center gap-1 hover:text-gray-200 transition-colors px-3 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Features <ChevronDown size={18} />
-              </button>
-              {featuresOpen && (
-                <div className="absolute mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 py-2">
-                  <button 
-                    onClick={() => handleFeatureClick('smart-matching')}
-                    className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                  >
-                    <Brain className="w-4 h-4 mr-3 text-blue-600" />
-                    <div className="text-left">
-                      <div className="font-medium">AI Matching</div>
-                      <div className="text-xs text-gray-500">Smart internship recommendations</div>
-                    </div>
-                  </button>
-                  <button 
-                    onClick={() => handleFeatureClick('skill-growth')}
-                    className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                  >
-                    <BookOpen className="w-4 h-4 mr-3 text-green-600" />
-                    <div className="text-left">
-                      <div className="font-medium">Skill Development</div>
-                      <div className="text-xs text-gray-500">Learn required skills</div>
-                    </div>
-                  </button>
-                  <button 
-                    onClick={() => handleFeatureClick('applications')}
-                    className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                  >
-                    <FileText className="w-4 h-4 mr-3 text-purple-600" />
-                    <div className="text-left">
-                      <div className="font-medium">Application Tracking</div>
-                      <div className="text-xs text-gray-500">Track your applications</div>
-                    </div>
-                  </button>
-                  <button 
-                    onClick={() => handleFeatureClick('equal-access')}
-                    className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors rounded-b-lg"
-                  >
-                    <Target className="w-4 h-4 mr-3 text-orange-600" />
-                    <div className="text-left">
-                      <div className="font-medium">Equal Access</div>
-                      <div className="text-xs text-gray-500">Inclusive opportunities</div>
-                    </div>
-                  </button>
-                </div>
-              )}
-            </div>
+            {/* Features Dropdown - Only show when not authenticated */}
+            {!isAuthenticated && (
+              <div className="relative" ref={featuresRef}>
+                <button
+                  onClick={() => setFeaturesOpen(!featuresOpen)}
+                  className="flex items-center gap-1 hover:text-gray-200 transition-colors px-3 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  {t('features')} <ChevronDown size={18} />
+                </button>
+                {featuresOpen && (
+                  <div className="absolute mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 py-2">
+                    <button 
+                      onClick={() => handleFeatureClick('smart-matching')}
+                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
+                    >
+                      <Brain className="w-4 h-4 mr-3 text-blue-600" />
+                      <div className="text-left">
+                        <div className="font-medium">AI Matching</div>
+                      </div>
+                    </button>
+                    <button 
+                      onClick={() => handleFeatureClick('skill-growth')}
+                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
+                    >
+                      <BookOpen className="w-4 h-4 mr-3 text-green-600" />
+                      <div className="text-left">
+                        <div className="font-medium">Skills Development</div>
+                      </div>
+                    </button>
+                    <button 
+                      onClick={() => handleFeatureClick('applications')}
+                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
+                    >
+                      <FileText className="w-4 h-4 mr-3 text-purple-600" />
+                      <div className="text-left">
+                        <div className="font-medium">Application Tracking</div>
+                      </div>
+                    </button>
+                    <button 
+                      onClick={() => handleFeatureClick('equal-access')}
+                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors rounded-b-lg"
+                    >
+                      <Target className="w-4 h-4 mr-3 text-orange-600" />
+                      <div className="text-left">
+                        <div className="font-medium">Equal Access</div>
+                      </div>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Language Dropdown */}
             <div className="relative" ref={languageRef}>
@@ -242,40 +308,31 @@ function Navbar() {
                 onClick={() => setLanguageOpen(!languageOpen)}
                 className="flex items-center gap-1 hover:text-gray-200 transition-colors px-3 py-2 rounded-lg hover:bg-blue-700"
               >
-                <Globe size={18} /> Language <ChevronDown size={14} />
+                <Globe size={18} /> {t('language')} <ChevronDown size={14} />
               </button>
               {languageOpen && (
                 <div className="absolute mt-2 w-40 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 py-2">
-                  <button 
-                    onClick={() => handleLanguageChange('English')}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors"
-                  >
-                    English
-                  </button>
-                  <button 
-                    onClick={() => handleLanguageChange('Hindi')}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors"
-                  >
-                    हिंदी
-                  </button>
-                  <button 
-                    onClick={() => handleLanguageChange('Bengali')}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors"
-                  >
-                    বাংলা
-                  </button>
-                  <button 
-                    onClick={() => handleLanguageChange('Telugu')}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors"
-                  >
-                    తెలుగు
-                  </button>
-                  <button 
-                    onClick={() => handleLanguageChange('Marathi')}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors rounded-b-lg"
-                  >
-                    मराठी
-                  </button>
+                  {availableLanguages.map((language, index) => (
+                    <button 
+                      key={language.code}
+                      onClick={() => handleLanguageChange(language.code)}
+                      disabled={isLanguageLoading}
+                      className={`block w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors ${
+                        currentLanguage === language.code ? 'bg-blue-50 text-blue-600 font-medium' : ''
+                      } ${
+                        index === availableLanguages.length - 1 ? 'rounded-b-lg' : ''
+                      } ${
+                        isLanguageLoading ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{language.nativeName}</span>
+                        {currentLanguage === language.code && (
+                          <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -287,60 +344,33 @@ function Navbar() {
                   onClick={handleLogin}
                   className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors font-medium"
                 >
-                  Login
+                  {t('login')}
                 </button>
                 <button
                   onClick={handleRegister}
                   className="px-4 py-2 bg-blue-800 rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 >
-                  Register
+                  {t('register')}
                 </button>
               </>
             ) : (
               <>
                 
 
-                {/* Settings Dropdown */}
-                <div className="relative" ref={settingsRef}>
-                  <button
-                    onClick={() => setSettingsOpen(!settingsOpen)}
-                    className="flex items-center gap-1 hover:text-gray-200 transition-colors p-2 rounded-lg hover:bg-blue-700"
-                  >
-                    <Settings size={18} />
-                  </button>
-                  {settingsOpen && (
-                    <div className="absolute mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 py-2">
-                      <button 
-                        onClick={() => handleSettingsClick('profile')}
-                        className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                      >
-                        <User className="w-4 h-4 mr-3 text-blue-600" />
-                        Profile Settings
-                      </button>
-                      <button 
-                        onClick={() => handleSettingsClick('notifications')}
-                        className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                      >
-                        <Bell className="w-4 h-4 mr-3 text-green-600" />
-                        Notifications
-                      </button>
-                      <button 
-                        onClick={() => handleSettingsClick('privacy')}
-                        className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                      >
-                        <Shield className="w-4 h-4 mr-3 text-purple-600" />
-                        Privacy & Security
-                      </button>
-                      <button 
-                        onClick={() => handleSettingsClick('theme')}
-                        className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors rounded-b-lg"
-                      >
-                        <Settings className="w-4 h-4 mr-3 text-gray-600" />
-                        Dark/Light Mode
-                      </button>
-                    </div>
-                  )}
-                </div>
+                {/* Notifications Button */}
+                <button
+                  onClick={() => {
+                    if (userType === 'admin') {
+                      navigate('/admin/settings');
+                    } else {
+                      navigate('/student-dashboard/notifications');
+                    }
+                  }}
+                  className="relative p-2 text-white hover:text-gray-200 transition-colors rounded-lg hover:bg-blue-700"
+                >
+                  <Bell size={18} />
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                </button>
 
                 {/* Profile Dropdown */}
                 <div className="relative" ref={profileRef}>
@@ -356,30 +386,30 @@ function Navbar() {
                   </button>
                   {profileOpen && (
                     <div className="absolute mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 py-2">
-                      <div className="px-4 py-2 border-b border-gray-200">
-                        <p className="font-medium text-gray-900">{userName}</p>
-                        <p className="text-sm text-gray-500">Student</p>
-                      </div>
+                    <div className="px-4 py-2 border-b border-gray-200">
+                      <p className="font-medium text-gray-900">{userName}</p>
+                      <p className="text-sm text-gray-500 capitalize">{userType === 'admin' ? t('admin', 'Admin') : t('student', 'Student')}</p>
+                    </div>
                       <button 
                         onClick={() => handleProfileClick('profile')}
                         className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
                       >
                         <User className="w-4 h-4 mr-3 text-blue-600" />
-                        My Profile
+                        {t('profile')}
                       </button>
                       <button 
                         onClick={() => handleProfileClick('dashboard')}
                         className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
                       >
                         <Home className="w-4 h-4 mr-3 text-green-600" />
-                        Dashboard
+                        {t('dashboard')}
                       </button>
                       <button 
                         onClick={() => handleProfileClick('logout')}
                         className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors text-red-600 rounded-b-lg"
                       >
                         <LogOut size={16} className="mr-3" />
-                        Logout
+                        {t('logout')}
                       </button>
                     </div>
                   )}
@@ -400,136 +430,131 @@ function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-blue-700 text-white px-4 pb-4 space-y-3">
-          {/* Features dropdown in mobile */}
-          <div>
-            <button
-              onClick={() => setFeaturesOpen(!featuresOpen)}
-              className="flex items-center gap-1 w-full py-2 text-left"
-            >
-              Features <ChevronDown size={18} />
-            </button>
-            {featuresOpen && (
-              <div className="ml-4 space-y-1">
-                <button 
-                  onClick={() => handleFeatureClick('smart-matching')}
-                  className="block py-1 text-blue-200 hover:text-white"
-                >
-                  AI Matching
-                </button>
-                <button 
-                  onClick={() => handleFeatureClick('skill-growth')}
-                  className="block py-1 text-blue-200 hover:text-white"
-                >
-                  Skill Development
-                </button>
-                <button 
-                  onClick={() => handleFeatureClick('applications')}
-                  className="block py-1 text-blue-200 hover:text-white"
-                >
-                  Application Tracking
-                </button>
-                <button 
-                  onClick={() => handleFeatureClick('equal-access')}
-                  className="block py-1 text-blue-200 hover:text-white"
-                >
-                  Equal Access
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Language dropdown in mobile */}
-          <div>
-            <button
-              onClick={() => setLanguageOpen(!languageOpen)}
-              className="flex items-center gap-1 w-full py-2 text-left"
-            >
-              <Globe size={18} /> Language <ChevronDown size={14} />
-            </button>
-            {languageOpen && (
-              <div className="ml-4 space-y-1 bg-white text-gray-800 rounded-lg mt-2 p-2">
-                <button 
-                  onClick={() => handleLanguageChange('English')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded"
-                >
-                  English
-                </button>
-                <button 
-                  onClick={() => handleLanguageChange('Hindi')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded"
-                >
-                  हिंदी
-                </button>
-                <button 
-                  onClick={() => handleLanguageChange('Bengali')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded"
-                >
-                  বাংলা
-                </button>
-                <button 
-                  onClick={() => handleLanguageChange('Telugu')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded"
-                >
-                  తెలుగు
-                </button>
-                <button 
-                  onClick={() => handleLanguageChange('Marathi')}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100 rounded"
-                >
-                  मराठी
-                </button>
-              </div>
-            )}
-          </div>
-
+        <div 
+          ref={mobileMenuRef}
+          className="md:hidden bg-blue-700 text-white px-4 pb-6 space-y-3 border-t border-blue-600 shadow-lg"
+        >
           {/* Authentication Section in Mobile */}
           {!isAuthenticated ? (
             <>
               <button
                 onClick={handleLogin}
-                className="w-full px-4 py-2 bg-white text-blue-600 rounded-lg font-medium"
+                className="w-full px-4 py-3 bg-white text-blue-600 rounded-lg font-medium"
               >
-                Login
+                {t('login')}
               </button>
               <button
                 onClick={handleRegister}
-                className="w-full px-4 py-2 bg-blue-800 rounded-lg hover:bg-blue-700 font-medium"
+                className="w-full px-4 py-3 bg-blue-800 rounded-lg hover:bg-blue-700 font-medium"
               >
-                Register
+                {t('register')}
               </button>
+              
+              {/* Language selector for non-authenticated users */}
+              <div className="border-t border-blue-600 pt-3">
+                <p className="text-blue-200 text-sm mb-2 flex items-center gap-2">
+                  <Globe size={16} /> {t('language')}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {availableLanguages.slice(0, 4).map((language) => (
+                    <button 
+                      key={language.code}
+                      onClick={() => {
+                        handleLanguageChange(language.code);
+                        setMobileMenuOpen(false);
+                      }}
+                      disabled={isLanguageLoading}
+                      className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                        currentLanguage === language.code 
+                          ? 'bg-white text-blue-600 font-medium' 
+                          : 'bg-blue-600 text-white hover:bg-blue-500'
+                      } ${
+                        isLanguageLoading ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      {language.nativeName}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </>
           ) : (
             <>
-              <div className="flex items-center space-x-2 py-2">
-                <div className="w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center">
-                  <User size={16} />
+              {/* User info */}
+              <div className="flex items-center space-x-3 py-2 border-b border-blue-600">
+                <div className="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center">
+                  <User size={18} />
                 </div>
-                <span className="font-medium">{userName}</span>
+                <div>
+                  <div className="font-medium text-white">{userName}</div>
+                  <div className="text-blue-200 text-sm capitalize">{userType === 'admin' ? 'Administrator' : 'Student'}</div>
+                </div>
               </div>
-              <button className="flex items-center px-4 py-2 hover:bg-blue-600 rounded-lg w-full text-left">
-                <Bell className="w-4 h-4 mr-3" />
-                Notifications
-                <span className="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">3</span>
-              </button>
-              <button 
-                onClick={() => handleProfileClick('profile')}
-                className="block px-4 py-2 hover:bg-blue-600 rounded-lg w-full text-left"
-              >
-                My Profile
-              </button>
+              
+              {/* Essential actions only */}
               <button 
                 onClick={() => handleProfileClick('dashboard')}
-                className="block px-4 py-2 hover:bg-blue-600 rounded-lg w-full text-left"
+                className="flex items-center px-4 py-3 hover:bg-blue-600 rounded-lg w-full text-left"
               >
-                Dashboard
+                <Home className="w-5 h-5 mr-3" />
+                {t('dashboard')}
               </button>
+              
+              <button 
+                onClick={() => {
+                  if (userType === 'admin') {
+                    navigate('/admin/settings');
+                  } else {
+                    navigate('/student-dashboard/notifications');
+                  }
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center px-4 py-3 hover:bg-blue-600 rounded-lg w-full text-left"
+              >
+                <Bell className="w-5 h-5 mr-3" />
+                {tCommon('notifications', 'Notifications')}
+                <span className="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">3</span>
+              </button>
+              
+              <button 
+                onClick={() => handleProfileClick('profile')}
+                className="flex items-center px-4 py-3 hover:bg-blue-600 rounded-lg w-full text-left"
+              >
+                <User className="w-5 h-5 mr-3" />
+                {t('profile')}
+              </button>
+              
+              {/* Language selector in compact form */}
+              <div className="border-t border-blue-600 pt-3">
+                <div className="grid grid-cols-2 gap-2">
+                  {availableLanguages.slice(0, 2).map((language) => (
+                    <button 
+                      key={language.code}
+                      onClick={() => {
+                        handleLanguageChange(language.code);
+                        setMobileMenuOpen(false);
+                      }}
+                      disabled={isLanguageLoading}
+                      className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                        currentLanguage === language.code 
+                          ? 'bg-white text-blue-600 font-medium' 
+                          : 'bg-blue-600 text-white hover:bg-blue-500'
+                      } ${
+                        isLanguageLoading ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                    >
+                      {language.nativeName}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
               <button 
                 onClick={() => handleProfileClick('logout')}
-                className="w-full px-4 py-2 text-left hover:bg-blue-600 rounded-lg text-red-300"
+                className="w-full px-4 py-3 text-left hover:bg-red-600 rounded-lg text-red-300 hover:text-white flex items-center border-t border-blue-600 pt-3 mt-3"
               >
-                <LogOut size={16} className="inline mr-2" />
-                Logout
+                <LogOut size={18} className="mr-3" />
+                {t('logout')}
               </button>
             </>
           )}

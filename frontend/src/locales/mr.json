@@ -1,0 +1,70 @@
+{
+  "common": {
+    "loading": "लोड होत आहे...",
+    "save": "जतन करा",
+    "cancel": "रद्द करा",
+    "submit": "सबमिट करा",
+    "edit": "संपादन करा",
+    "delete": "हटवा",
+    "view": "पहा",
+    "search": "शोधा",
+    "filter": "फिल्टर",
+    "sort": "क्रमवारी लावा",
+    "next": "पुढे",
+    "previous": "मागे",
+    "close": "बंद करा",
+    "ok": "ठीक आहे",
+    "yes": "होय",
+    "no": "नाही",
+    "error": "त्रुटी",
+    "success": "यश",
+    "warning": "चेतावणी",
+    "info": "माहिती"
+  },
+  "navigation": {
+    "home": "होम",
+    "dashboard": "डॅशबोर्ड",
+    "profile": "माझे प्रोफाईल",
+    "settings": "सेटिंग्स",
+    "logout": "लॉग आउट",
+    "login": "लॉग इन",
+    "register": "नोंदणी",
+    "features": "वैशिष्ट्ये",
+    "language": "भाषा"
+  },
+  "auth": {
+    "login": {
+      "title": "परत स्वागत आहे",
+      "subtitle": "तुमच्या खात्यात साइन इन करा",
+      "loginAs": "म्हणून लॉग इन करा",
+      "student": "विद्यार्थी",
+      "admin": "प्रशासक",
+      "email": "ईमेल पत्ता",
+      "emailPlaceholder": "तुमचा ईमेल टाका",
+      "password": "पासवर्ड",
+      "passwordPlaceholder": "तुमचा पासवर्ड टाका",
+      "rememberMe": "मला लक्षात ठेवा",
+      "forgotPassword": "पासवर्ड विसरलात?",
+      "signIn": "साइन इन",
+      "signingIn": "साइन इन करत आहे...",
+      "signInAs": "{{userType}} म्हणून साइन इन करा"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "welcome": "परत स्वागत आहे, {{name}}!",
+      "quickStats": "द्रुत आकडेवारी",
+      "applications": "अर्ज",
+      "recommendations": "शिफारसी",
+      "profile": "प्रोफाईल पूर्णता"
+    },
+    "internships": {
+      "recommended": "शिफारस केलेले इंटर्नशिप",
+      "applied": "अर्ज केलेले इंटर्नशिप",
+      "viewDetails": "तपशील पहा",
+      "apply": "अर्ज करा",
+      "company": "कंपनी",
+      "location": "स्थान"
+    }
+  }
+}
