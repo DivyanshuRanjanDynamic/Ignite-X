@@ -174,7 +174,7 @@ function Navbar() {
         if (userType === 'admin') {
           navigate('/admin/overview');
         } else {
-          navigate('/student-dashboard/recommended-internships');
+          navigate('/student-dashboard/resume-upload');
         }
         break;
       default:
@@ -294,7 +294,7 @@ function Navbar() {
                     >
                       <Target className="w-4 h-4 mr-3 text-orange-600" />
                       <div className="text-left">
-                        <div className="font-medium">Equal Access</div>
+                        <div className="font-medium">Resume Upload</div>
                       </div>
                     </button>
                   </div>
