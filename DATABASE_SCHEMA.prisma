@@ -1,0 +1,515 @@
+// PM Internship Platform - Database Schema
+// This Prisma schema defines the complete database structure for the platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum Role {
+  STUDENT
+  ADMIN
+  RECRUITER
+  MODERATOR
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  SHORTLISTED
+  SELECTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum InternshipStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  EXPIRED
+  SUSPENDED
+}
+
+enum NotificationType {
+  APPLICATION_UPDATE
+  NEW_INTERNSHIP
+  DEADLINE_REMINDER
+  SYSTEM_ANNOUNCEMENT
+  PROFILE_UPDATE
+  SECURITY_ALERT
+}
+
+enum FileType {
+  RESUME
+  COVER_LETTER
+  PORTFOLIO
+  CERTIFICATE
+  PROFILE_PICTURE
+  COMPANY_LOGO
+}
+
+enum InternshipMode {
+  REMOTE
+  ONSITE
+  HYBRID
+}
+
+enum EducationLevel {
+  HIGH_SCHOOL
+  UNDERGRADUATE
+  GRADUATE
+  POST_GRADUATE
+  DOCTORATE
+}
+
+// ==================== MAIN MODELS ====================
+
+model User {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  email       String    @unique
+  password    String?   // Nullable for OAuth users
+  role        Role      @default(STUDENT)
+  status      UserStatus @default(PENDING_VERIFICATION)
+  
+  // Basic Information
+  firstName   String
+  lastName    String
+  fullName    String    // Computed field
+  phone       String?
+  dateOfBirth DateTime?
+  gender      String?
+  
+  // Address Information
+  address     Address?
+  
+  // Profile Information
+  bio         String?
+  website     String?
+  linkedin    String?
+  github      String?
+  
+  // Education Information (for students)
+  education   Education[]
+  
+  // Professional Information
+  experience  Experience[]
+  skills      UserSkill[]
+  
+  // Platform Metadata
+  profilePicture    String?
+  isEmailVerified   Boolean   @default(false)
+  isPhoneVerified   Boolean   @default(false)
+  isProfileComplete Boolean   @default(false)
+  lastLoginAt       DateTime?
+  emailVerifiedAt   DateTime?
+  phoneVerifiedAt   DateTime?
+  
+  // OAuth Information
+  oauthProviders    OAuthProvider[]
+  
+  // Relationships
+  applications      Application[]
+  notifications     Notification[]
+  files            File[]
+  sessions         Session[]
+  
+  // Admin specific fields
+  department        String?   // For admin users
+  designation       String?   // For admin users
+  employeeId        String?   // For admin users
+  permissions       Permission[]
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+  
+  @@map("users")
+}
+
+model Address {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId
+  
+  street      String
+  city        String
+  state       String
+  country     String @default("India")
+  pincode     String
+  landmark    String?
+  
+  // Relationship
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("addresses")
+}
+
+model Education {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String        @db.ObjectId
+  
+  institution     String
+  degree          String
+  fieldOfStudy    String
+  level           EducationLevel
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrently     Boolean       @default(false)
+  grade           String?       // CGPA/Percentage
+  description     String?
+  
+  // Relationship
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  @@map("education")
+}
+
+model Experience {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @db.ObjectId
+  
+  company         String
+  position        String
+  description     String?
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrently     Boolean   @default(false)
+  location        String?
+  
+  // Relationship
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("experiences")
+}
+
+model Skill {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String      @unique
+  category    String      // e.g., "Programming", "Design", "Marketing"
+  description String?
+  
+  // Relationships
+  userSkills      UserSkill[]
+  internshipSkills InternshipSkill[]
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@map("skills")
+}
+
+model UserSkill {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId
+  skillId     String @db.ObjectId
+  
+  level       String @default("Beginner") // Beginner, Intermediate, Advanced, Expert
+  
+  // Relationships
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill       Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, skillId])
+  @@map("user_skills")
+}
+
+model OAuthProvider {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId
+  
+  provider    String // "google", "github"
+  providerId  String
+  email       String?
+  accessToken String?
+  refreshToken String?
+  
+  // Relationship
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([provider, providerId])
+  @@map("oauth_providers")
+}
+
+model Session {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  
+  token       String    @unique
+  refreshToken String?  @unique
+  expiresAt   DateTime
+  isActive    Boolean   @default(true)
+  
+  // Session metadata
+  ipAddress   String?
+  userAgent   String?
+  device      String?
+  location    String?
+  
+  // Relationship
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("sessions")
+}
+
+model Permission {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId
+  
+  resource    String // e.g., "users", "internships", "applications"
+  action      String // e.g., "create", "read", "update", "delete"
+  
+  // Relationship
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, resource, action])
+  @@map("permissions")
+}
+
+// ==================== INTERNSHIP MODELS ====================
+
+model Internship {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Basic Information
+  title           String
+  description     String
+  requirements    String[]
+  responsibilities String[]
+  
+  // Company Information
+  companyName     String
+  companyLogo     String?
+  companyWebsite  String?
+  companySize     String?           // e.g., "1-50", "51-200", "200+"
+  
+  // Internship Details
+  location        String
+  mode            InternshipMode    @default(ONSITE)
+  duration        Int               // Duration in months
+  startDate       DateTime
+  endDate         DateTime?
+  applicationDeadline DateTime
+  
+  // Compensation
+  stipend         Float?
+  currency        String            @default("INR")
+  isPaid          Boolean           @default(true)
+  
+  // Requirements
+  minEducation    EducationLevel?
+  minExperience   Int?              // Years of experience
+  
+  // Status and Metadata
+  status          InternshipStatus  @default(DRAFT)
+  totalPositions  Int               @default(1)
+  filledPositions Int               @default(0)
+  
+  // SEO and Search
+  tags            String[]
+  category        String
+  subcategory     String?
+  
+  // Admin Information
+  createdById     String?           @db.ObjectId
+  approvedById    String?           @db.ObjectId
+  approvedAt      DateTime?
+  
+  // Relationships
+  skills          InternshipSkill[]
+  applications    Application[]
+  
+  // Analytics
+  viewCount       Int               @default(0)
+  applicationCount Int              @default(0)
+  
+  // Timestamps
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  publishedAt     DateTime?
+  closedAt        DateTime?
+  deletedAt       DateTime?
+  
+  @@map("internships")
+}
+
+model InternshipSkill {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  internshipId  String     @db.ObjectId
+  skillId       String     @db.ObjectId
+  
+  isRequired    Boolean    @default(true)
+  priority      Int        @default(1) // 1 = High, 2 = Medium, 3 = Low
+  
+  // Relationships
+  internship    Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  skill         Skill      @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  
+  @@unique([internshipId, skillId])
+  @@map("internship_skills")
+}
+
+model Application {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String            @db.ObjectId
+  internshipId    String            @db.ObjectId
+  
+  // Application Data
+  status          ApplicationStatus @default(DRAFT)
+  coverLetter     String?
+  customAnswers   Json?             // Answers to custom questions
+  
+  // Timeline
+  submittedAt     DateTime?
+  reviewedAt      DateTime?
+  interviewDate   DateTime?
+  responseDate    DateTime?
+  
+  // Feedback
+  feedback        String?
+  rating          Int?              // 1-5 rating from admin
+  
+  // Admin Notes
+  adminNotes      String?
+  reviewedById    String?           @db.ObjectId
+  
+  // Relationships
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  internship      Internship        @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  deletedAt       DateTime?
+  
+  @@unique([userId, internshipId])
+  @@map("applications")
+}
+
+// ==================== NOTIFICATION SYSTEM ====================
+
+model Notification {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String            @db.ObjectId
+  
+  type        NotificationType
+  title       String
+  message     String
+  data        Json?             // Additional data for the notification
+  
+  isRead      Boolean           @default(false)
+  readAt      DateTime?
+  
+  // Relationships
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  
+  @@map("notifications")
+}
+
+// ==================== FILE MANAGEMENT ====================
+
+model File {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int       // Size in bytes
+  url         String
+  cloudinaryId String?  // For Cloudinary integration
+  
+  type        FileType
+  isPublic    Boolean   @default(false)
+  
+  // Relationships
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  
+  @@map("files")
+}
+
+// ==================== ANALYTICS & LOGS ====================
+
+model Analytics {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Event Information
+  event       String    // e.g., "user_registration", "application_submitted"
+  userId      String?   @db.ObjectId
+  sessionId   String?
+  
+  // Request Information
+  ipAddress   String?
+  userAgent   String?
+  referer     String?
+  
+  // Additional Data
+  metadata    Json?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@map("analytics")
+}
+
+model AuditLog {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Action Information
+  action      String    // e.g., "CREATE", "UPDATE", "DELETE"
+  resource    String    // e.g., "User", "Internship"
+  resourceId  String?   @db.ObjectId
+  
+  // User Information
+  userId      String?   @db.ObjectId
+  userEmail   String?
+  userRole    String?
+  
+  // Change Information
+  oldValues   Json?
+  newValues   Json?
+  
+  // Request Information
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@map("audit_logs")
+}

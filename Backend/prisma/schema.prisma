@@ -1,0 +1,537 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// 🧑‍💼 USER MANAGEMENT MODELS
+// ============================================
+
+enum UserRole {
+  STUDENT
+  ADMIN
+  RECRUITER
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+  BANNED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+model User {
+  id                String     @id @default(auto()) @map("_id") @db.ObjectId
+  email             String     @unique
+  password          String?    // Optional for OAuth users
+  role              UserRole   @default(STUDENT)
+  status            UserStatus @default(PENDING_VERIFICATION)
+  
+  // Basic Information
+  firstName         String
+  lastName          String
+  phone             String?
+  isVerified        Boolean    @default(false)
+  isActive          Boolean    @default(true)
+  
+  // OAuth Information
+  googleId          String?    @unique
+  githubId          String?    @unique
+  
+  // Security
+  emailVerifiedAt   DateTime?
+  lastLoginAt       DateTime?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  
+  // Timestamps
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  
+  // Relations
+  profile           Profile?
+  internships       Internship[]     @relation("RecruiterInternships")
+  applications      Application[]
+  notifications     Notification[]
+  files             File[]
+  analytics         Analytics[]
+  auditLogs         AuditLog[]
+  refreshTokens     RefreshToken[]
+  
+  @@map("users")
+}
+
+model Profile {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @unique @db.ObjectId
+  
+  // Personal Information
+  bio             String?
+  dateOfBirth     DateTime?
+  gender          Gender?
+  location        String?
+  avatar          String?   // Cloudinary URL
+  
+  // Contact Information
+  alternateEmail  String?
+  linkedinUrl     String?
+  githubUrl       String?
+  portfolioUrl    String?
+  
+  // Professional Information
+  skills          String[]  // Array of skill names
+  interests       String[]  // Array of interest areas
+  languages       String[]  // Array of languages spoken
+  
+  // Additional Information
+  resume          String?   // Cloudinary URL
+  coverLetter     String?
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  education       Education[]
+  experience      Experience[]
+  
+  @@map("profiles")
+}
+
+model Education {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  profileId       String    @db.ObjectId
+  
+  // Education Details
+  instituteName   String
+  degree          String
+  fieldOfStudy    String
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrent       Boolean   @default(false)
+  
+  // Academic Performance
+  cgpa            Float?
+  percentage      Float?
+  grade           String?
+  
+  // Additional Information
+  description     String?
+  achievements    String[]  // Array of achievements
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  profile         Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  @@map("education")
+}
+
+model Experience {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  profileId       String    @db.ObjectId
+  
+  // Experience Details
+  companyName     String
+  position        String
+  location        String?
+  startDate       DateTime
+  endDate         DateTime?
+  isCurrent       Boolean   @default(false)
+  
+  // Work Details
+  description     String?
+  responsibilities String[] // Array of responsibilities
+  technologies    String[]  // Array of technologies used
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  profile         Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  @@map("experience")
+}
+
+// ============================================
+// 💼 INTERNSHIP MANAGEMENT MODELS
+// ============================================
+
+enum InternshipMode {
+  REMOTE
+  ONSITE
+  HYBRID
+}
+
+enum InternshipStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  EXPIRED
+  CANCELLED
+  PAUSED
+}
+
+enum ApplicationStatus {
+  PENDING
+  UNDER_REVIEW
+  SHORTLISTED
+  INTERVIEW_SCHEDULED
+  INTERVIEWED
+  SELECTED
+  REJECTED
+  WITHDRAWN
+  OFFER_EXTENDED
+  OFFER_ACCEPTED
+  OFFER_DECLINED
+}
+
+model Internship {
+  id                    String            @id @default(auto()) @map("_id") @db.ObjectId
+  recruiterId           String            @db.ObjectId
+  
+  // Basic Information
+  title                 String
+  description           String
+  companyName           String
+  companyLogo           String?           // Cloudinary URL
+  
+  // Location & Mode
+  location              String
+  mode                  InternshipMode
+  
+  // Duration & Dates
+  duration              Int               // Duration in months
+  startDate             DateTime
+  applicationDeadline   DateTime
+  
+  // Compensation
+  stipend               Float?
+  currency              String            @default("INR")
+  isStipendNegotiable   Boolean           @default(false)
+  
+  // Requirements & Details
+  requirements          String[]          // Array of requirements
+  responsibilities      String[]          // Array of responsibilities
+  benefits              String[]          // Array of benefits
+  
+  // Position Details
+  totalPositions        Int               @default(1)
+  filledPositions       Int               @default(0)
+  
+  // Categorization
+  category              String            // e.g., "Technology", "Marketing"
+  subCategory           String?
+  tags                  String[]          // Array of tags
+  
+  // Additional Information
+  applicationInstructions String?
+  selectionProcess      String[]          // Array of selection steps
+  
+  // Status & Visibility
+  status                InternshipStatus  @default(DRAFT)
+  isPublished           Boolean           @default(false)
+  isFeatured            Boolean           @default(false)
+  
+  // Analytics
+  viewCount             Int               @default(0)
+  applicationCount      Int               @default(0)
+  
+  // Timestamps
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  publishedAt           DateTime?
+  
+  // Relations
+  recruiter             User              @relation("RecruiterInternships", fields: [recruiterId], references: [id])
+  applications          Application[]
+  
+  @@map("internships")
+}
+
+model Application {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  studentId         String            @db.ObjectId
+  internshipId      String            @db.ObjectId
+  
+  // Application Details
+  status            ApplicationStatus @default(PENDING)
+  coverLetter       String?
+  
+  // Documents
+  resumeUrl         String?           // Cloudinary URL
+  additionalDocs    String[]          // Array of document URLs
+  
+  // Application Responses
+  questionsAnswers  Json?             // Custom questions and answers
+  
+  // Review Information
+  reviewedBy        String?           @db.ObjectId
+  reviewedAt        DateTime?
+  reviewComments    String?
+  rating            Int?              // 1-5 rating by recruiter
+  
+  // Interview Information
+  interviewDate     DateTime?
+  interviewMode     String?           // "ONLINE", "OFFLINE", "PHONE"
+  interviewLink     String?
+  interviewNotes    String?
+  
+  // Offer Information
+  offerExtendedAt   DateTime?
+  offerAcceptedAt   DateTime?
+  offerDeclinedAt   DateTime?
+  
+  // Timestamps
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  // Relations
+  student           User              @relation(fields: [studentId], references: [id])
+  internship        Internship        @relation(fields: [internshipId], references: [id])
+  
+  // Composite unique index to prevent duplicate applications
+  @@unique([studentId, internshipId])
+  @@map("applications")
+}
+
+// ============================================
+// 📧 NOTIFICATION SYSTEM
+// ============================================
+
+enum NotificationType {
+  APPLICATION_SUBMITTED
+  APPLICATION_REVIEWED
+  INTERVIEW_SCHEDULED
+  OFFER_EXTENDED
+  INTERNSHIP_PUBLISHED
+  PROFILE_UPDATED
+  SYSTEM_ANNOUNCEMENT
+  REMINDER
+  SECURITY_ALERT
+}
+
+model Notification {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String           @db.ObjectId
+  
+  // Notification Content
+  type            NotificationType
+  title           String
+  message         String
+  
+  // Additional Data
+  metadata        Json?            // Additional context data
+  actionUrl       String?          // URL to navigate when clicked
+  
+  // Status
+  isRead          Boolean          @default(false)
+  readAt          DateTime?
+  
+  // Scheduling
+  scheduledFor    DateTime?        // For scheduled notifications
+  isSent          Boolean          @default(false)
+  sentAt          DateTime?
+  
+  // Timestamps
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  // Relations
+  user            User             @relation(fields: [userId], references: [id])
+  
+  @@map("notifications")
+}
+
+// ============================================
+// 📁 FILE MANAGEMENT
+// ============================================
+
+enum FileCategory {
+  PROFILE_PICTURE
+  RESUME
+  COVER_LETTER
+  ADDITIONAL_DOCUMENT
+  COMPANY_LOGO
+  PORTFOLIO_ITEM
+  CERTIFICATE
+}
+
+model File {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String        @db.ObjectId
+  
+  // File Information
+  fileName        String
+  originalName    String
+  fileUrl         String        // Cloudinary URL
+  publicId        String?       // Cloudinary public ID
+  
+  // File Properties
+  mimeType        String
+  fileSize        Int           // Size in bytes
+  category        FileCategory
+  
+  // Metadata
+  uploadedFrom    String?       // Device/browser information
+  isPublic        Boolean       @default(false)
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relations
+  user            User          @relation(fields: [userId], references: [id])
+  
+  @@map("files")
+}
+
+// ============================================
+// 📊 ANALYTICS & TRACKING
+// ============================================
+
+enum AnalyticsEventType {
+  PAGE_VIEW
+  INTERNSHIP_VIEW
+  APPLICATION_SUBMIT
+  PROFILE_UPDATE
+  SEARCH_QUERY
+  LOGIN
+  LOGOUT
+  FILE_UPLOAD
+  EMAIL_CLICK
+  FEATURE_USAGE
+}
+
+model Analytics {
+  id              String             @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String?            @db.ObjectId        // Optional for anonymous events
+  sessionId       String?
+  
+  // Event Information
+  eventType       AnalyticsEventType
+  eventData       Json?              // Additional event data
+  
+  // Request Information
+  ipAddress       String
+  userAgent       String?
+  referer         String?
+  
+  // Geographic Information
+  country         String?
+  region          String?
+  city            String?
+  
+  // Device Information
+  device          String?
+  browser         String?
+  operatingSystem String?
+  
+  // Timestamps
+  timestamp       DateTime           @default(now())
+  
+  // Relations
+  user            User?              @relation(fields: [userId], references: [id])
+  
+  @@map("analytics")
+}
+
+// ============================================
+// 📋 AUDIT LOGGING
+// ============================================
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  PASSWORD_RESET
+  EMAIL_VERIFIED
+  PROFILE_UPDATED
+  APPLICATION_SUBMITTED
+  INTERNSHIP_PUBLISHED
+  FILE_UPLOADED
+  ROLE_CHANGED
+  STATUS_CHANGED
+}
+
+model AuditLog {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String?     @db.ObjectId
+  
+  // Action Information
+  action          AuditAction
+  entityType      String      // e.g., "User", "Internship", "Application"
+  entityId        String?     @db.ObjectId
+  
+  // Change Information
+  oldValues       Json?       // Previous state
+  newValues       Json?       // New state
+  changes         Json?       // Diff of changes
+  
+  // Request Information
+  ipAddress       String
+  userAgent       String?
+  
+  // Additional Context
+  description     String?
+  metadata        Json?
+  
+  // Timestamps
+  timestamp       DateTime    @default(now())
+  
+  // Relations
+  user            User?       @relation(fields: [userId], references: [id])
+  
+  @@map("audit_logs")
+}
+
+// ============================================
+// 🔐 AUTHENTICATION & SESSIONS
+// ============================================
+
+model RefreshToken {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @db.ObjectId
+  token           String    @unique
+  
+  // Token Information
+  expiresAt       DateTime
+  isRevoked       Boolean   @default(false)
+  revokedAt       DateTime?
+  
+  // Device Information
+  deviceInfo      String?
+  ipAddress       String?
+  userAgent       String?
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("refresh_tokens")
+}
