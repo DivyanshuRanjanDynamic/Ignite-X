@@ -287,147 +287,27 @@ class AuthController {
   }
 
   /**
-   * Admin Registration (simplified for admin accounts)
+   * Admin Registration - COMPLETELY DISABLED
    * POST /api/v1/auth/register/admin
+   * 
+   * SECURITY: Only pre-seeded admins can access admin features.
+   * No new admin accounts can be created through the API.
    */
   async adminRegister(req, res) {
     try {
-      // SECURITY: Disable admin registration in production
-      // Only pre-seeded admins should be able to access admin features
-      if (process.env.NODE_ENV === 'production') {
-        logger.warn('Admin registration attempt in production - BLOCKED', {
-          email: req.body?.email,
-          ip: req.ip,
-        });
-        
-        return res.status(403).json({
-          success: false,
-          error: {
-            code: 'ADMIN_REGISTRATION_DISABLED',
-            message: 'Admin registration is disabled. Contact system administrator.',
-          },
-          timestamp: new Date().toISOString(),
-        });
-      }
-
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        phone,
-        department,
-        designation,
-        adminToken
-      } = req.body;
-
-      logger.info('Admin registration attempt', {
-        email,
-        firstName,
-        lastName,
+      // SECURITY: Admin registration is completely disabled
+      // Only pre-seeded admins from the database are allowed
+      logger.warn('Admin registration attempt - BLOCKED (Feature Disabled)', {
+        email: req.body?.email,
         ip: req.ip,
+        userAgent: req.get('User-Agent'),
       });
-
-      // Verify admin token if provided (optional security measure)
-      if (adminToken && adminToken !== process.env.ADMIN_REGISTRATION_TOKEN) {
-        return res.status(403).json({
-          success: false,
-          error: {
-            code: 'INVALID_ADMIN_TOKEN',
-            message: 'Invalid admin registration token',
-          },
-          timestamp: new Date().toISOString(),
-        });
-      }
-
-      // Check if admin already exists
-      const existingAdmin = await database.prisma.user.findFirst({
-        where: {
-          OR: [
-            { email: email.toLowerCase() },
-            ...(phone ? [{ phone: phone }] : [])
-          ]
-        }
-      });
-
-      if (existingAdmin) {
-        logger.warn('Admin registration failed - User already exists', {
-          email,
-          existingUserId: existingAdmin.id,
-          ip: req.ip,
-        });
-
-        return res.status(409).json({
-          success: false,
-          error: {
-            code: 'ADMIN_ALREADY_EXISTS',
-            message: 'Admin with this email already exists',
-          },
-          timestamp: new Date().toISOString(),
-        });
-      }
-
-      // Hash password
-      const hashedPassword = await passwordUtil.hash(password);
-
-      // Create admin user
-      const newAdmin = await database.prisma.user.create({
-        data: {
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email: email.toLowerCase().trim(),
-          password: hashedPassword,
-          role: 'ADMIN',
-          phone: phone?.trim(),
-          status: 'ACTIVE', // Admins are auto-activated
-          isVerified: true, // Admins are auto-verified
-          isActive: true,
-          emailVerifiedAt: new Date(), // Mark email as verified
-        },
-      });
-
-      // Create admin profile
-      await database.prisma.profile.create({
-        data: {
-          userId: newAdmin.id,
-          bio: `${designation || 'Administrator'} in ${department || 'Administration'}`,
-          skills: [],
-          interests: [],
-          languages: ['English'],
-        },
-      });
-
-      // Generate authentication tokens
-      const tokenPair = jwtUtil.generateTokenPair(newAdmin);
-
-      logger.info('Admin registered successfully', {
-        userId: newAdmin.id,
-        email: newAdmin.email,
-        role: newAdmin.role,
-        ip: req.ip,
-      });
-
-      // Return success response
-      const adminResponse = {
-        id: newAdmin.id,
-        name: `${newAdmin.firstName} ${newAdmin.lastName}`.trim(),
-        firstName: newAdmin.firstName,
-        lastName: newAdmin.lastName,
-        email: newAdmin.email,
-        phone: newAdmin.phone,
-        role: newAdmin.role,
-        isVerified: newAdmin.isVerified,
-        createdAt: newAdmin.createdAt,
-      };
-
-      res.status(201).json({
-        success: true,
-        message: 'Admin registration successful',
-        data: {
-          user: adminResponse,
-          accessToken: tokenPair.accessToken,
-          refreshToken: tokenPair.refreshToken,
-          redirectUrl: '/admin'
+      
+      return res.status(403).json({
+        success: false,
+        error: {
+          code: 'ADMIN_REGISTRATION_DISABLED',
+          message: 'Admin registration is permanently disabled. Only pre-authorized system administrators can access admin features.',
         },
         timestamp: new Date().toISOString(),
       });
@@ -517,7 +397,39 @@ class AuthController {
         });
       }
 
-      // Admin access is controlled by database - only users with ADMIN role can login as admin
+      // SECURITY: Admin access is strictly controlled by whitelist of pre-seeded accounts
+      if (userType === 'admin') {
+        const AUTHORIZED_ADMIN_EMAILS = [
+          'divyanshuchannel2@gmail.com',
+          'singhmanvi5983@gmail.com', 
+          'analyst@pminternship.gov.in',
+          'operations@pminternship.gov.in'
+        ];
+        
+        if (!AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase())) {
+          logger.warn('Admin login attempt with unauthorized email - BLOCKED', {
+            email,
+            userId: user.id,
+            ip: req.ip,
+            userAgent: req.get('User-Agent'),
+          });
+          
+          return res.status(403).json({
+            success: false,
+            error: {
+              code: 'UNAUTHORIZED_ADMIN_ACCESS',
+              message: 'Access denied. Only pre-authorized system administrators can access admin features.',
+            },
+            timestamp: new Date().toISOString(),
+          });
+        }
+        
+        logger.info('Authorized admin login attempt', {
+          email,
+          userId: user.id,
+          ip: req.ip,
+        });
+      }
 
       // Check if account is active
       if (!user.isActive) {

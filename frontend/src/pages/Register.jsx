@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, MapPin, GraduationCap, User, ArrowRight, ArrowLeft, CheckCircle, Eye, EyeOff, Upload, Camera, Info, Check, X, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthTranslation } from '../hooks/useTranslation.jsx';
+import { authToasts } from '../utils/toast.jsx';
 
 function Register() {
   const { t, tCommon } = useAuthTranslation();
@@ -142,7 +143,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert(t('register.validation.passwordMismatch'));
+      authToasts.registerError(t('register.validation.passwordMismatch'));
       return;
     }
     
@@ -174,14 +175,16 @@ function Register() {
 
       // After successful registration, DO NOT auto-login. Ask user to verify email.
       const email = formData.email;
-      alert('Registration successful! Please check your email for a verification link or code.');
-      window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
+      authToasts.registerSuccess();
+      setTimeout(() => {
+        window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
+      }, 2000);
     } catch (err) {
       console.error('Registration failed', err);
       const details = err?.response?.data?.error?.details;
       const firstDetail = Array.isArray(details) && details.length ? `${details[0].field}: ${details[0].message}` : null;
       const message = firstDetail || err?.response?.data?.error?.message || 'Registration failed. Please check your details and try again.';
-      alert(message);
+      authToasts.registerError(message);
     } finally {
       setIsLoading(false);
     }

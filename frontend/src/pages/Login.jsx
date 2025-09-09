@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Brain, ArrowRight, User, Shield, CheckCircle, Users, Building2, TrendingUp, Home, AlertTriangle } from "lucide-react";
 import { useAuthTranslation } from '../hooks/useTranslation.jsx';
+import { authToasts } from '../utils/toast.jsx';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -41,11 +42,17 @@ function Login() {
         case 'missing_params':
           errorMessage = 'Authentication was incomplete. Please try signing in again.';
           break;
+        case 'unauthorized_admin':
+          errorMessage = message || 'Access denied. Only pre-authorized system administrators can access admin features.';
+          break;
         default:
           errorMessage = 'An error occurred during OAuth login. Please try again.';
       }
       
       setOAuthError(errorMessage);
+      
+      // Show OAuth error toast
+      authToasts.oauthError(errorMessage);
       
       // Clear URL params after showing error
       const newUrl = window.location.pathname;
@@ -81,6 +88,10 @@ function Login() {
         detail: { isAuthenticated: true, userType: userType, userName: localStorage.getItem('userName') }
       }));
 
+      // Show success toast
+      const userName = user?.name || user?.firstName || email.split('@')[0];
+      authToasts.loginSuccess(userName);
+      
       navigate(redirectUrl);
     } catch (err) {
       console.error('Login failed', err);
@@ -88,11 +99,13 @@ function Login() {
       const message = err?.response?.data?.error?.message || err?.response?.data?.message || 'Login failed. Please check your credentials.';
       if (needsVerify) {
         const userEmail = err?.response?.data?.email || err?.response?.data?.data?.email || email;
-        alert('Please verify your email address before logging in. Check your inbox for a verification link.');
-        window.location.href = `/verify-email?email=${encodeURIComponent(userEmail)}`;
+        authToasts.emailVerificationError('Please verify your email address before logging in. Check your inbox for a verification link.');
+        setTimeout(() => {
+          window.location.href = `/verify-email?email=${encodeURIComponent(userEmail)}`;
+        }, 2000);
       } else {
         console.error('Login error details:', err?.response?.data);
-        alert(`Login failed: ${message}\n\nFor testing, try registering a new account first.`);
+        authToasts.loginError(message);
       }
     } finally {
       setIsLoading(false);

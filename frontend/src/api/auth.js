@@ -36,9 +36,10 @@ export async function registerStudent(form) {
   return data;
 }
 
+// ADMIN REGISTRATION DISABLED - Only pre-seeded admins allowed
 export async function registerAdmin(payload) {
-  const { data } = await api.post('/auth/register/admin', payload);
-  return data;
+  // Throw error immediately - admin registration is not allowed
+  throw new Error('Admin registration is permanently disabled. Only pre-authorized system administrators can access admin features.');
 }
 
 export async function verifyEmail(token) {

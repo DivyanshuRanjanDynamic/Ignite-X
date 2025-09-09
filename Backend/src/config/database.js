@@ -50,6 +50,12 @@ class Database {
       await this.prisma.$connect();
       logger.info('🗄️ Database connected successfully');
       
+      // Skip connection test in development to avoid startup failures
+      if (process.env.NODE_ENV === 'development') {
+        logger.info('⚠️ Skipping database test in development mode');
+        return true;
+      }
+      
       // Test the connection with MongoDB compatible query
       await this.prisma.user.findMany({ take: 1 });
       logger.info('✅ Database connection test passed');
@@ -60,6 +66,13 @@ class Database {
         error: error.message,
         stack: error.stack,
       });
+      
+      // In development, log error but don't fail startup
+      if (process.env.NODE_ENV === 'development') {
+        logger.warn('🚧 Database connection failed, but continuing in development mode');
+        return false;
+      }
+      
       throw error;
     }
   }

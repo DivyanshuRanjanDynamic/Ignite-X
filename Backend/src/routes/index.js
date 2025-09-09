@@ -1,5 +1,6 @@
 import express from 'express';
 import authRoutes from './authRoutes.js';
+import adminRoutes from './adminRoutes.js';
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.get('/', (req, res) => {
     documentation: '/api/v1/docs',
     endpoints: {
       auth: '/api/v1/auth',
+      admin: '/api/v1/admin',
       users: '/api/v1/users',
       internships: '/api/v1/internships',
       applications: '/api/v1/applications',
@@ -32,6 +34,7 @@ router.get('/', (req, res) => {
 
 // Mount route modules
 router.use('/auth', authRoutes);
+router.use('/admin', adminRoutes);
 
 // TODO: Add other route modules
 // router.use('/users', userRoutes);
