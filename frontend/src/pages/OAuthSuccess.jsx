@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { authToasts } from '../utils/toast.jsx';
 import { RefreshCw } from 'lucide-react';
 
 function OAuthSuccess() {
@@ -29,13 +30,21 @@ function OAuthSuccess() {
           }
         }));
 
-        // Redirect to the appropriate dashboard
-        navigate(redirectUrl || (userType === 'admin' ? '/admin' : '/student-dashboard'), { 
-          replace: true 
-        });
+        // Show OAuth success toast
+        authToasts.oauthSuccess('OAuth Provider');
+        
+        // Redirect to the appropriate dashboard with slight delay for toast
+        setTimeout(() => {
+          navigate(redirectUrl || (userType === 'admin' ? '/admin' : '/student-dashboard'), { 
+            replace: true 
+          });
+        }, 1500);
       } else {
         // Missing required parameters - redirect to login with error
-        navigate('/login?oauth_error=missing_params', { replace: true });
+        authToasts.oauthError('OAuth authentication failed. Missing required parameters.');
+        setTimeout(() => {
+          navigate('/login?oauth_error=missing_params', { replace: true });
+        }, 2000);
       }
     };
 

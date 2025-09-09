@@ -36,13 +36,23 @@ router.post(
 
 /**
  * @route POST /api/v1/auth/register/admin
- * @desc Register a new admin account
- * @access Public (with optional admin token verification)
+ * @desc Admin registration - PERMANENTLY DISABLED
+ * @access None - Route disabled for security
  */
+// SECURITY: Admin registration is completely disabled
+// Only pre-seeded admins can access admin features
 router.post(
   '/register/admin',
-  validate(adminRegisterSchema),
-  authController.adminRegister
+  (req, res) => {
+    res.status(403).json({
+      success: false,
+      error: {
+        code: 'ADMIN_REGISTRATION_DISABLED',
+        message: 'Admin registration is permanently disabled. Only pre-authorized system administrators can access admin features.',
+      },
+      timestamp: new Date().toISOString(),
+    });
+  }
 );
 
 /**

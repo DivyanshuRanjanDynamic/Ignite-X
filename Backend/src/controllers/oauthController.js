@@ -4,6 +4,7 @@ import database from '../config/database.js';
 import logger from '../config/logger.js';
 import jwtUtil from '../utils/jwt.js';
 import config from '../config/env.js';
+import { isAuthorizedAdmin } from '../middleware/adminAuth.js';
 
 class OAuthController {
   /**
@@ -98,6 +99,20 @@ class OAuthController {
       if (existingUser.role !== expectedRole) {
         return res.redirect(
           `${config.frontend.baseUrl}/login?oauth_error=invalid_user_type&expected=${userType}&actual=${existingUser.role.toLowerCase()}`
+        );
+      }
+
+      // SECURITY: For admin OAuth, check if email is in authorized whitelist
+      if (userType === 'admin' && !isAuthorizedAdmin(existingUser.email)) {
+        logger.warn('OAuth admin login attempt with unauthorized email - BLOCKED', {
+          email: existingUser.email,
+          provider: 'google',
+          ip: req.ip,
+          userAgent: req.get('User-Agent'),
+        });
+        
+        return res.redirect(
+          `${config.frontend.baseUrl}/login?oauth_error=unauthorized_admin&message=${encodeURIComponent('Access denied. Only pre-authorized system administrators can access admin features.')}`
         );
       }
 
@@ -260,6 +275,20 @@ class OAuthController {
       if (existingUser.role !== expectedRole) {
         return res.redirect(
           `${config.frontend.baseUrl}/login?oauth_error=invalid_user_type&expected=${userType}&actual=${existingUser.role.toLowerCase()}`
+        );
+      }
+
+      // SECURITY: For admin OAuth, check if email is in authorized whitelist
+      if (userType === 'admin' && !isAuthorizedAdmin(existingUser.email)) {
+        logger.warn('OAuth admin login attempt with unauthorized email - BLOCKED', {
+          email: existingUser.email,
+          provider: 'github',
+          ip: req.ip,
+          userAgent: req.get('User-Agent'),
+        });
+        
+        return res.redirect(
+          `${config.frontend.baseUrl}/login?oauth_error=unauthorized_admin&message=${encodeURIComponent('Access denied. Only pre-authorized system administrators can access admin features.')}`
         );
       }
 

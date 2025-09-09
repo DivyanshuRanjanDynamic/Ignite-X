@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useNavTranslation } from '../hooks/useTranslation.jsx';
 import { useLanguageContext } from '../contexts/LanguageContext';
+import { authToasts } from '../utils/toast.jsx';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -120,6 +121,9 @@ function Navbar() {
     window.dispatchEvent(new CustomEvent('authStateChanged', {
       detail: { isAuthenticated: false, userType: null, userName: "Student User" }
     }));
+    
+    // Show logout success toast
+    authToasts.logoutSuccess();
     
     navigate('/');
   };

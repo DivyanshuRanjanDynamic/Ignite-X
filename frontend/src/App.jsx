@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Suspense } from "react";
 import './i18n'; // Initialize i18n
 import { LanguageProvider } from './contexts/LanguageContext';
+import { Toaster } from './utils/toast.jsx';
 import ScrollToTop from './components/ScrollToTop';
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -54,6 +55,7 @@ function App() {
   return (
     <LanguageProvider>
       <ScrollToTop />
+      <Toaster position="top-right" />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
       {/* Public Pages */}

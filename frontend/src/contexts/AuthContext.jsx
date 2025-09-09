@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { login as loginApi, registerStudent, registerAdmin, logout as logoutApi, verifyEmail, resendVerification, forgotPassword, resetPassword } from '../api/auth';
 import api from '../api/client';
+import { authToasts } from '../utils/toast.jsx';
 
 const AuthContext = createContext();
 
@@ -168,6 +169,9 @@ export const AuthProvider = ({ children }) => {
       window.dispatchEvent(new CustomEvent('authStateChanged', {
         detail: { isAuthenticated: false, userType: null, user: null }
       }));
+
+      // Show logout success toast
+      authToasts.logoutSuccess();
 
       return { success: true };
     } catch (error) {

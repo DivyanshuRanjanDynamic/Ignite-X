@@ -1,9 +1,11 @@
-// Simple Admin Seeding Script
+// Simple Admin Seeding Script - SECURE VERSION
 import { PrismaClient } from '@prisma/client';
 import bcryptjs from 'bcryptjs';
+import { getAuthorizedAdminEmails } from '../middleware/adminAuth.js';
 
 const prisma = new PrismaClient();
 
+// SECURITY: Only these pre-defined admins are allowed - matches adminAuth.js whitelist
 const PREDEFINED_ADMINS = [
   {
     firstName: 'Divyanshu',
@@ -42,6 +44,17 @@ const PREDEFINED_ADMINS = [
     designation: 'Operations Manager',
   }
 ];
+
+// Validate that all seeded admins are in the authorized whitelist
+const authorizedEmails = getAuthorizedAdminEmails();
+const seedEmails = PREDEFINED_ADMINS.map(admin => admin.email.toLowerCase());
+const unauthorizedSeeds = seedEmails.filter(email => !authorizedEmails.includes(email));
+
+if (unauthorizedSeeds.length > 0) {
+  console.error('❌ SECURITY ERROR: Seeded admin emails not in authorized whitelist:', unauthorizedSeeds);
+  console.error('Update the adminAuth.js whitelist to include these emails or remove them from seeding.');
+  process.exit(1);
+}
 
 async function seedAdmins() {
   console.log('🌱 Starting admin account seeding...');
