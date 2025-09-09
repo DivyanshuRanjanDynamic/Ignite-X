@@ -1,0 +1,60 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# System files
+.bash_history
+
+# VS Code or other editor config files
+.vscode/
+*.code-workspace
+
+# Cursor extension build files, config stores, etc.
+.config/
+.cursor/
+*.json
+*.txt
+*.md
+
+# Node dependencies
+node_modules/
+
+# Build or output folders
+dist/
+build/
+
+# Log files
+*.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# License files that are generated or unnecessary
+*.LICENSE.txt
+
+# Environment files with secrets
+.env
+.env.local
+.env.production
+.env.development
