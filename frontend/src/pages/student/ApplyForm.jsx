@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { useStudentTranslation } from "../../hooks/useTranslation";
 
 export default function ApplyForm() {
   const { id } = useParams(); // internship ID from URL
+  const { t } = useStudentTranslation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,7 +18,7 @@ export default function ApplyForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Application submitted for Internship ID: ${id}`);
+    alert(t('applyForm.applicationSubmitted', { id }));
     console.log(formData);
   };
 
@@ -27,11 +29,11 @@ export default function ApplyForm() {
         className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-lg"
       >
         <h2 className="text-2xl font-bold text-blue-700 mb-6">
-          Internship Application (ID: {id})
+          {t('applyForm.title', { id })}
         </h2>
 
         <label className="block mb-4">
-          <span className="text-gray-700">Full Name</span>
+          <span className="text-gray-700">{t('applyForm.fullName')}</span>
           <input
             type="text"
             name="name"
@@ -43,7 +45,7 @@ export default function ApplyForm() {
         </label>
 
         <label className="block mb-4">
-          <span className="text-gray-700">Email</span>
+          <span className="text-gray-700">{t('applyForm.email')}</span>
           <input
             type="email"
             name="email"
@@ -55,7 +57,7 @@ export default function ApplyForm() {
         </label>
 
         <label className="block mb-4">
-          <span className="text-gray-700">Resume (Link)</span>
+          <span className="text-gray-700">{t('applyForm.resumeLink')}</span>
           <input
             type="url"
             name="resume"
@@ -67,7 +69,7 @@ export default function ApplyForm() {
         </label>
 
         <label className="block mb-4">
-          <span className="text-gray-700">Cover Letter</span>
+          <span className="text-gray-700">{t('applyForm.coverLetter')}</span>
           <textarea
             name="coverLetter"
             value={formData.coverLetter}
@@ -82,7 +84,7 @@ export default function ApplyForm() {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
         >
-          Submit Application
+          {t('applyForm.submitApplication')}
         </button>
       </form>
     </div>

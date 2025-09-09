@@ -12,8 +12,11 @@ import {
   Linkedin,
   Globe,
 } from "lucide-react";
+import { useStudentTranslation } from "../../hooks/useTranslation";
 
 export default function Profile() {
+  const { t } = useStudentTranslation();
+  
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -36,11 +39,11 @@ export default function Profile() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
-      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-blue-800">👤 My Profile</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-blue-800">{t('profile.title')}</h2>
 
       <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 relative hover:shadow-2xl hover:scale-[1.02] transition duration-300 ease-in-out">
         {/* Edit button */}
-        <button className="absolute top-3 right-3 sm:top-4 sm:right-4 text-blue-600 hover:text-blue-800 hover:scale-110 transition">
+        <button className="absolute top-3 right-3 sm:top-4 sm:right-4 text-blue-600 hover:text-blue-800 hover:scale-110 transition" title={t('profile.editButton')}>
           <Edit className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
@@ -80,7 +83,7 @@ export default function Profile() {
 
         {/* Skills Section */}
         <div className="mt-4 sm:mt-6">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900">💡 Skills</h4>
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900">{t('profile.skills')}</h4>
           <div className="flex flex-wrap gap-2 mt-2">
             {user.skills.map((skill, idx) => (
               <span
@@ -95,25 +98,25 @@ export default function Profile() {
 
         {/* Resume Upload */}
         <div className="mt-4 sm:mt-6">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900">📄 Resume</h4>
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900">{t('profile.resume')}</h4>
           <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             <button className="flex items-center justify-center sm:justify-start px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:scale-105 transition duration-300">
               <Upload className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              <span className="text-sm sm:text-base">Upload Resume</span>
+              <span className="text-sm sm:text-base">{t('profile.uploadResume')}</span>
             </button>
             {user.resume ? (
               <span className="text-green-600 font-medium animate-pulse text-sm sm:text-base text-center sm:text-left">
-                Uploaded ✅
+                {t('profile.resumeUploaded')}
               </span>
             ) : (
-              <span className="text-gray-500 text-sm sm:text-base text-center sm:text-left">No resume uploaded</span>
+              <span className="text-gray-500 text-sm sm:text-base text-center sm:text-left">{t('profile.noResumeUploaded')}</span>
             )}
           </div>
         </div>
 
         {/* Social Links */}
         <div className="mt-4 sm:mt-6">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900">🌐 Social Links</h4>
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900">{t('profile.socialLinks')}</h4>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-3">
             <a
               href={user.github}
@@ -122,7 +125,7 @@ export default function Profile() {
               className="flex items-center justify-center sm:justify-start px-3 py-2 bg-gray-900 text-white rounded-lg shadow hover:bg-gray-800 hover:shadow-lg hover:scale-110 transition"
             >
               <Github className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              <span className="text-sm sm:text-base">GitHub</span>
+              <span className="text-sm sm:text-base">{t('profile.github')}</span>
             </a>
             <a
               href={user.linkedin}
@@ -131,7 +134,7 @@ export default function Profile() {
               className="flex items-center justify-center sm:justify-start px-3 py-2 bg-blue-700 text-white rounded-lg shadow hover:bg-blue-800 hover:shadow-lg hover:scale-110 transition"
             >
               <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              <span className="text-sm sm:text-base">LinkedIn</span>
+              <span className="text-sm sm:text-base">{t('profile.linkedin')}</span>
             </a>
             <a
               href={user.portfolio}
@@ -140,7 +143,7 @@ export default function Profile() {
               className="flex items-center justify-center sm:justify-start px-3 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 hover:shadow-lg hover:scale-110 transition"
             >
               <Globe className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              <span className="text-sm sm:text-base">Portfolio</span>
+              <span className="text-sm sm:text-base">{t('profile.portfolio')}</span>
             </a>
           </div>
         </div>
