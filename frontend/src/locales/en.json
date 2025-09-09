@@ -85,7 +85,8 @@
           "subheading": "Secure your account and add final details"
         }
       },
-      "fields": {
+        "fields": {
+        "fullName": "Full Name",
         "email": "Email Address",
         "phone": "Phone Number",
         "dateOfBirth": "Date of Birth",
@@ -509,13 +510,255 @@
       "recentActivity": "Recent Activity"
     },
     "profile": {
-      "title": "My Profile",
+      "title": "👤 My Profile",
       "personalInfo": "Personal Information",
       "education": "Education",
-      "skills": "Skills",
+      "skills": "💡 Skills",
+      "skillsEmpty": "No skills added yet",
       "experience": "Experience",
       "preferences": "Preferences",
-      "updateProfile": "Update Profile"
+      "updateProfile": "Update Profile",
+      "editButton": "Edit",
+      "resume": "📄 Resume",
+      "uploadResume": "Upload Resume",
+      "resumeUploaded": "Uploaded ✅",
+      "noResumeUploaded": "No resume uploaded",
+      "socialLinks": "🌐 Social Links",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "portfolio": "Portfolio",
+      "contactInfo": "Contact Information",
+      "email": "Email",
+      "phone": "Phone",
+      "location": "Location",
+      "college": "College",
+      "course": "Course",
+      "year": "Year"
+    },
+    "applications": {
+      "title": "📑 My Applications",
+      "noApplications": "No applications submitted yet.",
+      "status": {
+        "pending": "Pending",
+        "underReview": "Under Review",
+        "accepted": "Accepted",
+        "rejected": "Rejected",
+        "withdrawn": "Withdrawn"
+      },
+      "appliedOn": "📅 Applied on:",
+      "lastUpdate": "Last Update",
+      "viewDetails": "View Details",
+      "viewDetailsShort": "Details",
+      "company": "Company",
+      "position": "Position"
+    },
+    "applyForm": {
+      "title": "Internship Application (ID: {{id}})",
+      "fullName": "Full Name",
+      "email": "Email",
+      "resumeLink": "Resume (Link)",
+      "coverLetter": "Cover Letter",
+      "submitApplication": "Submit Application",
+      "applicationSubmitted": "Application submitted for Internship ID: {{id}}"
+    },
+    "notifications": {
+      "title": "🔔 Notifications",
+      "markAllRead": "Mark all as read",
+      "noNotifications": "No new notifications 📭",
+      "newRecommendation": "New internship recommendation",
+      "applicationUpdate": "Application status updated",
+      "deadlineReminder": "Application deadline reminder",
+      "types": {
+        "info": "Information",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error"
+      },
+      "timeAgo": {
+        "hoursAgo": "{{count}} hours ago",
+        "daysAgo": "{{count}} days ago",
+        "weeksAgo": "{{count}} weeks ago"
+      }
+    },
+    "recommendations": {
+      "title": "🧠 AI-Powered Recommendations",
+      "subtitle": "Personalized internship suggestions based on your profile and preferences",
+      "refreshAI": "Refresh AI",
+      "refreshing": "Refreshing...",
+      "stats": {
+        "aiMatchAccuracy": "AI Match Accuracy",
+        "totalMatches": "Total Matches",
+        "successRate": "Success Rate"
+      },
+      "filterByCategory": "Filter by Category",
+      "filters": {
+        "all": "All Recommendations",
+        "government": "Government",
+        "socialImpact": "Social Impact",
+        "education": "Education",
+        "healthcare": "Healthcare",
+        "environment": "Environment"
+      },
+      "internshipDetails": {
+        "company": "Company",
+        "location": "Location",
+        "type": "Type",
+        "duration": "Duration",
+        "stipend": "Stipend",
+        "match": "Match",
+        "description": "Description",
+        "skills": "Skills",
+        "category": "Category",
+        "months": "Months",
+        "remote": "Remote"
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "apply": "Apply Now",
+        "bookmark": "Bookmark",
+        "share": "Share"
+      }
+    },
+    "requiredSkills": {
+      "title": "📖 Required Skills to Learn",
+      "subtitle": "Master the skills needed for your dream internship in the PM Internship Scheme",
+      "stats": {
+        "totalSkills": "Total Skills",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "highPriority": "High Priority"
+      },
+      "searchSkills": "Search skills...",
+      "filterByCategory": "Filter by Category",
+      "filterByLevel": "Filter by Level",
+      "sortBy": "Sort by",
+      "categories": {
+        "allSkills": "All Skills",
+        "digitalSkills": "Digital Skills",
+        "softSkills": "Soft Skills",
+        "programming": "Programming",
+        "frontend": "Frontend",
+        "database": "Database",
+        "management": "Management",
+        "analytics": "Analytics",
+        "tools": "Tools"
+      },
+      "levels": {
+        "allLevels": "All Levels",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+      },
+      "sortOptions": {
+        "importance": "Priority",
+        "progress": "Progress",
+        "demand": "Market Demand",
+        "name": "Name"
+      },
+      "skillCard": {
+        "importance": "Importance",
+        "level": "Level",
+        "progress": "Progress",
+        "estimatedTime": "Estimated Time",
+        "demand": "Market Demand",
+        "relatedInternships": "Related Internships",
+        "avgSalary": "Avg Salary",
+        "resources": "Resources",
+        "startLearning": "Start Learning",
+        "continueProgress": "Continue Progress",
+        "viewResources": "View Resources"
+      },
+      "importanceLevels": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "demandLevels": {
+        "veryHigh": "Very High",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      }
+    },
+    "resumeUpload": {
+      "title": "📤 Resume Upload & ATS Compatibility",
+      "subtitle": "Upload your resume and get instant ATS compatibility analysis",
+      "stats": {
+        "resumesUploaded": "Resumes Uploaded",
+        "bestATSScore": "Best ATS Score",
+        "improvementsMade": "Improvements Made",
+        "applicationsSent": "Applications Sent"
+      },
+      "uploadSection": {
+        "title": "Upload Your Resume",
+        "dragDropText": "Drag and drop your resume here, or click to select",
+        "supportedFormats": "Supported formats: PDF, DOC, DOCX",
+        "maxSize": "Maximum size: 5MB",
+        "preview": "Preview",
+        "reUpload": "Upload New Resume",
+        "analyzing": "Analyzing your resume...",
+        "analysisComplete": "Analysis Complete!"
+      },
+      "atsAnalysis": {
+        "title": "ATS Compatibility Analysis",
+        "overallScore": "Overall ATS Score",
+        "sections": {
+          "contactInformation": "Contact Information",
+          "professionalSummary": "Professional Summary",
+          "workExperience": "Work Experience",
+          "education": "Education",
+          "skills": "Skills",
+          "keywordsMatch": "Keywords Match",
+          "formatting": "Formatting",
+          "length": "Length"
+        },
+        "status": {
+          "excellent": "Excellent",
+          "good": "Good",
+          "needsImprovement": "Needs Improvement"
+        },
+        "suggestions": "Improvement Suggestions",
+        "improvements": "Quick Improvements",
+        "downloadReport": "Download Report",
+        "shareResults": "Share Results"
+      }
+    },
+    "settings": {
+      "title": "⚙️ Settings",
+      "tabs": {
+        "account": "Account",
+        "preferences": "Preferences",
+        "notifications": "Notifications",
+        "security": "Security"
+      },
+      "account": {
+        "title": "👤 Account Settings",
+        "fullName": "Full Name",
+        "email": "Email"
+      },
+      "preferences": {
+        "title": "🌍 Preferences",
+        "language": "Language",
+        "darkMode": "Enable Dark Mode",
+        "languages": {
+          "english": "English",
+          "hindi": "Hindi",
+          "bengali": "Bengali",
+          "marathi": "Marathi",
+          "telugu": "Telugu"
+        }
+      },
+      "notifications": {
+        "title": "🔔 Notifications",
+        "emailNotifications": "Enable Email Notifications"
+      },
+      "security": {
+        "title": "🔒 Security",
+        "newPassword": "New Password",
+        "newPasswordPlaceholder": "Enter new password"
+      },
+      "saveChanges": "💾 Save Changes",
+      "settingsSaved": "✅ Settings saved successfully!"
     },
     "internships": {
       "recommended": "Recommended Internships",
@@ -539,26 +782,6 @@
       "skillGap": "Skill Gap Analysis",
       "learnSkill": "Learn This Skill",
       "addSkill": "Add Skill"
-    },
-    "applications": {
-      "title": "My Applications",
-      "status": {
-        "pending": "Pending",
-        "reviewed": "Under Review",
-        "accepted": "Accepted",
-        "rejected": "Rejected",
-        "withdrawn": "Withdrawn"
-      },
-      "appliedOn": "Applied On",
-      "lastUpdate": "Last Update",
-      "viewApplication": "View Application"
-    },
-    "notifications": {
-      "title": "Notifications",
-      "markAllRead": "Mark All as Read",
-      "newRecommendation": "New internship recommendation",
-      "applicationUpdate": "Application status updated",
-      "deadlineReminder": "Application deadline reminder"
     },
     "chatbot": {
       "title": "AI Assistant",
@@ -596,5 +819,11 @@
     "somethingWentWrong": "Something went wrong",
     "networkError": "Network error. Please check your connection.",
     "validationError": "Please check your input and try again"
+  },
+  "time": {
+    "hoursAgo": "{{hours}} hours ago",
+    "daysAgo": "{{days}} days ago",
+    "weeksAgo": "{{weeks}} weeks ago",
+    "monthsAgo": "{{months}} months ago"
   }
 }

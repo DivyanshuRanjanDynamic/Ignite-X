@@ -8,9 +8,14 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import VerificationSuccess from "./pages/VerificationSuccess";
+import ResetPassword from "./pages/ResetPassword";
+import OAuthSuccess from "./pages/OAuthSuccess";
 import StudentDashboard from "./pages/StudentDashboard";
 import InternshipList from "./pages/InternshipList";
 import InternshipDetail from "./pages/InternshipDetail";
+import { StudentProtectedRoute, AdminProtectedRoute } from "./components/ProtectedRoute";
 
 // Admin components
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -58,9 +63,13 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/verification-success" element={<VerificationSuccess />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/oauth-success" element={<OAuthSuccess />} />
 
-                  {/* Student Dashboard Layout with Nested Pages */}
-            <Route path="/student-dashboard" element={<StudentDashboard />}>
+                  {/* Student Dashboard Layout with Nested Pages - Protected */}
+            <Route path="/student-dashboard" element={<StudentProtectedRoute><StudentDashboard /></StudentProtectedRoute>}>
               <Route index element={<RecommendedInternships />} />
               <Route path="recommended-internships" element={<RecommendedInternships />} />
               <Route path="applied-internships" element={<AppliedInternships />} />
@@ -74,8 +83,8 @@ function App() {
               <Route path="progress" element={<StudentProgress />} />
             </Route>
 
-      {/* Admin Dashboard with nested routes */}
-      <Route path="/admin" element={<AdminLayout />}>
+      {/* Admin Dashboard with nested routes - Protected */}
+      <Route path="/admin" element={<AdminProtectedRoute><AdminLayout /></AdminProtectedRoute>}>
         <Route index element={<SimpleOverview />} />
         <Route path="overview" element={<SimpleOverview />} />
         <Route path="internship-data" element={<InternshipData />} />

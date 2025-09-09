@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useStudentTranslation } from '../../hooks/useTranslation.jsx';
 
 export default function RecommendedInternships() {
+  const { t } = useStudentTranslation();
   const navigate = useNavigate();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -138,10 +139,10 @@ export default function RecommendedInternships() {
           <div className="flex-1">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
               <Brain className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600" />
-              <span className="break-words">Recommended Internships</span>
+              <span className="break-words">{t('recommendations.title')}</span>
             </h1>
             <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
-              AI-powered internship suggestions based on your profile and preferences
+              {t('recommendations.subtitle')}
             </p>
           </div>
           <button
@@ -150,8 +151,8 @@ export default function RecommendedInternships() {
             className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition disabled:opacity-50 text-sm sm:text-base min-w-[120px] sm:min-w-[140px]"
           >
             <RefreshCw className={`w-4 h-4 mr-1 sm:mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">Refresh AI</span>
-            <span className="sm:hidden">Refresh</span>
+            <span className="hidden sm:inline">{t('recommendations.refreshAI')}</span>
+            <span className="sm:hidden">{t('recommendations.refreshAI')}</span>
           </button>
         </div>
 
@@ -160,7 +161,7 @@ export default function RecommendedInternships() {
           <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-xs sm:text-sm">AI Match Accuracy</p>
+                <p className="text-blue-100 text-xs sm:text-sm">{t('recommendations.stats.aiMatchAccuracy')}</p>
                 <p className="text-xl sm:text-2xl font-bold">95%</p>
               </div>
               <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-blue-200" />
@@ -169,7 +170,7 @@ export default function RecommendedInternships() {
           <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100 text-xs sm:text-sm">Total Matches</p>
+                <p className="text-green-100 text-xs sm:text-sm">{t('recommendations.stats.totalMatches')}</p>
                 <p className="text-xl sm:text-2xl font-bold">{recommendations.length}</p>
               </div>
               <Users className="w-6 h-6 sm:w-8 sm:h-8 text-green-200" />
@@ -178,7 +179,7 @@ export default function RecommendedInternships() {
           <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl sm:rounded-2xl p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 text-xs sm:text-sm">Success Rate</p>
+                <p className="text-purple-100 text-xs sm:text-sm">{t('recommendations.stats.successRate')}</p>
                 <p className="text-xl sm:text-2xl font-bold">87%</p>
               </div>
               <Award className="w-6 h-6 sm:w-8 sm:h-8 text-purple-200" />
@@ -196,7 +197,7 @@ export default function RecommendedInternships() {
       >
         <div className="flex items-center mb-3 sm:mb-4">
           <Filter className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-gray-600" />
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900">Filter by Category</h3>
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900">{t('recommendations.filterByCategory')}</h3>
         </div>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           {filters.map((filter) => (

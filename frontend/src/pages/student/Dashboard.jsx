@@ -7,10 +7,12 @@ import {
   TrendingUp, MapPin, Star, ArrowRight, RefreshCw 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useStudentTranslation } from '../../hooks/useTranslation';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, tCommon } = useStudentTranslation();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Scroll to top when component mounts
@@ -120,7 +122,7 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-              Welcome back, {userStats.name}! 👋
+              {t('dashboard.welcome', { name: userStats.name })} 👋
             </h1>
             <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
               Your AI-powered internship journey dashboard

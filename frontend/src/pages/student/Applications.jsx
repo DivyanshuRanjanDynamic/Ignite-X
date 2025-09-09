@@ -1,8 +1,11 @@
 // src/pages/student/Applications.jsx
 import { useEffect } from "react";
 import { FileText, Clock, CheckCircle, XCircle } from "lucide-react";
+import { useStudentTranslation } from "../../hooks/useTranslation";
 
 export default function Applications() {
+  const { t } = useStudentTranslation();
+  
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -45,6 +48,19 @@ export default function Applications() {
     }
   };
 
+  const getStatusTranslation = (status) => {
+    switch (status) {
+      case "Accepted":
+        return t('applications.status.accepted');
+      case "Rejected":
+        return t('applications.status.rejected');
+      case "Under Review":
+        return t('applications.status.underReview');
+      default:
+        return status;
+    }
+  };
+
   const getStatusIcon = (status) => {
     switch (status) {
       case "Accepted":
@@ -60,10 +76,10 @@ export default function Applications() {
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8">
-      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-blue-800">📑 My Applications</h2>
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-blue-800">{t('applications.title')}</h2>
 
       {applications.length === 0 ? (
-        <p className="text-sm sm:text-base text-gray-600 text-center py-8">No applications submitted yet.</p>
+        <p className="text-sm sm:text-base text-gray-600 text-center py-8">{t('applications.noApplications')}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {applications.map((app) => (
@@ -82,18 +98,18 @@ export default function Applications() {
                 )}`}
               >
                 {getStatusIcon(app.status)}
-                {app.status}
+                {getStatusTranslation(app.status)}
               </div>
 
               {/* Date */}
               <p className="text-gray-600 text-xs sm:text-sm mt-3">
-                📅 Applied on: <span className="font-medium">{app.date}</span>
+                {t('applications.appliedOn')} <span className="font-medium">{app.date}</span>
               </p>
 
               {/* View Details Button */}
               <button className="mt-4 w-full bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium shadow hover:bg-blue-700 hover:shadow-lg hover:scale-105 transition duration-300">
-                <span className="hidden sm:inline">View Details</span>
-                <span className="sm:hidden">Details</span>
+                <span className="hidden sm:inline">{t('applications.viewDetails')}</span>
+                <span className="sm:hidden">{t('applications.viewDetailsShort')}</span>
               </button>
             </div>
           ))}

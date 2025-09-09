@@ -47,7 +47,190 @@
       "forgotPassword": "पासवर्ड विसरलात?",
       "signIn": "साइन इन",
       "signingIn": "साइन इन करत आहे...",
-      "signInAs": "{{userType}} म्हणून साइन इन करा"
+      "signInAs": "{{userType}} म्हणून साइन इन करा",
+      "orContinueWith": "किंवा याच्यासह चालू ठेवा",
+      "google": "Google",
+      "github": "GitHub",
+      "noAccount": "खाते नाही?",
+      "createAccount": "येथे तयार करा"
+    },
+    "register": {
+      "title": "PM इंटर्नशिप AI मध्ये सामील व्हा",
+      "subtitle": "AI द्वारे चालविलेल्या वैयक्तिक इंटर्नशिप शिफारसी मिळवण्यासाठी तुमचे प्रोफाईल तयार करा",
+      "fullName": "पूर्ण नाव",
+      "confirmPassword": "पासवर्डची पुष्टी करा",
+      "steps": {
+        "basicInfo": {
+          "title": "वैयक्तिक तपशील",
+          "description": "मूलभूत माहिती",
+          "heading": "सुरुवात करूया!",
+          "subheading": "तुमचे वैयक्तिक प्रोफाईल तयार करण्यासाठी आमच्याशी शेअर करा"
+        },
+        "educationSkills": {
+          "title": "शिक्षण आणि कौशल्ये",
+          "description": "शैक्षणिक आणि क्षमता",
+          "heading": "शिक्षण आणि कौशल्य प्रोफाईल",
+          "subheading": "तुमची शैक्षणिक पार्श्वभूमी आणि कौशल्य संच समजून घेण्यासाठी आम्हाला मदत करा"
+        },
+        "locationInterests": {
+          "title": "स्थान आणि पसंती",
+          "description": "कारकिर्दी पसंती",
+          "heading": "स्थान आणि कारकिर्दी पसंती",
+          "subheading": "चांगल्या मॅचेससाठी तुमचे स्थान आणि कारकिर्दीचे आवड शेअर करा"
+        },
+        "security": {
+          "title": "प्रोफाईल पूर्ण करा",
+          "description": "अंतिम सेटअप",
+          "heading": "तुमचे प्रोफाईल पूर्ण करा",
+          "subheading": "तुमचे खाते सुरक्षित करा आणि अंतिम तपशील जोडा"
+        }
+      },
+      "fields": {
+        "fullName": "पूर्ण नाव",
+        "email": "ईमेल पत्ता",
+        "phone": "फोन नंबर",
+        "dateOfBirth": "जन्म तारीख",
+        "gender": "लिंग",
+        "password": "पासवर्ड",
+        "education": "शिक्षणाची पातळी",
+        "degree": "पदवी/कोर्स",
+        "institution": "संस्था/महाविद्यालय",
+        "graduationYear": "पदवी वर्ष",
+        "domain": "पसंतीचे क्षेत्र",
+        "skills": "तुमची कौशल्ये",
+        "experience": "अनुभवाची पातळी",
+        "state": "राज्य",
+        "city": "शहर",
+        "interests": "कारकिर्दी आवड",
+        "workPreference": "कामाची पसंती",
+        "resume": "बायोडेटा अपलोड करा",
+        "profilePhoto": "प्रोफाईल फोटो"
+      },
+      "placeholders": {
+        "fullName": "तुमचे पूर्ण नाव टाका",
+        "email": "your.email@example.com",
+        "phone": "+91 98765 43210",
+        "password": "मजबूत पासवर्ड तयार करा (8+ अक्षरे)",
+        "confirmPassword": "तुमच्या पासवर्डची पुष्टी करा",
+        "degree": "उदा. इंजिनिअरिंग बॅचलर, MBA इ.",
+        "institution": "तुमच्या कॉलेज/विद्यापीठाचे नाव टाका",
+        "interests": "तुमची कारकिर्दी उद्दिष्टे आणि आवडी बद्दल सांगा..."
+      },
+      "buttons": {
+        "continue": "चालू ठेवा",
+        "back": "मागे",
+        "previous": "मागील",
+        "next": "पुढे",
+        "completeRegistration": "नोंदणी पूर्ण करा",
+        "creatingAccount": "खाते तयार करत आहे...",
+        "skipForNow": "सध्या वगळा"
+      },
+      "validation": {
+        "passwordMismatch": "पासवर्ड जुळत नाहीत!",
+        "invalidEmail": "कृपया वैध ईमेल पत्ता टाका",
+        "invalidPhone": "कृपया वैध फोन नंबर टाका",
+        "requiredField": "हे फील्ड आवश्यक आहे",
+        "passwordTooShort": "पासवर्ड कमीत कमी 8 अक्षरांचा असावा",
+        "selectAtLeastOne": "कृपया कमीत कमी एक पर्याय निवडा"
+      }
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "तुमचा परफेक्ट",
+      "titleHighlight": "PM इंटर्नशिप",
+      "titleEnd": "मॅच शोधा",
+      "subtitle": "आमचे AI शिफारस इंजिन ग्रामीण भाग, आदिवासी जिल्हे आणि दूरच्या कॉलेजेतील विद्यार्थ्यांना त्यांच्या कौशल्यांवर, स्थानावर आणि आकांक्षांवर आधारित सर्वात योग्य इंटर्नशिप शोधण्यात मदत करते. आता अधिक अंतहीन शोध नाही!",
+      "getStarted": "मोफत सुरू करा",
+      "seeHowItWorks": "हे कसे काम करते पहा",
+      "benefits": {
+        "personalizedRecommendations": "3-5 वैयक्तिक शिफारसी",
+        "mobileCompatible": "मोबाईल डिव्हाइसेसवर काम करते",
+        "userFriendly": "सोपा, वापरकर्ता-अनुकूल इंटरफेस"
+      }
+    },
+    "stats": {
+      "studentsHelped": "मदत केलेले विद्यार्थी",
+      "internshipsAvailable": "उपलब्ध इंटर्नशिप",
+      "matchAccuracy": "मॅच अचूकता",
+      "statesCovered": "कव्हर केलेली राज्ये"
+    },
+    "features": {
+      "title": "आमचे प्लॅटफॉर्म का निवडावे?",
+      "aiMatching": {
+        "title": "AI-पावर्ड मॅचिंग",
+        "description": "आमचे हुशार अल्गोरिदम तुमची कौशल्ये, स्थान आणि पसंती विश्लेषित करून शेकडो उपलब्ध संधींतून सर्वात संबंधित इंटर्नशिप सुचवते."
+      },
+      "systemIntegration": {
+        "title": "सिस्टम एकीकरण",
+        "description": "सरकारी पोर्टल, शैक्षणिक संस्था आणि करकीर्द प्लॅटफॉर्मसह सहजपणे एकत्रीकरण करते, गुळगुळीत डेटा सिंक्रोनाइझेशन आणि अर्ज ट्रॅकिंग सुनिश्चित करते."
+      },
+      "realTimeAnalytics": {
+        "title": "रिअल-टाइम अॅनालिटिक्स",
+        "description": "कधीही अद्ययावत इंटर्नशिप डेटा, अर्ज आकडेवारी आणि यश दरांमध्ये प्रवेश मिळवा, माहितीपूर्ण करकीर्द निर्णयांसाठी आवश्यक अंतर्दृष्टी देते."
+      },
+      "highLevelSecurity": {
+        "title": "उच्च-स्तरीय सुरक्षा",
+        "description": "तुमचा वैयक्तिक डेटा आणि अर्ज माहिती नवीनतम तंत्रज्ञान वापरून एनक्रिप्ट केली जाते, तुमच्या संपूर्ण इंटर्नशिप प्रवासात गोपनीयता आणि सुरक्षा सुनिश्चित करते."
+      }
+    },
+    "internships": {
+      "featured": "फीचर्ड इंटर्नशिप",
+      "viewAll": "सर्व इंटर्नशिप पहा",
+      "match": "मॅच",
+      "matchBadges": {
+        "excellent": "उत्कृष्ट मॅच",
+        "good": "चांगला मॅच",
+        "fair": "ठीक मॅच"
+      },
+      "details": {
+        "location": "स्थान",
+        "duration": "कालावधी",
+        "stipend": "वेतन",
+        "category": "श्रेणी",
+        "skills": "कौशल्ये",
+        "description": "वर्णन",
+        "remote": "रिमोट",
+        "months": "महिने"
+      },
+      "categories": {
+        "government": "सरकारी",
+        "socialImpact": "सामाजिक प्रभाव",
+        "education": "शिक्षण",
+        "technology": "तंत्रज्ञान"
+      },
+      "apply": "आता अर्ज करा",
+      "learnMore": "अधिक जाणून घ्या"
+    },
+    "cta": {
+      "getStarted": "सुरू करा",
+      "signIn": "साइन इन"
+    },
+    "footer": {
+      "description": "PM इंटर्नशिप योजनेसाठी AI-पावर्ड इंटर्नशिप शिफारस इंजिन, भारतभरातील विद्यार्थ्यांना त्यांच्या परफेक्ट करकीर्द संधी शोधण्यात मदत करते.",
+      "platform": {
+        "title": "प्लॅटफॉर्म",
+        "howItWorks": "हे कसे काम करते",
+        "features": "वैशिष्ट्ये",
+        "successStories": "यश गोष्टी",
+        "helpCenter": "मदत केंद्र"
+      },
+      "support": {
+        "title": "समर्थन",
+        "helpCenter": "मदत केंद्र",
+        "contactUs": "आम्हाशी संपर्क साधा",
+        "languageSupport": "प्रादेशिक भाषा समर्थन",
+        "faq": "वारंवार विचारले जाणारे प्रश्न"
+      },
+      "legal": {
+        "title": "कायदेशीर",
+        "privacyPolicy": "गोपनीयता धोरण",
+        "termsOfService": "सेवा अटी",
+        "cookiePolicy": "कुकी धोरण",
+        "accessibility": "प्रवेशयोग्यता"
+      },
+      "copyright": "© {{year}} इग्नाईट-X AI शिफारस इंजिन. सर्व हक्क राखीव.",
+      "tagline": "PM इंटर्नशिप योजनेसाठी डिझाइन केले - भारतभरात संधी जोडणे"
     }
   },
   "student": {
@@ -56,15 +239,96 @@
       "quickStats": "द्रुत आकडेवारी",
       "applications": "अर्ज",
       "recommendations": "शिफारसी",
-      "profile": "प्रोफाईल पूर्णता"
+      "profile": "प्रोफाईल पूर्णता",
+      "recentActivity": "अलीकडील क्रियाकलाप"
+    },
+    "profile": {
+      "title": "माझे प्रोफाईल",
+      "personalInfo": "वैयक्तिक माहिती",
+      "education": "शिक्षण",
+      "skills": "कौशल्ये",
+      "experience": "अनुभव",
+      "preferences": "पसंती",
+      "updateProfile": "प्रोफाईल अपडेट करा"
     },
     "internships": {
       "recommended": "शिफारस केलेले इंटर्नशिप",
       "applied": "अर्ज केलेले इंटर्नशिप",
+      "saved": "जतन केलेले इंटर्नशिप",
       "viewDetails": "तपशील पहा",
       "apply": "अर्ज करा",
+      "alreadyApplied": "आधीच अर्ज केला आहे",
+      "deadline": "शेवटची तारीख",
+      "location": "स्थान",
+      "duration": "कालावधी",
+      "stipend": "वेतन",
       "company": "कंपनी",
-      "location": "स्थान"
+      "requirements": "आवश्यकता",
+      "description": "वर्णन"
+    },
+    "skills": {
+      "title": "आवश्यक कौशल्ये",
+      "yourSkills": "तुमची कौशल्ये",
+      "recommendedSkills": "शिफारस केलेली कौशल्ये",
+      "skillGap": "कौशल्य अंतर विश्लेषण",
+      "learnSkill": "हे कौशल्य शिका",
+      "addSkill": "कौशल्य जोडा"
+    },
+    "applications": {
+      "title": "माझे अर्ज",
+      "status": {
+        "pending": "प्रलंबित",
+        "reviewed": "पुनरावलोकनाधीन",
+        "accepted": "स्वीकारले",
+        "rejected": "नाकारले",
+        "withdrawn": "मागे घेतले"
+      },
+      "appliedOn": "अर्जाची तारीख",
+      "lastUpdate": "शेवटचे अपडेट",
+      "viewApplication": "अर्ज पहा"
+    },
+    "notifications": {
+      "title": "सूचना",
+      "markAllRead": "सर्व वाचले म्हणून मार्क करा",
+      "newRecommendation": "नवीन इंटर्नशिप शिफारस",
+      "applicationUpdate": "अर्ज स्थिती अपडेट",
+      "deadlineReminder": "अर्जाच्या शेवटच्या तारखेची आठवण"
+    },
+    "chatbot": {
+      "title": "AI असिस्टंट",
+      "placeholder": "इंटर्नशिपबद्दल काहीही विचारा...",
+      "send": "पाठवा",
+      "typing": "AI टाइप करत आहे...",
+      "welcome": "नमस्कार! मी तुमचा AI असिस्टंट आहे. आज तुमच्या इंटर्नशिप शोधात मी कशी मदत करू शकते?"
     }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "अॅडमिन डॅशबोर्ड",
+      "overview": "विहंगावलोकन",
+      "totalStudents": "एकूण विद्यार्थी",
+      "totalInternships": "एकूण इंटर्नशिप",
+      "activeApplications": "सक्रिय अर्ज",
+      "successRate": "यश दर"
+    },
+    "internships": {
+      "title": "इंटर्नशिप व्यवस्थापन",
+      "addInternship": "नवीन इंटर्नशिप जोडा",
+      "editInternship": "इंटर्नशिप संपादित करा",
+      "deleteInternship": "इंटर्नशिप हटवा"
+    },
+    "users": {
+      "title": "वापरकर्ता व्यवस्थापन",
+      "students": "विद्यार्थी",
+      "admins": "प्रशासक",
+      "addUser": "वापरकर्ता जोडा",
+      "editUser": "वापरकर्ता संपादित करा"
+    }
+  },
+  "errors": {
+    "pageNotFound": "पेज सापडले नाही",
+    "somethingWentWrong": "काहीतरी चूक झाली",
+    "networkError": "नेटवर्क त्रुटी. कृपया तुमचे कनेक्शन तपासा.",
+    "validationError": "कृपया तुमचे इनपुट तपासा आणि पुन्हा प्रयत्न करा"
   }
 }

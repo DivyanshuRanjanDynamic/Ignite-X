@@ -67,6 +67,18 @@ function Register() {
     return strength;
   };
 
+  const getPasswordStrengthText = (strength) => {
+    switch (strength) {
+      case 0:
+      case 1: return { text: 'Very Weak', color: 'text-red-500' };
+      case 2: return { text: 'Weak', color: 'text-orange-500' };
+      case 3: return { text: 'Fair', color: 'text-yellow-500' };
+      case 4: return { text: 'Good', color: 'text-blue-500' };
+      case 5: return { text: 'Strong', color: 'text-green-500' };
+      default: return { text: 'Very Weak', color: 'text-red-500' };
+    }
+  };
+
   const validateStep = (stepNumber) => {
     const newErrors = {};
     
@@ -135,28 +147,44 @@ function Register() {
     }
     
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log("User Data:", formData);
-      
-      // Set authentication state in localStorage
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userType', 'student');
-      localStorage.setItem('userName', formData.name || formData.email.split('@')[0]);
-      
-      // Dispatch custom event to notify navbar of auth change
-      window.dispatchEvent(new CustomEvent('authStateChanged', {
-        detail: { 
-          isAuthenticated: true, 
-          userType: 'student', 
-          userName: formData.name || formData.email.split('@')[0] 
+    try {
+      // Build payload compatible with backend
+      const payload = { ...formData };
+
+      // Normalize gender to backend enum to avoid 422 validation errors
+      if (payload.gender) {
+        const gv = String(payload.gender).trim().toLowerCase();
+        if (gv === 'male') payload.gender = 'MALE';
+        else if (gv === 'female') payload.gender = 'FEMALE';
+        else if (gv === 'other') payload.gender = 'OTHER';
+        else if (['prefernottosay','prefer_not_to_say','prefer-not-to-say','prefer not to say'].includes(gv)) {
+          payload.gender = 'PREFER_NOT_TO_SAY';
+        } else {
+          // If it's an unexpected value, omit it so backend treats as optional
+          delete payload.gender;
         }
-      }));
-      
+      }
+
+      // Ensure interests/skills are arrays of strings
+      payload.skills = Array.isArray(formData.skills) ? formData.skills : [];
+      payload.interests = Array.isArray(formData.interests) ? formData.interests : [];
+
+      // Send to backend
+      const res = await import('../api/auth.js').then(m => m.registerStudent(payload));
+
+      // After successful registration, DO NOT auto-login. Ask user to verify email.
+      const email = formData.email;
+      alert('Registration successful! Please check your email for a verification link or code.');
+      window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
+    } catch (err) {
+      console.error('Registration failed', err);
+      const details = err?.response?.data?.error?.details;
+      const firstDetail = Array.isArray(details) && details.length ? `${details[0].field}: ${details[0].message}` : null;
+      const message = firstDetail || err?.response?.data?.error?.message || 'Registration failed. Please check your details and try again.';
+      alert(message);
+    } finally {
       setIsLoading(false);
-      // Navigate to dashboard
-      window.location.href = "/student-dashboard";
-    }, 2000);
+    }
   };
 
   const stepTitles = [
@@ -998,33 +1026,86 @@ function Register() {
                         🔑 Secure Your Account
                       </h3>
                       <div className="space-y-4">
+                        {/* Password field with show/hide and strength */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Password
                           </label>
-                          <input
-                            type="password"
-                            name="password"
-                            placeholder="Create a strong password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                            required
-                          />
+                          <div className="relative">
+                            <input
+                              type={showPassword ? 'text' : 'password'}
+                              name="password"
+                              placeholder="Create a strong password"
+                              value={formData.password}
+                              onChange={handleChange}
+                              className="w-full p-4 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                              required
+                            />
+                            <button
+                              type="button"
+                              aria-label={showPassword ? 'Hide password' : 'Show password'}
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+
+                          {/* Strength Indicator */}
+                          {formData.password && (
+                            <div className="mt-2">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-gray-500">Password Strength:</span>
+                                <span className={getPasswordStrengthText(getPasswordStrength(formData.password)).color}>
+                                  {getPasswordStrengthText(getPasswordStrength(formData.password)).text}
+                                </span>
+                              </div>
+                              <div className="flex space-x-1 mt-1">
+                                {[1,2,3,4,5].map((level) => (
+                                  <div
+                                    key={level}
+                                    className={`h-1 flex-1 rounded-full ${
+                                      getPasswordStrength(formData.password) >= level
+                                        ? level <= 2 ? 'bg-red-400' : level <= 3 ? 'bg-yellow-400' : 'bg-green-400'
+                                        : 'bg-gray-200'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                              <p className="text-xs text-gray-500 mt-1">Use at least 8 characters. Adding upper/lowercase, numbers and symbols makes it stronger.</p>
+                            </div>
+                          )}
                         </div>
+
+                        {/* Confirm Password with show/hide */}
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Confirm Password
                           </label>
-                          <input
-                            type="password"
-                            name="confirmPassword"
-                            placeholder="Confirm your password"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                            required
-                          />
+                          <div className="relative">
+                            <input
+                              type={showConfirmPassword ? 'text' : 'password'}
+                              name="confirmPassword"
+                              placeholder="Confirm your password"
+                              value={formData.confirmPassword}
+                              onChange={handleChange}
+                              className="w-full p-4 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                              required
+                            />
+                            <button
+                              type="button"
+                              aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                              {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                          {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                            <p className="mt-1 text-sm text-red-500 flex items-center">
+                              <X className="w-4 h-4 mr-1" /> Passwords do not match
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

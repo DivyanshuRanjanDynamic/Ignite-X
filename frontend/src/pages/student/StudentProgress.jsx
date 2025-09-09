@@ -1,8 +1,10 @@
 // src/pages/student/StudentSettings.jsx
 import { useState } from "react";
 import { User, Lock, Bell, Globe, Save } from "lucide-react";
+import { useStudentTranslation } from "../../hooks/useTranslation";
 
 export default function Settings() {
+  const { t } = useStudentTranslation();
   const [activeTab, setActiveTab] = useState("account");
 
   const [settings, setSettings] = useState({
@@ -23,22 +25,22 @@ export default function Settings() {
   };
 
   const handleSave = () => {
-    alert("✅ Settings saved successfully!");
+    alert(t('settings.settingsSaved'));
   };
 
   return (
     <div className="max-w-4xl mx-auto p-8">
       <h2 className="text-3xl font-bold text-blue-800 mb-8 text-center">
-        ⚙️ Settings
+        {t('settings.title')}
       </h2>
 
       {/* Tabs */}
       <div className="flex justify-center space-x-4 border-b pb-3 mb-8">
         {[
-          { key: "account", label: "Account" },
-          { key: "preferences", label: "Preferences" },
-          { key: "notifications", label: "Notifications" },
-          { key: "security", label: "Security" },
+          { key: "account", label: t('settings.tabs.account') },
+          { key: "preferences", label: t('settings.tabs.preferences') },
+          { key: "notifications", label: t('settings.tabs.notifications') },
+          { key: "security", label: t('settings.tabs.security') },
         ].map((tab) => (
           <button
             key={tab.key}
@@ -59,12 +61,12 @@ export default function Settings() {
         {activeTab === "account" && (
           <div>
             <h3 className="text-lg font-semibold flex items-center text-gray-800 mb-6">
-              <User className="mr-2 text-blue-600" /> Account Settings
+              <User className="mr-2 text-blue-600" /> {t('settings.account.title')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-600">
-                  Full Name
+                  {t('settings.account.fullName')}
                 </label>
                 <input
                   type="text"
@@ -76,7 +78,7 @@ export default function Settings() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-600">
-                  Email
+                  {t('settings.account.email')}
                 </label>
                 <input
                   type="email"
@@ -93,12 +95,12 @@ export default function Settings() {
         {activeTab === "preferences" && (
           <div>
             <h3 className="text-lg font-semibold flex items-center text-gray-800 mb-6">
-              <Globe className="mr-2 text-green-600" /> Preferences
+              <Globe className="mr-2 text-green-600" /> {t('settings.preferences.title')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-600">
-                  Language
+                  {t('settings.preferences.language')}
                 </label>
                 <select
                   name="language"
@@ -106,9 +108,9 @@ export default function Settings() {
                   onChange={handleChange}
                   className="w-full px-4 py-2 mt-2 border rounded-lg focus:ring-2 focus:ring-green-300 shadow-sm"
                 >
-                  <option>English</option>
-                  <option>Hindi</option>
-                  <option>Bengali</option>
+                <option>{t('settings.preferences.languages.english')}</option>
+                  <option>{t('settings.preferences.languages.hindi')}</option>
+                  <option>{t('settings.preferences.languages.bengali')}</option>
                 </select>
               </div>
 
@@ -121,7 +123,7 @@ export default function Settings() {
                   className="w-5 h-5 text-blue-600"
                 />
                 <label className="text-sm text-gray-700 font-medium">
-                  Enable Dark Mode
+                  {t('settings.preferences.darkMode')}
                 </label>
               </div>
             </div>
@@ -131,7 +133,7 @@ export default function Settings() {
         {activeTab === "notifications" && (
           <div>
             <h3 className="text-lg font-semibold flex items-center text-gray-800 mb-6">
-              <Bell className="mr-2 text-yellow-600" /> Notifications
+              <Bell className="mr-2 text-yellow-600" /> {t('settings.notifications.title')}
             </h3>
             <div className="flex items-center space-x-3">
               <input
@@ -142,7 +144,7 @@ export default function Settings() {
                 className="w-5 h-5 text-blue-600"
               />
               <label className="text-sm text-gray-700 font-medium">
-                Enable Email Notifications
+                {t('settings.notifications.emailNotifications')}
               </label>
             </div>
           </div>
@@ -151,18 +153,18 @@ export default function Settings() {
         {activeTab === "security" && (
           <div>
             <h3 className="text-lg font-semibold flex items-center text-gray-800 mb-6">
-              <Lock className="mr-2 text-red-600" /> Security
+              <Lock className="mr-2 text-red-600" /> {t('settings.security.title')}
             </h3>
             <div>
               <label className="block text-sm font-medium text-gray-600">
-                New Password
+                {t('settings.security.newPassword')}
               </label>
               <input
                 type="password"
                 name="password"
                 value={settings.password}
                 onChange={handleChange}
-                placeholder="Enter new password"
+                placeholder={t('settings.security.newPasswordPlaceholder')}
                 className="w-full px-4 py-2 mt-2 border rounded-lg focus:ring-2 focus:ring-red-300 shadow-sm"
               />
             </div>
@@ -176,7 +178,7 @@ export default function Settings() {
           onClick={handleSave}
           className="flex items-center px-6 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition transform"
         >
-          <Save size={18} className="mr-2" /> Save Changes
+          <Save size={18} className="mr-2" /> {t('settings.saveChanges')}
         </button>
       </div>
     </div>

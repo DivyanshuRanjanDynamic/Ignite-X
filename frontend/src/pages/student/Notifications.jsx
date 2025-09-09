@@ -1,8 +1,10 @@
 // src/pages/student/Notifications.jsx
 import { useState } from "react";
 import { Bell, CheckCircle, XCircle, Info, AlertTriangle, Clock, Check } from "lucide-react";
+import { useStudentTranslation } from "../../hooks/useTranslation";
 
 export default function Notifications() {
+  const { t } = useStudentTranslation();
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -59,7 +61,7 @@ export default function Notifications() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-blue-800 flex items-center">
-          <Bell className="mr-2 text-blue-600" /> Notifications
+          <Bell className="mr-2 text-blue-600" /> {t('notifications.title')}
         </h2>
 
         {notifications.some((note) => !note.read) && (
@@ -67,7 +69,7 @@ export default function Notifications() {
             onClick={markAllAsRead}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg shadow hover:bg-blue-700 transition"
           >
-            <Check size={16} /> Mark all as read
+            <Check size={16} /> {t('notifications.markAllRead')}
           </button>
         )}
       </div>
@@ -75,7 +77,7 @@ export default function Notifications() {
       {/* Notifications List */}
       {notifications.length === 0 ? (
         <div className="bg-white p-6 rounded-xl shadow text-center text-gray-600">
-          <p>No new notifications 📭</p>
+          <p>{t('notifications.noNotifications')}</p>
         </div>
       ) : (
         <div className="space-y-4">
