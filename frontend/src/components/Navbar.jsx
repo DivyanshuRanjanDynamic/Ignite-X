@@ -9,6 +9,7 @@ import {
 import { useNavTranslation } from '../hooks/useTranslation.jsx';
 import { useLanguageContext } from '../contexts/LanguageContext';
 import { authToasts } from '../utils/toast.jsx';
+import NavbarFeaturesShowcase from './NavbarFeaturesShowcase';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -254,56 +255,9 @@ function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
-            {/* Features Dropdown - Only show when not authenticated */}
+            {/* Features Showcase - Only show when not authenticated */}
             {!isAuthenticated && (
-              <div className="relative" ref={featuresRef}>
-                <button
-                  onClick={() => setFeaturesOpen(!featuresOpen)}
-                  className="flex items-center gap-1 hover:text-gray-200 transition-colors px-3 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  {t('features')} <ChevronDown size={18} />
-                </button>
-                {featuresOpen && (
-                  <div className="absolute mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 py-2">
-                    <button 
-                      onClick={() => handleFeatureClick('smart-matching')}
-                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                    >
-                      <Brain className="w-4 h-4 mr-3 text-blue-600" />
-                      <div className="text-left">
-                        <div className="font-medium">AI Matching</div>
-                      </div>
-                    </button>
-                    <button 
-                      onClick={() => handleFeatureClick('skill-growth')}
-                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                    >
-                      <BookOpen className="w-4 h-4 mr-3 text-green-600" />
-                      <div className="text-left">
-                        <div className="font-medium">Skills Development</div>
-                      </div>
-                    </button>
-                    <button 
-                      onClick={() => handleFeatureClick('applications')}
-                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors"
-                    >
-                      <FileText className="w-4 h-4 mr-3 text-purple-600" />
-                      <div className="text-left">
-                        <div className="font-medium">Application Tracking</div>
-                      </div>
-                    </button>
-                    <button 
-                      onClick={() => handleFeatureClick('equal-access')}
-                      className="flex items-center w-full px-4 py-3 hover:bg-gray-100 transition-colors rounded-b-lg"
-                    >
-                      <Target className="w-4 h-4 mr-3 text-orange-600" />
-                      <div className="text-left">
-                        <div className="font-medium">Resume Upload</div>
-                      </div>
-                    </button>
-                  </div>
-                )}
-              </div>
+              <NavbarFeaturesShowcase />
             )}
 
             {/* Language Dropdown */}

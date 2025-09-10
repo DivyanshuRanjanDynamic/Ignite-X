@@ -41,6 +41,7 @@ import RecommendedInternships from "./pages/student/RecommendedInternships";
 import AppliedInternships from "./pages/student/AppliedInternships";
 import RequiredSkills from "./pages/student/RequiredSkills";
 import ResumeUpload from "./pages/student/ResumeUpload";
+import FeaturesDemo from "./pages/FeaturesDemo";
 
 // Loading component for Suspense fallback
 const LoadingFallback = () => (
@@ -71,6 +72,7 @@ function App() {
       <Route path="/verification-success" element={<VerificationSuccess />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/oauth-success" element={<OAuthSuccess />} />
+      <Route path="/features-demo" element={<FeaturesDemo />} />
 
                   {/* Student Dashboard Layout with Nested Pages - Protected */}
             <Route path="/student-dashboard" element={<StudentProtectedRoute><StudentDashboard /></StudentProtectedRoute>}>
