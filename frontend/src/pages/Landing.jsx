@@ -12,10 +12,12 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useLandingTranslation } from '../hooks/useTranslation.jsx';
 import Navbar from "../components/Navbar";
+import FeaturesShowcase from "../components/FeaturesShowcase";
 
 export default function LandingPage() {
   const { t, tCommon } = useLandingTranslation();
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [featuresShowcaseOpen, setFeaturesShowcaseOpen] = useState(false);
 
   // Handle scroll to show/hide scroll to top button
   useEffect(() => {
@@ -425,6 +427,54 @@ export default function LandingPage() {
               </motion.div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Interactive Features Showcase Section */}
+      <section className="px-4 sm:px-6 md:px-10 py-16 bg-gradient-to-br from-blue-50 via-white to-orange-50">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: -30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+          >
+            Discover Our Powerful AI Features
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-gray-600 mb-12 max-w-3xl mx-auto text-lg"
+          >
+            Experience the comprehensive suite of AI-powered tools designed to accelerate your internship journey and career growth.
+          </motion.p>
+          
+          {/* Features Showcase Component */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="flex justify-center"
+          >
+            <FeaturesShowcase 
+              isOpen={featuresShowcaseOpen} 
+              onToggle={() => setFeaturesShowcaseOpen(!featuresShowcaseOpen)} 
+            />
+          </motion.div>
+          
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="text-sm text-gray-500 mt-8"
+          >
+            Click the features button above to explore our comprehensive toolkit
+          </motion.p>
         </div>
       </section>
 
