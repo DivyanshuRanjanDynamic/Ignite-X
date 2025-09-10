@@ -4,6 +4,7 @@ import { Brain, MapPin, GraduationCap, User, ArrowRight, ArrowLeft, CheckCircle,
 import { Link } from "react-router-dom";
 import { useAuthTranslation } from '../hooks/useTranslation.jsx';
 import { authToasts } from '../utils/toast.jsx';
+import BotProtection from '../components/BotProtection.jsx';
 
 function Register() {
   const { t, tCommon } = useAuthTranslation();
@@ -13,6 +14,7 @@ function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [selectedSkillCategory, setSelectedSkillCategory] = useState('technical');
+  const [botProtection, setBotProtection] = useState(null);
   const [formData, setFormData] = useState({
     // Step 1: Personal Details
     name: "",
@@ -104,6 +106,15 @@ function Register() {
         if (!formData.password) newErrors.password = t('register.validation.requiredField');
         else if (!validatePassword(formData.password)) newErrors.password = t('register.validation.passwordTooShort');
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = t('register.validation.passwordMismatch');
+        
+        // Bot protection validation
+        if (!botProtection?.isProtected) {
+          if (!botProtection?.captchaToken) {
+            newErrors.botProtection = 'Please complete the reCAPTCHA verification';
+          } else if (botProtection?.status === 'suspicious') {
+            newErrors.botProtection = 'Suspicious activity detected. Please try again.';
+          }
+        }
         break;
     }
     
@@ -147,6 +158,12 @@ function Register() {
       return;
     }
     
+    // Validate bot protection
+    if (!validateStep(4)) {
+      authToasts.registerError('Please complete all required fields and security verification');
+      return;
+    }
+    
     setIsLoading(true);
     try {
       // Build payload compatible with backend
@@ -169,6 +186,16 @@ function Register() {
       // Ensure interests/skills are arrays of strings
       payload.skills = Array.isArray(formData.skills) ? formData.skills : [];
       payload.interests = Array.isArray(formData.interests) ? formData.interests : [];
+      
+      // Add bot protection data
+      if (botProtection) {
+        payload.botProtection = {
+          captchaToken: botProtection.captchaToken,
+          behaviorScore: botProtection.behaviorScore,
+          honeypotValue: botProtection.honeypotValue,
+          analytics: botProtection.analytics
+        };
+      }
 
       // Send to backend
       const res = await import('../api/auth.js').then(m => m.registerStudent(payload));
@@ -1114,6 +1141,28 @@ function Register() {
                     </div>
                   </div>
 
+                  {/* Bot Protection Component */}
+                  <div className="space-y-4">
+                    <BotProtection
+                      onProtectionChange={setBotProtection}
+                      onBehaviorScore={(score) => {
+                        // Optional: track behavior score for analytics
+                        console.log('Behavior score:', score);
+                      }}
+                      formData={formData}
+                      isVisible={true}
+                    />
+                    
+                    {errors.botProtection && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <p className="text-sm text-red-700 flex items-center">
+                          <X className="w-4 h-4 mr-2" />
+                          {errors.botProtection}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="flex justify-between pt-6">
                     <button
                       type="button"
@@ -1125,7 +1174,7 @@ function Register() {
                     </button>
                     <button
                       type="submit"
-                      disabled={isLoading}
+                      disabled={isLoading || !botProtection?.isProtected}
                       className="px-8 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                     >
                       {isLoading ? (

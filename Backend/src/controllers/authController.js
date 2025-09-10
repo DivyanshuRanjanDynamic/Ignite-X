@@ -4,6 +4,7 @@ import jwtUtil from '../utils/jwt.js';
 import passwordUtil from '../utils/password.js';
 import config from '../config/env.js';
 import uploadService from '../services/uploadService.js';
+import botProtectionService from '../services/botProtectionService.js';
 // Admin authentication now works directly with database-stored admin accounts
 
 class AuthController {
@@ -38,7 +39,10 @@ class AuthController {
         
         // Step 4: Security
         password,
-        confirmPassword
+        confirmPassword,
+        
+        // Bot Protection Data
+        botProtection
       } = req.body;
 
       // Defensive normalization in case upstream parsing left strings
@@ -76,6 +80,42 @@ class AuthController {
         phone,
         ip: req.ip,
       });
+
+      // Perform bot protection checks
+      const botCheckResult = await botProtectionService.performBotProtectionCheck(req, {
+        ...req.body,
+        captchaToken: botProtection?.captchaToken
+      });
+
+      // Log bot protection result
+      logger.info('Bot protection check result', {
+        email,
+        isBot: botCheckResult.isBot,
+        confidence: botCheckResult.confidence,
+        reason: botCheckResult.reason,
+        suspicionScore: botCheckResult.suspicionScore,
+        ip: req.ip
+      });
+
+      // Block if identified as bot with high confidence
+      if (botCheckResult.isBot && botCheckResult.confidence >= 70) {
+        logger.warn('Registration blocked - Bot detected', {
+          email,
+          confidence: botCheckResult.confidence,
+          reason: botCheckResult.reason,
+          flags: botCheckResult.checks?.dataAnalysis?.flags || [],
+          ip: req.ip
+        });
+
+        return res.status(403).json({
+          success: false,
+          error: {
+            code: 'BOT_DETECTED',
+            message: 'Registration failed: Automated behavior detected. Please try again with a different approach.',
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
 
       // Normalize phone (strip spaces and hyphens)
       const normalizedPhone = phone ? phone.replace(/[^\d+]/g, '') : null;
