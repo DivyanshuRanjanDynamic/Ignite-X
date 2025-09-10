@@ -82,9 +82,21 @@ class AuthController {
       });
 
       // Perform bot protection checks
+      // Parse botProtection if it arrives as a JSON string from multipart/form-data
+      let botProtectionData = botProtection;
+      if (typeof botProtection === 'string') {
+        try {
+          botProtectionData = JSON.parse(botProtection);
+        } catch (e) {
+          // leave as-is if parsing fails
+        }
+      }
+
       const botCheckResult = await botProtectionService.performBotProtectionCheck(req, {
         ...req.body,
-        captchaToken: botProtection?.captchaToken
+        botProtection: botProtectionData,
+        // Support captcha token from either nested object or top-level field (added by frontend)
+        captchaToken: botProtectionData?.captchaToken || req.body?.captchaToken
       });
 
       // Log bot protection result
@@ -98,7 +110,13 @@ class AuthController {
       });
 
       // Block if identified as bot with high confidence
-      if (botCheckResult.isBot && botCheckResult.confidence >= 70) {
+      // Only block in production or if very high confidence to avoid false positives
+      const shouldBlock = botCheckResult.isBot && (
+        (process.env.NODE_ENV === 'production' && botCheckResult.confidence >= 85) ||
+        (process.env.NODE_ENV !== 'production' && botCheckResult.confidence >= 95)
+      );
+      
+      if (shouldBlock) {
         logger.warn('Registration blocked - Bot detected', {
           email,
           confidence: botCheckResult.confidence,
