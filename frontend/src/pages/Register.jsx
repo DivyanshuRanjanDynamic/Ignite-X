@@ -107,13 +107,9 @@ function Register() {
         else if (!validatePassword(formData.password)) newErrors.password = t('register.validation.passwordTooShort');
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = t('register.validation.passwordMismatch');
         
-        // Bot protection validation
-        if (!botProtection?.isProtected) {
-          if (!botProtection?.captchaToken) {
-            newErrors.botProtection = 'Please complete the reCAPTCHA verification';
-          } else if (botProtection?.status === 'suspicious') {
-            newErrors.botProtection = 'Suspicious activity detected. Please try again.';
-          }
+        // Bot protection validation: require only CAPTCHA token
+        if (!botProtection?.captchaToken) {
+          newErrors.botProtection = 'Please complete the reCAPTCHA verification';
         }
         break;
     }
@@ -1174,7 +1170,7 @@ function Register() {
                     </button>
                     <button
                       type="submit"
-                      disabled={isLoading || !botProtection?.isProtected}
+                      disabled={isLoading || !botProtection?.captchaToken}
                       className="px-8 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                     >
                       {isLoading ? (

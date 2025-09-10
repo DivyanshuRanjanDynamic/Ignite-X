@@ -28,6 +28,21 @@ export async function registerStudent(form) {
       return;
     }
 
+    // Ensure nested objects are serialized properly in multipart/form-data
+    if (key === 'botProtection' && typeof value === 'object') {
+      try {
+        const serialized = JSON.stringify(value);
+        formData.append('botProtection', serialized);
+        // Also expose captchaToken at top-level for backend convenience/fallback parsing
+        if (value.captchaToken) {
+          formData.append('captchaToken', value.captchaToken);
+        }
+      } catch (e) {
+        // If serialization fails, skip to avoid sending "[object Object]"
+      }
+      return;
+    }
+
     formData.append(key, value);
   });
   const { data } = await api.post('/auth/register/student', formData, {
