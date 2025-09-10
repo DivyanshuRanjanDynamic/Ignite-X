@@ -83,6 +83,11 @@ function Login() {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userType', userType);
       localStorage.setItem('userName', user?.name || email.split('@')[0]);
+      
+      // Set first-time login flag for tour
+      if (user?.isFirstLogin) {
+        localStorage.setItem('isFirstLogin', 'true');
+      }
 
       window.dispatchEvent(new CustomEvent('authStateChanged', {
         detail: { isAuthenticated: true, userType: userType, userName: localStorage.getItem('userName') }

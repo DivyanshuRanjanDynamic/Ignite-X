@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Suspense } from "react";
 import './i18n'; // Initialize i18n
 import { LanguageProvider } from './contexts/LanguageContext';
+import { TourProvider } from './contexts/TourContext';
 import { Toaster } from './utils/toast.jsx';
 import ScrollToTop from './components/ScrollToTop';
 import Landing from "./pages/Landing";
@@ -54,10 +55,11 @@ const LoadingFallback = () => (
 function App() {
   return (
     <LanguageProvider>
-      <ScrollToTop />
-      <Toaster position="top-right" />
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
+      <TourProvider>
+        <ScrollToTop />
+        <Toaster position="top-right" />
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
       {/* Public Pages */}
       <Route path="/" element={<Landing />} />
       <Route path="/internships" element={<InternshipList />} />
@@ -101,8 +103,9 @@ function App() {
 
           {/* Catch All */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
+          </Routes>
+        </Suspense>
+      </TourProvider>
     </LanguageProvider>
   );
 }

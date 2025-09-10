@@ -569,6 +569,7 @@ class AuthController {
         status: user.status,
         isVerified: user.isVerified,
         lastLoginAt: new Date().toISOString(),
+        isFirstLogin: !user.lastLoginAt, // Track if this is the user's first login
         profile: user.profile ? {
           bio: user.profile.bio,
           location: user.profile.location,
