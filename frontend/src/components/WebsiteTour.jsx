@@ -136,8 +136,7 @@ const WebsiteTour = () => {
         // tooltipComponent={CustomTooltip}
       />
       
-      {/* Tour Help Button - Always visible */}
-      <TourHelpButton />
+      {/* Import TourHelper component instead - already included in StudentDashboard */}
     </>
   );
 };
@@ -230,52 +229,5 @@ const CustomTooltip = ({
   );
 };
 
-// Tour help button that's always accessible
-const TourHelpButton = () => {
-  const { startTour, tourCompleted } = useTour();
-
-  const handleRestartTour = () => {
-    // Set manual tour flag
-    localStorage.setItem('showTourManually', 'true');
-    startTour();
-  };
-
-  // Show the help button always for easy access (can be hidden in production)
-  // if (!tourCompleted) return null;
-
-  return (
-    <div className="fixed bottom-24 right-6 md:bottom-6 z-40 flex flex-col gap-2">
-      <button
-        onClick={handleRestartTour}
-        className="bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 transition-all duration-200 hover:scale-105 group"
-        title="Start Website Tour"
-        aria-label="Start Website Tour"
-      >
-        <HelpCircle className="w-6 h-6" />
-        
-        {/* Tooltip */}
-        <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
-          Start Website Tour
-          <div className="absolute top-full right-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-        </div>
-      </button>
-      
-      {process.env.NODE_ENV === 'development' && (
-        <button
-          onClick={() => {
-            console.log('Force starting tour...');
-            localStorage.setItem('isFirstLogin', 'true');
-            localStorage.removeItem('websiteTourCompleted');
-            startTour();
-          }}
-          className="bg-green-600 text-white rounded-lg px-3 py-2 text-sm shadow-lg hover:bg-green-700 transition-all duration-200"
-          title="Test Tour (Dev)"
-        >
-          Test Tour
-        </button>
-      )}
-    </div>
-  );
-};
 
 export default WebsiteTour;

@@ -1,0 +1,369 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// User model - Core user account information
+model User {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName     String
+  lastName      String
+  email         String   @unique
+  phone         String?  @unique
+  password      String?
+  role          Role     @default(STUDENT)
+  status        UserStatus @default(PENDING_VERIFICATION)
+  isVerified    Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  emailVerifiedAt DateTime?
+  lastLoginAt   DateTime?
+  
+  // OAuth fields  
+  googleId      String?
+  githubId      String?
+  avatarUrl     String?
+  oauthProvider String?  // "google", "github", etc.
+  
+  // First login tracking
+  isFirstLogin  Boolean  @default(true)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  profile       Profile?
+  applications  Application[]
+  refreshTokens RefreshToken[]
+  files         File[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
+  savedInternships SavedInternship[]
+  
+  // Admin-only relations
+  createdInternships Internship[] @relation("CreatedBy")
+  
+  @@map("users")
+}
+
+// Profile model - Extended user information
+model Profile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @unique @db.ObjectId
+  dateOfBirth   DateTime?
+  gender        Gender?
+  bio           String?
+  location      String?
+  skills        String[] @default([])
+  interests     String[] @default([])
+  languages     String[] @default(["English"])
+  avatar        String?
+  resume        String?
+  linkedinUrl   String?
+  githubUrl     String?
+  portfolioUrl  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  education     Education[]
+  experience    Experience[]
+
+  @@map("profiles")
+}
+
+// Education model - User education history
+model Education {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId     String   @db.ObjectId
+  instituteName String
+  degree        String
+  fieldOfStudy  String?
+  startDate     DateTime
+  endDate       DateTime?
+  isCurrent     Boolean  @default(false)
+  grade         String?
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  profile       Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("education")
+}
+
+// Experience model - User work experience
+model Experience {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId     String   @db.ObjectId
+  title         String
+  company       String
+  location      String?
+  startDate     DateTime
+  endDate       DateTime?
+  isCurrent     Boolean  @default(false)
+  description   String?
+  skills        String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  profile       Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@map("experiences")
+}
+
+// Internship model - Core internship opportunities
+model Internship {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String
+  shortDescription String?
+  category      InternshipCategory
+  type          InternshipType @default(REMOTE)
+  department    String
+  location      String?
+  duration      Int // Duration in weeks
+  stipend       Float?
+  currency      String @default("INR")
+  isStipendNegotiable Boolean @default(false)
+  startDate     DateTime
+  endDate       DateTime
+  applicationDeadline DateTime
+  maxApplications Int @default(100)
+  currentApplications Int @default(0)
+  skills        String[] @default([])
+  requirements  String[] @default([])
+  responsibilities String[] @default([])
+  benefits      String[] @default([])
+  eligibility   String[] @default([])
+  status        InternshipStatus @default(ACTIVE)
+  isActive      Boolean  @default(true)
+  isFeatured    Boolean  @default(false)
+  viewCount     Int @default(0)
+  createdById   String   @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  createdBy     User @relation("CreatedBy", fields: [createdById], references: [id])
+  applications  Application[]
+  savedInternships SavedInternship[]
+
+  @@map("internships")
+}
+
+// Application model - Student applications to internships
+model Application {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  studentId     String   @db.ObjectId
+  internshipId  String   @db.ObjectId
+  status        ApplicationStatus @default(PENDING)
+  coverLetter   String?
+  resumeUrl     String?
+  additionalDocuments String[] @default([])
+  answers       Json? // For custom application questions
+  submittedAt   DateTime @default(now())
+  reviewedAt    DateTime?
+  reviewedBy    String?  @db.ObjectId
+  reviewNotes   String?
+  priority      Int @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  student       User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  internship    Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, internshipId])
+  @@map("applications")
+}
+
+// SavedInternship model - Bookmarked internships
+model SavedInternship {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  internshipId  String   @db.ObjectId
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  internship    Internship @relation(fields: [internshipId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, internshipId])
+  @@map("saved_internships")
+}
+
+// RefreshToken model - JWT refresh token management
+model RefreshToken {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  token         String   @unique
+  expiresAt     DateTime
+  isRevoked     Boolean  @default(false)
+  revokedAt     DateTime?
+  deviceInfo    String?
+  ipAddress     String?
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// File model - File upload management
+model File {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  fileName      String
+  originalName  String
+  fileUrl       String
+  publicId      String?
+  mimeType      String
+  fileSize      Int
+  category      FileCategory
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("files")
+}
+
+// Notification model - User notifications
+model Notification {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  type          NotificationType
+  title         String
+  message       String
+  data          Json? // Additional notification data
+  isRead        Boolean  @default(false)
+  readAt        DateTime?
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// AuditLog model - System audit logs
+model AuditLog {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String?  @db.ObjectId
+  action        String
+  resource      String
+  resourceId    String?
+  oldValues     Json?
+  newValues     Json?
+  ipAddress     String?
+  userAgent     String?
+  success       Boolean  @default(true)
+  errorMessage  String?
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user          User? @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+// Enums
+enum Role {
+  STUDENT
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+  BANNED
+  INACTIVE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum InternshipCategory {
+  TECHNOLOGY
+  MARKETING
+  FINANCE
+  DESIGN
+  CONTENT_WRITING
+  RESEARCH
+  OPERATIONS
+  HUMAN_RESOURCES
+  BUSINESS_DEVELOPMENT
+  DATA_SCIENCE
+  CONSULTING
+  EDUCATION
+  HEALTHCARE
+  GOVERNMENT
+  OTHER
+}
+
+enum InternshipType {
+  REMOTE
+  ONSITE
+  HYBRID
+}
+
+enum InternshipStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  CLOSED
+  EXPIRED
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWED
+  SHORTLISTED
+  INTERVIEW_SCHEDULED
+  INTERVIEW_COMPLETED
+  SELECTED
+  REJECTED
+  WITHDRAWN
+  EXPIRED
+}
+
+enum FileCategory {
+  RESUME
+  PROFILE_PICTURE
+  COVER_LETTER
+  CERTIFICATE
+  PORTFOLIO
+  OTHER
+}
+
+enum NotificationType {
+  APPLICATION_STATUS
+  INTERNSHIP_UPDATE
+  DEADLINE_REMINDER
+  SYSTEM_ANNOUNCEMENT
+  PROFILE_UPDATE
+  SECURITY_ALERT
+  GENERAL
+}

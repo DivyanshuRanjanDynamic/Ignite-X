@@ -604,10 +604,20 @@ class AuthController {
         },
       });
 
-      // Update last login timestamp
+      // Update last login timestamp and first login tracking
+      const updateData = { 
+        lastLoginAt: new Date()
+      };
+      
+      // Track first login for tour system
+      const wasFirstLogin = user.isFirstLogin;
+      if (wasFirstLogin) {
+        updateData.isFirstLogin = false;
+      }
+      
       await database.prisma.user.update({
         where: { id: user.id },
-        data: { lastLoginAt: new Date() },
+        data: updateData,
       });
 
       logger.info('User logged in successfully', {
@@ -627,7 +637,7 @@ class AuthController {
         status: user.status,
         isVerified: user.isVerified,
         lastLoginAt: new Date().toISOString(),
-        isFirstLogin: !user.lastLoginAt, // Track if this is the user's first login
+        isFirstLogin: wasFirstLogin, // Track if this is the user's first login
         profile: user.profile ? {
           bio: user.profile.bio,
           location: user.profile.location,

@@ -1,6 +1,10 @@
 import express from 'express';
 import authRoutes from './authRoutes.js';
 import adminRoutes from './adminRoutes.js';
+import userRoutes from './userRoutes.js';
+import internshipRoutes from './internshipRoutes.js';
+import applicationRoutes from './applicationRoutes.js';
+import notificationRoutes from './notificationRoutes.js';
 
 const router = express.Router();
 
@@ -27,6 +31,8 @@ router.get('/', (req, res) => {
       users: '/api/v1/users',
       internships: '/api/v1/internships',
       applications: '/api/v1/applications',
+      notifications: '/api/v1/notifications',
+      dashboard: '/api/v1/dashboard',
     },
     timestamp: new Date().toISOString(),
   });
@@ -35,10 +41,20 @@ router.get('/', (req, res) => {
 // Mount route modules
 router.use('/auth', authRoutes);
 router.use('/admin', adminRoutes);
+router.use('/users', userRoutes);
+router.use('/internships', internshipRoutes);
+router.use('/applications', applicationRoutes);
+router.use('/notifications', notificationRoutes);
 
-// TODO: Add other route modules
-// router.use('/users', userRoutes);
-// router.use('/internships', internshipRoutes);
-// router.use('/applications', applicationRoutes);
+// Dashboard route (import function)
+router.get('/dashboard', async (req, res, next) => {
+  try {
+    const { authenticate } = await import('../middleware/auth.js');
+    const { default: userController } = await import('../controllers/userController.js');
+    authenticate(req, res, () => userController.getDashboardData(req, res));
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;
