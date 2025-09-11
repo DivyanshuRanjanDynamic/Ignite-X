@@ -75,6 +75,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('userType', userData.role.toLowerCase());
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('isAuthenticated', 'true');
+        
+        // Store first login status for tour system
+        if (userData.isFirstLogin) {
+          localStorage.setItem('isFirstLogin', 'true');
+        }
 
         setUser(userData);
         setIsAuthenticated(true);

@@ -9,6 +9,7 @@ import {
 import Navbar from "../components/Navbar";
 import AIAgent from "../components/AIAgent";
 import WebsiteTour from "../components/WebsiteTour";
+import TourHelper from "../components/TourHelper";
 
 const navClass = ({ isActive }) =>
   `flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200
@@ -269,6 +270,9 @@ export default function StudentDashboard() {
       
       {/* Website Tour Component */}
       <WebsiteTour />
+      
+      {/* Tour Helper Button */}
+      <TourHelper />
     </div>
   );
 }

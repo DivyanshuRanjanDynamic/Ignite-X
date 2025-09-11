@@ -13,6 +13,7 @@ function OAuthSuccess() {
       const refreshToken = searchParams.get('refresh_token');
       const userType = searchParams.get('user_type');
       const redirectUrl = searchParams.get('redirect_url');
+      const isFirstLogin = searchParams.get('is_first_login') === 'true';
 
       if (accessToken && refreshToken && userType) {
         // Store tokens in localStorage
@@ -20,6 +21,11 @@ function OAuthSuccess() {
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userType', userType);
+        
+        // Store first login status for tour system
+        if (isFirstLogin) {
+          localStorage.setItem('isFirstLogin', 'true');
+        }
 
         // Trigger auth state change event
         window.dispatchEvent(new CustomEvent('authStateChanged', {

@@ -60,7 +60,7 @@ class OAuthController {
       const { code, state: userType } = req.query;
 
       if (!code) {
-        return this.handleOAuthError(res, 'Authorization code missing');
+        return oauthController.handleOAuthError(res, 'Authorization code missing');
       }
 
       const oauth2Client = new google.auth.OAuth2(
@@ -77,7 +77,7 @@ class OAuthController {
       const oauth2 = google.oauth2({ version: 'v2', auth: oauth2Client });
       const { data: googleUser } = await oauth2.userinfo.get();
 
-      // Check if user exists with this Google ID or email
+      // Check if user exists with this Google ID or email  
       const existingUser = await database.prisma.user.findFirst({
         where: {
           OR: [
@@ -86,6 +86,25 @@ class OAuthController {
           ]
         }
       });
+      
+      // Additional check for Google ID uniqueness (since we removed DB constraint)
+      if (googleUser.id) {
+        const existingGoogleUser = await database.prisma.user.findFirst({
+          where: { 
+            googleId: googleUser.id,
+            id: { not: existingUser?.id } // Exclude current user if updating
+          }
+        });
+        
+        if (existingGoogleUser) {
+          logger.warn('Google ID already associated with another account', {
+            googleId: googleUser.id,
+            email: googleUser.email,
+            existingUserEmail: existingGoogleUser.email
+          });
+          return oauthController.handleOAuthError(res, 'This Google account is already linked to another user');
+        }
+      }
 
       if (!existingUser) {
         // User not registered - redirect to registration with message
@@ -124,10 +143,19 @@ class OAuthController {
         });
       }
 
-      // Update last login
+      // Update last login and first login tracking
+      const updateData = { 
+        lastLoginAt: new Date()
+      };
+      
+      // Track first login status for tour system
+      if (existingUser.isFirstLogin) {
+        updateData.isFirstLogin = false;
+      }
+      
       await database.prisma.user.update({
         where: { id: existingUser.id },
-        data: { lastLoginAt: new Date() }
+        data: updateData
       });
 
       // Generate JWT tokens
@@ -150,17 +178,20 @@ class OAuthController {
 
       // Redirect to frontend with tokens
       const redirectUrl = existingUser.role === 'ADMIN' ? '/admin' : '/student-dashboard';
+      const wasFirstLogin = existingUser.isFirstLogin;
+      
       res.redirect(
         `${config.frontend.baseUrl}/oauth-success?` +
         `access_token=${tokenPair.accessToken}&` +
         `refresh_token=${tokenPair.refreshToken}&` +
         `user_type=${userType}&` +
+        `is_first_login=${wasFirstLogin}&` +
         `redirect_url=${encodeURIComponent(redirectUrl)}`
       );
 
     } catch (error) {
       logger.error('Google OAuth callback error', { error: error.message });
-      this.handleOAuthError(res, 'Google OAuth authentication failed');
+      oauthController.handleOAuthError(res, 'Google OAuth authentication failed');
     }
   }
 
@@ -210,7 +241,7 @@ class OAuthController {
       const { code, state: userType } = req.query;
 
       if (!code) {
-        return this.handleOAuthError(res, 'Authorization code missing');
+        return oauthController.handleOAuthError(res, 'Authorization code missing');
       }
 
       // Exchange code for access token
@@ -227,7 +258,7 @@ class OAuthController {
       const { access_token } = tokenResponse.data;
 
       if (!access_token) {
-        return this.handleOAuthError(res, 'Failed to get GitHub access token');
+        return oauthController.handleOAuthError(res, 'Failed to get GitHub access token');
       }
 
       // Get user info from GitHub
@@ -250,7 +281,7 @@ class OAuthController {
       const primaryEmail = emailResponse.data.find(email => email.primary)?.email;
 
       if (!primaryEmail) {
-        return this.handleOAuthError(res, 'GitHub email not found');
+        return oauthController.handleOAuthError(res, 'GitHub email not found');
       }
 
       // Check if user exists with this GitHub ID or email
@@ -262,6 +293,25 @@ class OAuthController {
           ]
         }
       });
+      
+      // Additional check for GitHub ID uniqueness (since we removed DB constraint)
+      if (githubUser.id) {
+        const existingGithubUser = await database.prisma.user.findFirst({
+          where: { 
+            githubId: String(githubUser.id),
+            id: { not: existingUser?.id } // Exclude current user if updating
+          }
+        });
+        
+        if (existingGithubUser) {
+          logger.warn('GitHub ID already associated with another account', {
+            githubId: String(githubUser.id),
+            email: primaryEmail,
+            existingUserEmail: existingGithubUser.email
+          });
+          return oauthController.handleOAuthError(res, 'This GitHub account is already linked to another user');
+        }
+      }
 
       if (!existingUser) {
         // User not registered - redirect to registration with message
@@ -300,10 +350,19 @@ class OAuthController {
         });
       }
 
-      // Update last login
+      // Update last login and first login tracking
+      const updateData = { 
+        lastLoginAt: new Date()
+      };
+      
+      // Track first login status for tour system
+      if (existingUser.isFirstLogin) {
+        updateData.isFirstLogin = false;
+      }
+      
       await database.prisma.user.update({
         where: { id: existingUser.id },
-        data: { lastLoginAt: new Date() }
+        data: updateData
       });
 
       // Generate JWT tokens
@@ -326,17 +385,20 @@ class OAuthController {
 
       // Redirect to frontend with tokens
       const redirectUrl = existingUser.role === 'ADMIN' ? '/admin' : '/student-dashboard';
+      const wasFirstLogin = existingUser.isFirstLogin;
+      
       res.redirect(
         `${config.frontend.baseUrl}/oauth-success?` +
         `access_token=${tokenPair.accessToken}&` +
         `refresh_token=${tokenPair.refreshToken}&` +
         `user_type=${userType}&` +
+        `is_first_login=${wasFirstLogin}&` +
         `redirect_url=${encodeURIComponent(redirectUrl)}`
       );
 
     } catch (error) {
       logger.error('GitHub OAuth callback error', { error: error.message });
-      this.handleOAuthError(res, 'GitHub OAuth authentication failed');
+      oauthController.handleOAuthError(res, 'GitHub OAuth authentication failed');
     }
   }
 
