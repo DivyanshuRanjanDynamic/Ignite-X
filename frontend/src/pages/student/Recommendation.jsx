@@ -124,13 +124,8 @@ export default function Recommendation() {
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
-              <Brain className="w-8 h-8 mr-3 text-blue-600" />
-              AI-Powered Recommendations
-            </h1>
-            <p className="text-gray-600 mt-2">
-              Personalized internship suggestions based on your profile and preferences
-            </p>
+           
+           
           </div>
           <button
             onClick={handleRefreshRecommendations}
