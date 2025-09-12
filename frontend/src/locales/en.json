@@ -19,7 +19,8 @@
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
-    "info": "Information"
+    "info": "Information",
+    "help": "Help"
   },
   "navigation": {
     "home": "Home",
@@ -31,6 +32,32 @@
     "register": "Register",
     "features": "Features",
     "language": "Language"
+  },
+  "tour": {
+    "startTour": "Start Tour",
+    "testTour": "Test Tour",
+    "debugTour": "Debug Tour",
+    "steps": {
+      "welcome": "Welcome to PM Internship AI",
+      "navigation": "Navigation Menu",
+      "aiRecommendations": "AI Recommendations",
+      "applicationTracking": "Application Tracking",
+      "skillDevelopment": "Skill Development",
+      "resumeManagement": "Resume Management",
+      "aiAssistant": "AI Assistant",
+      "mobileGuide": "Mobile Navigation"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "title": "Student Dashboard",
+      "shortTitle": "Dashboard",
+      "subtitle": "PM Internship AI",
+      "footer": {
+        "title": "PM Internship Scheme",
+        "subtitle": "Empowering Students Across India"
+      }
+    }
   },
   "auth": {
     "login": {
@@ -798,20 +825,105 @@
       "totalStudents": "Total Students",
       "totalInternships": "Total Internships",
       "activeApplications": "Active Applications",
-      "successRate": "Success Rate"
+      "successRate": "Success Rate",
+      "monitorPerformance": "Monitor PM Internship Scheme performance across India",
+      "keyMetrics": "Key Metrics",
+      "fromLastMonth": "from last month",
+      "activeInternships": "Active Internships",
+      "applicationsThisMonth": "Applications This Month",
+      "suspendedUsers": "Suspended Users",
+      "recentActivity": "Recent Activity",
+      "skillsGapAnalysis": "Skills Gap Analysis",
+      "regionalDistribution": "Regional Distribution",
+      "internshipCategories": "Internship Categories",
+      "applicationTrends": "Application Trends"
     },
     "internships": {
       "title": "Manage Internships",
       "addInternship": "Add New Internship",
       "editInternship": "Edit Internship",
-      "deleteInternship": "Delete Internship"
+      "deleteInternship": "Delete Internship",
+      "category": "Category",
+      "location": "Location",
+      "duration": "Duration",
+      "stipend": "Stipend",
+      "status": "Status",
+      "applications": "Applications",
+      "publishDate": "Publish Date",
+      "deadline": "Deadline",
+      "active": "Active",
+      "inactive": "Inactive",
+      "draft": "Draft",
+      "published": "Published",
+      "expired": "Expired"
     },
     "users": {
       "title": "User Management",
       "students": "Students",
       "admins": "Administrators",
       "addUser": "Add User",
-      "editUser": "Edit User"
+      "editUser": "Edit User",
+      "totalUsers": "Total Users",
+      "activeUsers": "Active Users",
+      "suspended": "Suspended",
+      "searchUsers": "Search users...",
+      "filterByRole": "Filter by Role",
+      "filterByStatus": "Filter by Status",
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive",
+      "student": "Student",
+      "admin": "Admin",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "lastActive": "Last Active",
+      "actions": "Actions",
+      "viewProfile": "View Profile",
+      "editProfile": "Edit Profile",
+      "deleteUser": "Delete User",
+      "suspendUser": "Suspend User",
+      "activateUser": "Activate User"
+    },
+    "profile": {
+      "title": "Admin Profile",
+      "personalInfo": "Personal Information",
+      "accountSettings": "Account Settings",
+      "preferences": "Preferences",
+      "security": "Security",
+      "notifications": "Notifications",
+      "activity": "Recent Activity",
+      "emailNotifications": "Email Notifications",
+      "smsAlerts": "SMS Alerts",
+      "pushNotifications": "Push Notifications",
+      "weeklyReports": "Weekly Reports",
+      "dashboardPreferences": "Dashboard Preferences",
+      "defaultView": "Default View",
+      "theme": "Theme",
+      "language": "Language",
+      "dataRefreshRate": "Data Refresh Rate",
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Auto"
+    },
+    "settings": {
+      "title": "System Settings",
+      "general": "General Settings",
+      "security": "Security Settings",
+      "notifications": "Notification Settings",
+      "integrations": "Integrations",
+      "backup": "Backup & Restore",
+      "logs": "System Logs"
+    },
+    "reports": {
+      "title": "Reports",
+      "generateReport": "Generate Report",
+      "downloadReport": "Download Report",
+      "userActivity": "User Activity Report",
+      "applicationStats": "Application Statistics",
+      "internshipPerformance": "Internship Performance",
+      "regionalAnalytics": "Regional Analytics"
     }
   },
   "errors": {

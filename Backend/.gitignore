@@ -42,11 +42,6 @@ node_modules/
 # Build or output folders
 dist/
 build/
-out/
-output/
-.output/
-.build/
-.dist/
 
 # Log files
 *.log

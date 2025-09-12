@@ -25,12 +25,23 @@
     "home": "హోమ్",
     "dashboard": "డాష్‌బోర్డ్",
     "profile": "నా ప్రొఫైల్",
-    "settings": "సెట్టింగ్స్",
+    "settings": "సెట్టింగ్‌లు",
     "logout": "లాగ్ అవుట్",
     "login": "లాగిన్",
     "register": "నమోదు",
-    "features": "లక్షణాలు",
+    "features": "ఫీచర్లు",
     "language": "భాష"
+  },
+  "student": {
+    "dashboard": {
+      "title": "విద్యార్థి డాష్‌బోర్డ్",
+      "shortTitle": "డాష్‌బోర్డ్",
+      "subtitle": "పీఎం ఇంటర్న్‌షిప్ ఏఐ",
+      "footer": {
+        "title": "పీఎం ఇంటర్న్‌షిప్ స్కీమ్",
+        "subtitle": "భారతదేశంలోని విద్యార్థులకు శక్తినివ్వడం"
+      }
+    }
   },
   "auth": {
     "login": {
@@ -305,24 +316,109 @@
   "admin": {
     "dashboard": {
       "title": "అడ్మిన్ డాష్‌బోర్డ్",
-      "overview": "సంక్షిప్త వీక్షణ",
+      "overview": "అవలోకనం",
       "totalStudents": "మొత్తం విద్యార్థులు",
       "totalInternships": "మొత్తం ఇంటర్న్‌షిప్‌లు",
-      "activeApplications": "క్రియాశీల దరఖాస్తులు",
-      "successRate": "విజయ రేటు"
+      "activeApplications": "యాక్టివ్ అప్లికేషన్లు",
+      "successRate": "విజయ రేటు",
+      "monitorPerformance": "భారతదేశం అంతటా పీఎం ఇంటర్న్‌షిప్ స్కీమ్ పనితీరును పర్యవేక్షించండి",
+      "keyMetrics": "కీలక మెట్రిక్స్",
+      "fromLastMonth": "గత నెల నుండి",
+      "activeInternships": "యాక్టివ్ ఇంటర్న్‌షిప్‌లు",
+      "applicationsThisMonth": "ఈ నెల దరఖాస్తులు",
+      "suspendedUsers": "సస్పెండ్ చేయబడిన వినియోగదారులు",
+      "recentActivity": "ఇటీవలి కార్యకలాపం",
+      "skillsGapAnalysis": "నైపుణ్యాల అంతరాల విశ్లేషణ",
+      "regionalDistribution": "ప్రాంతీయ పంపిణీ",
+      "internshipCategories": "ఇంటర్న్‌షిప్ వర్గాలు",
+      "applicationTrends": "అప్లికేషన్ ట్రెండ్‌లు"
     },
     "internships": {
       "title": "ఇంటర్న్‌షిప్ నిర్వహణ",
       "addInternship": "కొత్త ఇంటర్న్‌షిప్‌ను జోడించండి",
       "editInternship": "ఇంటర్న్‌షిప్‌ను సవరించండి",
-      "deleteInternship": "ఇంటర్న్‌షిప్‌ను తొలగించండి"
+      "deleteInternship": "ఇంటర్న్‌షిప్‌ను తొలగించండి",
+      "category": "వర్గం",
+      "location": "స్థానం",
+      "duration": "వ్యవధి",
+      "stipend": "స్టైపెండ్",
+      "status": "స్థితి",
+      "applications": "దరఖాస్తులు",
+      "publishDate": "ప్రచురణ తేదీ",
+      "deadline": "గడువు",
+      "active": "యాక్టివ్",
+      "inactive": "నిష్క్రియాత్మకంగా",
+      "draft": "డ్రాఫ్ట్",
+      "published": "ప్రచురించబడింది",
+      "expired": "గడువు ముగిసింది"
     },
     "users": {
       "title": "వినియోగదారు నిర్వహణ",
       "students": "విద్యార్థులు",
       "admins": "నిర్వాహకులు",
       "addUser": "వినియోగదారుని జోడించండి",
-      "editUser": "వినియోగదారుని సవరించండి"
+      "editUser": "వినియోగదారుని సవరించండి",
+      "totalUsers": "మొత్తం వినియోగదారులు",
+      "activeUsers": "యాక్టివ్ వినియోగదారులు",
+      "suspended": "సస్పెండ్ చేయబడింది",
+      "searchUsers": "వినియోగదారులను శోధించండి...",
+      "filterByRole": "పాత్ర ద్వారా ఫిల్టర్ చేయండి",
+      "filterByStatus": "స్థితి ద్వారా ఫిల్టర్ చేయండి",
+      "all": "అన్నీ",
+      "active": "యాక్టివ్",
+      "inactive": "నిష్క్రియాత్మకంగా",
+      "student": "విద్యార్థి",
+      "admin": "నిర్వాహకుడు",
+      "name": "పేరు",
+      "email": "ఇమెయిల్",
+      "role": "పాత్ర",
+      "status": "స్థితి",
+      "lastActive": "చివరిగా యాక్టివ్‌గా ఉన్నది",
+      "actions": "చర్యలు",
+      "viewProfile": "ప్రొఫైల్‌ను వీక్షించండి",
+      "editProfile": "ప్రొఫైల్‌ను సవరించండి",
+      "deleteUser": "వినియోగదారుని తొలగించండి",
+      "suspendUser": "వినియోగదారుని సస్పెండ్ చేయండి",
+      "activateUser": "వినియోగదారుని యాక్టివేట్ చేయండి"
+    },
+    "profile": {
+      "title": "అడ్మిన్ ప్రొఫైల్",
+      "personalInfo": "వ్యక్తిగత సమాచారం",
+      "accountSettings": "ఖాతా సెట్టింగ్‌లు",
+      "preferences": "ప్రాధాన్యతలు",
+      "security": "భద్రత",
+      "notifications": "నోటిఫికేషన్‌లు",
+      "activity": "ఇటీవలి కార్యకలాపం",
+      "emailNotifications": "ఇమెయిల్ నోటిఫికేషన్‌లు",
+      "smsAlerts": "SMS అలర్ట్‌లు",
+      "pushNotifications": "పుష్ నోటిఫికేషన్‌లు",
+      "weeklyReports": "వారపు నివేదికలు",
+      "dashboardPreferences": "డాష్‌బోర్డ్ ప్రాధాన్యతలు",
+      "defaultView": "డిఫాల్ట్ వీక్షణ",
+      "theme": "థీమ్",
+      "language": "భాష",
+      "dataRefreshRate": "డేటా రిఫ్రెష్ రేట్",
+      "light": "లైట్",
+      "dark": "డార్క్",
+      "auto": "ఆటో"
+    },
+    "settings": {
+      "title": "సిస్టమ్ సెట్టింగ్‌లు",
+      "general": "సాధారణ సెట్టింగ్‌లు",
+      "security": "భద్రతా సెట్టింగ్‌లు",
+      "notifications": "నోటిఫికేషన్ సెట్టింగ్‌లు",
+      "integrations": "ఇంటిగ్రేషన్‌లు",
+      "backup": "బ్యాకప్ & పునరుద్ధరణ",
+      "logs": "సిస్టమ్ లాగ్‌లు"
+    },
+    "reports": {
+      "title": "నివేదికలు",
+      "generateReport": "నివేదికను రూపొందించండి",
+      "downloadReport": "నివేదికను డౌన్‌లోడ్ చేయండి",
+      "userActivity": "వినియోగదారు కార్యకలాపం నివేదిక",
+      "applicationStats": "అప్లికేషన్ గణాంకాలు",
+      "internshipPerformance": "ఇంటర్న్‌షిప్ పనితీరు",
+      "regionalAnalytics": "ప్రాంతీయ విశ్లేషణలు"
     }
   },
   "errors": {
