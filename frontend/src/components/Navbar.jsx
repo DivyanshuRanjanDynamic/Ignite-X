@@ -250,7 +250,12 @@ function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-90 transition-opacity flex-shrink-0">
             <Bubbles className="w-6 h-6 sm:w-8 sm:h-8" />
-            <span className="text-lg sm:text-xl md:text-2xl font-bold">Ignite-X</span>
+           {/* <img 
+              src="/ProConnect.png" 
+              alt="ProConnect Logo" 
+              className="w-6 h-6 sm:w-8 sm:h-8" 
+            /> */}
+            <span className="text-lg sm:text-xl md:text-2xl font-bold">ProConnect</span>
           </Link>
 
           {/* Desktop Menu */}
