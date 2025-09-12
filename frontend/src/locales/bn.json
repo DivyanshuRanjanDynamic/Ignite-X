@@ -32,6 +32,17 @@
     "features": "বৈশিষ্ট্য",
     "language": "ভাষা"
   },
+  "student": {
+    "dashboard": {
+      "title": "ছাত্র ড্যাশবোর্ড",
+      "shortTitle": "ড্যাশবোর্ড",
+      "subtitle": "পিএম ইন্টার্নশিপ এআই",
+      "footer": {
+        "title": "পিএম ইন্টার্নশিপ স্কিম",
+        "subtitle": "ভারতের ছাত্রদের ক্ষমতায়ন"
+      }
+    }
+  },
   "auth": {
     "login": {
       "title": "ফিরে স্বাগতম",
@@ -308,21 +319,106 @@
       "overview": "সংক্ষিপ্ত বিবরণ",
       "totalStudents": "মোট শিক্ষার্থী",
       "totalInternships": "মোট ইন্টার্নশিপ",
-      "activeApplications": "সক্রিয় আবেদনসমূহ",
-      "successRate": "সফলতার হার"
+      "activeApplications": "সক্রিয় আবেদন",
+      "successRate": "সাফল্যের হার",
+      "monitorPerformance": "সারা ভারতে পিএম ইন্টার্নশিপ স্কিমের কার্যকারিতা পর্যবেক্ষণ করুন",
+      "keyMetrics": "মূল পরিমাপ",
+      "fromLastMonth": "গত মাস থেকে",
+      "activeInternships": "সক্রিয় ইন্টার্নশিপ",
+      "applicationsThisMonth": "এই মাসের আবেদন",
+      "suspendedUsers": "স্থগিত ব্যবহারকারী",
+      "recentActivity": "সাম্প্রতিক কার্যকলাপ",
+      "skillsGapAnalysis": "দক্ষতা ব্যবধান বিশ্লেষণ",
+      "regionalDistribution": "আঞ্চলিক বিতরণ",
+      "internshipCategories": "ইন্টার্নশিপ বিভাগ",
+      "applicationTrends": "আবেদনের প্রবণতা"
     },
     "internships": {
       "title": "ইন্টার্নশিপ ব্যবস্থাপনা",
       "addInternship": "নতুন ইন্টার্নশিপ যোগ করুন",
       "editInternship": "ইন্টার্নশিপ সম্পাদনা করুন",
-      "deleteInternship": "ইন্টার্নশিপ মুছুন"
+      "deleteInternship": "ইন্টার্নশিপ মুছুন",
+      "category": "বিভাগ",
+      "location": "অবস্থান",
+      "duration": "সময়কাল",
+      "stipend": "বৃত্তি",
+      "status": "অবস্থা",
+      "applications": "আবেদন",
+      "publishDate": "প্রকাশের তারিখ",
+      "deadline": "শেষ তারিখ",
+      "active": "সক্রিয়",
+      "inactive": "নিষ্ক্রিয়",
+      "draft": "খসড়া",
+      "published": "প্রকাশিত",
+      "expired": "মেয়াদ শেষ"
     },
     "users": {
       "title": "ব্যবহারকারী ব্যবস্থাপনা",
       "students": "শিক্ষার্থী",
       "admins": "প্রশাসক",
       "addUser": "ব্যবহারকারী যোগ করুন",
-      "editUser": "ব্যবহারকারী সম্পাদনা করুন"
+      "editUser": "ব্যবহারকারী সম্পাদনা করুন",
+      "totalUsers": "মোট ব্যবহারকারী",
+      "activeUsers": "সক্রিয় ব্যবহারকারী",
+      "suspended": "স্থগিত",
+      "searchUsers": "ব্যবহারকারী খুঁজুন...",
+      "filterByRole": "ভূমিকা অনুসারে ফিল্টার করুন",
+      "filterByStatus": "অবস্থা অনুসারে ফিল্টার করুন",
+      "all": "সব",
+      "active": "সক্রিয়",
+      "inactive": "নিষ্ক্রিয়",
+      "student": "শিক্ষার্থী",
+      "admin": "প্রশাসক",
+      "name": "নাম",
+      "email": "ইমেইল",
+      "role": "ভূমিকা",
+      "status": "অবস্থা",
+      "lastActive": "সর্বশেষ সক্রিয়",
+      "actions": "কার্যক্রম",
+      "viewProfile": "প্রোফাইল দেখুন",
+      "editProfile": "প্রোফাইল সম্পাদনা করুন",
+      "deleteUser": "ব্যবহারকারী মুছুন",
+      "suspendUser": "ব্যবহারকারী স্থগিত করুন",
+      "activateUser": "ব্যবহারকারী সক্রিয় করুন"
+    },
+    "profile": {
+      "title": "অ্যাডমিন প্রোফাইল",
+      "personalInfo": "ব্যক্তিগত তথ্য",
+      "accountSettings": "অ্যাকাউন্ট সেটিংস",
+      "preferences": "পছন্দসমূহ",
+      "security": "নিরাপত্তা",
+      "notifications": "বিজ্ঞপ্তি",
+      "activity": "সাম্প্রতিক কার্যকলাপ",
+      "emailNotifications": "ইমেইল বিজ্ঞপ্তি",
+      "smsAlerts": "এসএমএস সতর্কতা",
+      "pushNotifications": "পুশ বিজ্ঞপ্তি",
+      "weeklyReports": "সাপ্তাহিক প্রতিবেদন",
+      "dashboardPreferences": "ড্যাশবোর্ড পছন্দসমূহ",
+      "defaultView": "ডিফল্ট ভিউ",
+      "theme": "থিম",
+      "language": "ভাষা",
+      "dataRefreshRate": "ডেটা রিফ্রেশ হার",
+      "light": "লাইট",
+      "dark": "ডার্ক",
+      "auto": "অটো"
+    },
+    "settings": {
+      "title": "সিস্টেম সেটিংস",
+      "general": "সাধারণ সেটিংস",
+      "security": "নিরাপত্তা সেটিংস",
+      "notifications": "বিজ্ঞপ্তি সেটিংস",
+      "integrations": "ইন্টিগ্রেশন",
+      "backup": "ব্যাকআপ এবং পুনরুদ্ধার",
+      "logs": "সিস্টেম লগ"
+    },
+    "reports": {
+      "title": "প্রতিবেদন",
+      "generateReport": "প্রতিবেদন তৈরি করুন",
+      "downloadReport": "প্রতিবেদন ডাউনলোড করুন",
+      "userActivity": "ব্যবহারকারী কার্যকলাপ প্রতিবেদন",
+      "applicationStats": "আবেদন পরিসংখ্যান",
+      "internshipPerformance": "ইন্টার্নশিপ কার্যকারিতা",
+      "regionalAnalytics": "আঞ্চলিক বিশ্লেষণ"
     }
   },
   "errors": {

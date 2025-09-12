@@ -5,6 +5,7 @@ import userRoutes from './userRoutes.js';
 import internshipRoutes from './internshipRoutes.js';
 import applicationRoutes from './applicationRoutes.js';
 import notificationRoutes from './notificationRoutes.js';
+import mlStatusRoutes from './mlStatusRoutes.js';
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.get('/', (req, res) => {
       internships: '/api/v1/internships',
       applications: '/api/v1/applications',
       notifications: '/api/v1/notifications',
+      mlStatus: '/api/v1/ml-status',
       dashboard: '/api/v1/dashboard',
     },
     timestamp: new Date().toISOString(),
@@ -45,6 +47,7 @@ router.use('/users', userRoutes);
 router.use('/internships', internshipRoutes);
 router.use('/applications', applicationRoutes);
 router.use('/notifications', notificationRoutes);
+router.use('/ml-status', mlStatusRoutes);
 
 // Dashboard route (import function)
 router.get('/dashboard', async (req, res, next) => {

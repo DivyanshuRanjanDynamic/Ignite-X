@@ -58,3 +58,27 @@ __pycache__/
 .env.local
 .env.production
 .env.development
+.env.test
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+.npm/
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock

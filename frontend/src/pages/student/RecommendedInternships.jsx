@@ -3,117 +3,143 @@ import { motion } from "framer-motion";
 import { 
   MapPin, Briefcase, Clock, Star, Filter, 
   RefreshCw, TrendingUp, Users, Award, Brain,
-  ArrowRight, Bookmark, Eye, CheckCircle
+  ArrowRight, Bookmark, Eye, CheckCircle, AlertCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useStudentTranslation } from '../../hooks/useTranslation.jsx';
+import { getRecommendations } from '../../api/internships.js';
+import RecommendationFilters from '../../components/RecommendationFilters.jsx';
+import toast from 'react-hot-toast';
 
 export default function RecommendedInternships() {
   const { t } = useStudentTranslation();
   const navigate = useNavigate();
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [dataSource, setDataSource] = useState({ mlUsed: false, fallback: false });
+  const [activeFilters, setActiveFilters] = useState({});
 
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, []);
- 
-  // Mock data for PM Internship Scheme
-  const recommendations = [
+
+  // Load recommendations on component mount
+  useEffect(() => {
+    loadRecommendations();
+  }, []);
+
+  const loadRecommendations = async (filters = {}) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const response = await getRecommendations(filters);
+      
+      if (response.success && response.data.recommendations) {
+        setRecommendations(response.data.recommendations);
+        setDataSource({
+          mlUsed: response.data.mlServiceUsed || false,
+          fallback: response.data.fallback || false
+        });
+        
+        // Show different messages based on data source and filters
+        const hasFilters = Object.keys(filters).some(key => {
+          const value = filters[key];
+          return Array.isArray(value) ? value.length > 0 : value !== '';
+        });
+        
+        if (response.data.mlServiceUsed) {
+          if (hasFilters) {
+            toast.success(`🤖 AI-powered filtered recommendations: ${response.data.recommendations.length} personalized matches!`);
+          } else {
+            toast.success(`🤖 AI-powered recommendations: ${response.data.recommendations.length} personalized matches!`);
+          }
+        } else if (response.data.fallback) {
+          if (hasFilters) {
+            toast.success(`📋 Curated filtered recommendations: ${response.data.recommendations.length} high-quality opportunities!`);
+          } else {
+            toast.success(`📋 Curated recommendations: ${response.data.recommendations.length} high-quality opportunities!`);
+          }
+        } else {
+          if (hasFilters) {
+            toast.success(`Found ${response.data.recommendations.length} filtered recommendations!`);
+          } else {
+            toast.success(`Found ${response.data.recommendations.length} personalized recommendations!`);
+          }
+        }
+      } else {
+        throw new Error(response.error?.message || 'Failed to load recommendations');
+      }
+    } catch (err) {
+      console.error('Error loading recommendations:', err);
+      setError(err.message);
+      toast.error('Failed to load recommendations. Please try again.');
+      
+      // Set fallback recommendations
+      setRecommendations(getFallbackRecommendations());
+      setDataSource({ mlUsed: false, fallback: true });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fallback recommendations for when API fails
+  const getFallbackRecommendations = () => [
     {
       id: 1,
       title: "Digital India Intern",
-      company: "Ministry of Electronics & IT",
+      department: "Ministry of Electronics & IT",
       location: "Remote",
-      type: "Government",
-      duration: "3 Months",
-      stipend: "₹12,000",
-      match: 95,
+      type: "REMOTE",
+      duration: 12,
+      stipend: 12000,
+      matchPercentage: 95,
       description: "Work on digital transformation projects and e-governance initiatives.",
       skills: ["Digital Literacy", "Communication", "Project Management"],
-      category: "government",
-      status: "Available"
+      category: "GOVERNMENT",
+      status: "ACTIVE"
     },
     {
       id: 2,
       title: "Rural Development Intern",
-      company: "Ministry of Rural Development",
+      department: "Ministry of Rural Development",
       location: "Delhi",
-      type: "Social Impact",
-      duration: "6 Months",
-      stipend: "₹10,000",
-      match: 92,
+      type: "ONSITE",
+      duration: 24,
+      stipend: 10000,
+      matchPercentage: 92,
       description: "Assist in rural development programs and community outreach initiatives.",
       skills: ["Community Work", "Research", "Communication"],
-      category: "social",
-      status: "Available"
+      category: "GOVERNMENT",
+      status: "ACTIVE"
     },
     {
       id: 3,
       title: "Skill Development Intern",
-      company: "Ministry of Skill Development",
+      department: "Ministry of Skill Development",
       location: "Mumbai",
-      type: "Education",
-      duration: "4 Months",
-      stipend: "₹8,000",
-      match: 88,
+      type: "ONSITE",
+      duration: 16,
+      stipend: 8000,
+      matchPercentage: 88,
       description: "Support skill development programs and vocational training initiatives.",
       skills: ["Teaching", "Training", "Education"],
-      category: "education",
-      status: "Available"
-    },
-    {
-      id: 4,
-      title: "Healthcare Outreach Intern",
-      company: "Ministry of Health & Family Welfare",
-      location: "Hyderabad",
-      type: "Healthcare",
-      duration: "5 Months",
-      stipend: "₹9,000",
-      match: 85,
-      description: "Assist in public health campaigns and healthcare awareness programs.",
-      skills: ["Healthcare", "Communication", "Community Work"],
-      category: "healthcare",
-      status: "Available"
-    },
-    {
-      id: 5,
-      title: "Women Empowerment Intern",
-      company: "Ministry of Women & Child Development",
-      location: "Chennai",
-      type: "Social Impact",
-      duration: "3 Months",
-      stipend: "₹7,000",
-      match: 82,
-      description: "Support women empowerment initiatives and child development programs.",
-      skills: ["Social Work", "Communication", "Research"],
-      category: "social",
-      status: "Available"
-    },
-    {
-      id: 6,
-      title: "Environmental Conservation Intern",
-      company: "Ministry of Environment, Forest & Climate Change",
-      location: "Bangalore",
-      type: "Environment",
-      duration: "4 Months",
-      stipend: "₹11,000",
-      match: 80,
-      description: "Work on environmental conservation projects and climate change initiatives.",
-      skills: ["Environmental Science", "Research", "Project Management"],
-      category: "environment",
-      status: "Available"
+      category: "EDUCATION",
+      status: "ACTIVE"
     }
   ];
 
   const filters = [
     { id: "all", label: "All Recommendations", count: recommendations.length },
-    { id: "government", label: "Government", count: recommendations.filter(r => r.category === "government").length },
-    { id: "social", label: "Social Impact", count: recommendations.filter(r => r.category === "social").length },
-    { id: "education", label: "Education", count: recommendations.filter(r => r.category === "education").length },
-    { id: "healthcare", label: "Healthcare", count: recommendations.filter(r => r.category === "healthcare").length },
-    { id: "environment", label: "Environment", count: recommendations.filter(r => r.category === "environment").length }
+    { id: "GOVERNMENT", label: "Government", count: recommendations.filter(r => r.category === "GOVERNMENT").length },
+    { id: "EDUCATION", label: "Education", count: recommendations.filter(r => r.category === "EDUCATION").length },
+    { id: "HEALTHCARE", label: "Healthcare", count: recommendations.filter(r => r.category === "HEALTHCARE").length },
+    { id: "TECHNOLOGY", label: "Technology", count: recommendations.filter(r => r.category === "TECHNOLOGY").length },
+    { id: "OTHER", label: "Other", count: recommendations.filter(r => r.category === "OTHER").length }
   ];
 
   const filteredRecommendations = selectedFilter === "all" 
@@ -122,9 +148,13 @@ export default function RecommendedInternships() {
 
   const handleRefreshRecommendations = async () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 2000);
+    await loadRecommendations(activeFilters);
+    setIsRefreshing(false);
+  };
+
+  const handleFiltersChange = async (filters) => {
+    setActiveFilters(filters);
+    await loadRecommendations(filters);
   };
 
   return (
@@ -138,12 +168,31 @@ export default function RecommendedInternships() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
           <div className="flex-1">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
-              <Brain className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600" />
+              <h3 className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600" />
               <span className="break-words">{t('recommendations.title')}</span>
             </h1>
             <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
               {t('recommendations.subtitle')}
             </p>
+            {/* Data Source Indicator */}
+            <div className="mt-2 flex items-center">
+              {dataSource.mlUsed ? (
+                <div className="flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                  <Brain className="w-3 h-3 mr-1" />
+                  AI-Powered Recommendations
+                </div>
+              ) : dataSource.fallback ? (
+                <div className="flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                  <CheckCircle className="w-3 h-3 mr-1" />
+                  Curated Recommendations
+                </div>
+              ) : (
+                <div className="flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  Personalized Matches
+                </div>
+              )}
+            </div>
           </div>
           <button
             onClick={handleRefreshRecommendations}
@@ -188,11 +237,25 @@ export default function RecommendedInternships() {
         </div>
       </motion.div>
 
-      {/* Filters */}
+      {/* Advanced Filters */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
+        className="mb-6 sm:mb-8"
+      >
+        <RecommendationFilters 
+          onFiltersChange={handleFiltersChange}
+          isLoading={isLoading}
+          currentFilters={activeFilters}
+        />
+      </motion.div>
+
+      {/* Category Filters */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
         className="mb-6 sm:mb-8"
       >
         <div className="flex items-center mb-3 sm:mb-4">
@@ -217,102 +280,141 @@ export default function RecommendedInternships() {
         </div>
       </motion.div>
 
+      {/* Loading State */}
+      {isLoading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-12"
+        >
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading AI-powered recommendations...</p>
+        </motion.div>
+      )}
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6"
+        >
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-yellow-600 mr-2" />
+            <div>
+              <h3 className="text-yellow-800 font-medium">Recommendations temporarily unavailable</h3>
+              <p className="text-yellow-700 text-sm mt-1">
+                Showing fallback recommendations. Our AI is working to provide personalized suggestions.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* Recommendations Grid */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
-      >
-        {filteredRecommendations.map((rec, index) => (
-          <motion.div
-            key={rec.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 + index * 0.1 }}
-            className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 hover:shadow-xl hover:scale-[1.02] transition transform duration-300 border border-gray-100"
-          >
-            {/* Header */}
-            <div className="flex items-start justify-between mb-3 sm:mb-4">
-              <div className="flex-1 pr-2">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">{rec.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">{rec.company}</p>
+      {!isLoading && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+        >
+          {filteredRecommendations.map((rec, index) => (
+            <motion.div
+              key={rec.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 hover:shadow-xl hover:scale-[1.02] transition transform duration-300 border border-gray-100"
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between mb-3 sm:mb-4">
+                <div className="flex-1 pr-2">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">{rec.title}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 line-clamp-1">{rec.department || rec.organization}</p>
+                </div>
+                <div className="flex items-center text-green-600 flex-shrink-0">
+                  <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                  <span className="text-xs sm:text-sm font-medium">{rec.matchPercentage || rec.mlScore || 85}%</span>
+                </div>
               </div>
-              <div className="flex items-center text-green-600 flex-shrink-0">
-                <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                <span className="text-xs sm:text-sm font-medium">{rec.match}%</span>
-              </div>
-            </div>
 
-            {/* Match Badge */}
-            <div className="mb-3 sm:mb-4">
-              <span className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
-                rec.match >= 90 ? 'bg-green-100 text-green-800' :
-                rec.match >= 80 ? 'bg-blue-100 text-blue-800' :
-                'bg-yellow-100 text-yellow-800'
-              }`}>
-                {rec.match >= 90 ? 'Excellent Match' :
-                 rec.match >= 80 ? 'Good Match' : 'Fair Match'}
-              </span>
-            </div>
+              {/* Match Badge */}
+              <div className="mb-3 sm:mb-4">
+                <span className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
+                  (rec.matchPercentage || rec.mlScore || 85) >= 90 ? 'bg-green-100 text-green-800' :
+                  (rec.matchPercentage || rec.mlScore || 85) >= 80 ? 'bg-blue-100 text-blue-800' :
+                  'bg-yellow-100 text-yellow-800'
+                }`}>
+                  {(rec.matchPercentage || rec.mlScore || 85) >= 90 ? 'Excellent Match' :
+                   (rec.matchPercentage || rec.mlScore || 85) >= 80 ? 'Good Match' : 'Fair Match'}
+                  {rec.isMLGenerated && <span className="ml-1">🤖</span>}
+                </span>
+              </div>
 
-            {/* Details */}
-            <div className="space-y-2 mb-3 sm:mb-4">
-              <div className="flex items-center text-gray-600">
-                <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-red-500 flex-shrink-0" />
-                <span className="text-xs sm:text-sm line-clamp-1">{rec.location}</span>
+              {/* Details */}
+              <div className="space-y-2 mb-3 sm:mb-4">
+                <div className="flex items-center text-gray-600">
+                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-red-500 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm line-clamp-1">{rec.location}</span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-blue-500 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">{rec.type || 'Remote'}</span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-green-500 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">{rec.duration ? `${rec.duration} weeks` : '12 weeks'}</span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <span className="text-xs sm:text-sm font-medium">💰 ₹{rec.stipend || 0}/month</span>
+                </div>
               </div>
-              <div className="flex items-center text-gray-600">
-                <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-blue-500 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">{rec.type}</span>
-              </div>
-              <div className="flex items-center text-gray-600">
-                <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-green-500 flex-shrink-0" />
-                <span className="text-xs sm:text-sm">{rec.duration}</span>
-              </div>
-              <div className="flex items-center text-gray-600">
-                <span className="text-xs sm:text-sm font-medium">💰 {rec.stipend}/month</span>
-              </div>
-            </div>
 
-            {/* Description */}
-            <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{rec.description}</p>
+              {/* Description */}
+              <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{rec.description}</p>
 
-            {/* Skills */}
-            <div className="mb-3 sm:mb-4">
-              <p className="text-xs text-gray-500 mb-2">Required Skills:</p>
-              <div className="flex flex-wrap gap-1">
-                {rec.skills.map((skill, idx) => (
-                  <span key={idx} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                    {skill}
-                  </span>
-                ))}
+              {/* Skills */}
+              <div className="mb-3 sm:mb-4">
+                <p className="text-xs text-gray-500 mb-2">Required Skills:</p>
+                <div className="flex flex-wrap gap-1">
+                  {(rec.skills || rec.requirements || []).slice(0, 3).map((skill, idx) => (
+                    <span key={idx} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                      {skill}
+                    </span>
+                  ))}
+                  {(rec.skills || rec.requirements || []).length > 3 && (
+                    <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-500 text-xs rounded">
+                      +{(rec.skills || rec.requirements || []).length - 3} more
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* Actions */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => navigate(`/apply/${rec.id}`)}
-                className="flex-1 flex items-center justify-center gap-1 bg-blue-600 text-white px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-700 transition"
-              >
-                <span className="hidden sm:inline">Apply Now</span>
-                <span className="sm:hidden">Apply</span>
-              </button>
-              <button className="flex items-center justify-center gap-1 bg-gray-200 text-gray-800 px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-gray-300 transition">
-                <Bookmark className="w-3 h-3 sm:w-4 sm:h-4" />
-              </button>
-              <button
-                onClick={() => navigate(`/internship/${rec.id}`)}
-                className="flex items-center justify-center gap-1 bg-green-600 text-white px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-green-700 transition"
-              >
-                <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline ml-1">View</span>
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+              {/* Actions */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => navigate(`/apply/${rec.id}`)}
+                  className="flex-1 flex items-center justify-center gap-1 bg-blue-600 text-white px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-700 transition"
+                >
+                  <span className="hidden sm:inline">Apply Now</span>
+                  <span className="sm:hidden">Apply</span>
+                </button>
+                <button className="flex items-center justify-center gap-1 bg-gray-200 text-gray-800 px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-gray-300 transition">
+                  <Bookmark className="w-3 h-3 sm:w-4 sm:h-4" />
+                </button>
+                <button
+                  onClick={() => navigate(`/internship/${rec.id}`)}
+                  className="flex items-center justify-center gap-1 bg-green-600 text-white px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm hover:bg-green-700 transition"
+                >
+                  <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline ml-1">View</span>
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
 
       {/* No Results */}
       {filteredRecommendations.length === 0 && (

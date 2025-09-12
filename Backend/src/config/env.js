@@ -77,6 +77,9 @@ const envSchema = Joi.object({
   GITHUB_CLIENT_ID: Joi.string().default(''),
   GITHUB_CLIENT_SECRET: Joi.string().default(''),
 
+  // ML Model API
+  ML_API_URL: Joi.string().uri().default('http://localhost:8000'),
+
   // Redis (Optional)
   REDIS_URL: Joi.string().default('redis://localhost:6379'),
 
@@ -203,6 +206,11 @@ const config = {
       clientId: envVars.GITHUB_CLIENT_ID,
       clientSecret: envVars.GITHUB_CLIENT_SECRET,
     },
+  },
+
+  // ML Model API
+  ml: {
+    apiUrl: envVars.ML_API_URL,
   },
 
   // Redis

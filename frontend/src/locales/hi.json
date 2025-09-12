@@ -19,7 +19,8 @@
     "error": "त्रुटि",
     "success": "सफलता",
     "warning": "चेतावनी",
-    "info": "जानकारी"
+    "info": "जानकारी",
+    "help": "सहायता"
   },
   "navigation": {
     "home": "होम",
@@ -31,6 +32,32 @@
     "register": "पंजीकरण",
     "features": "विशेषताएं",
     "language": "भाषा"
+  },
+  "tour": {
+    "startTour": "टूर शुरू करें",
+    "testTour": "टेस्ट टूर",
+    "debugTour": "डीबग टूर",
+    "steps": {
+      "welcome": "पीएम इंटर्नशिप एआई में आपका स्वागत है",
+      "navigation": "नेविगेशन मेनू",
+      "aiRecommendations": "एआई अनुशंसाएँ",
+      "applicationTracking": "आवेदन ट्रैकिंग",
+      "skillDevelopment": "कौशल विकास",
+      "resumeManagement": "रिज्यूमे प्रबंधन",
+      "aiAssistant": "एआई सहायक",
+      "mobileGuide": "मोबाइल नेविगेशन"
+    }
+  },
+  "student": {
+    "dashboard": {
+      "title": "छात्र डैशबोर्ड",
+      "shortTitle": "डैशबोर्ड",
+      "subtitle": "पीएम इंटर्नशिप एआई",
+      "footer": {
+        "title": "पीएम इंटर्नशिप योजना",
+        "subtitle": "भारत भर के छात्रों को सशक्त बनाना"
+      }
+    }
   },
   "auth": {
     "login": {
@@ -581,25 +608,110 @@
   },
   "admin": {
     "dashboard": {
-      "title": "प्रशासक डैशबोर्ड",
+      "title": "एडमिन डैशबोर्ड",
       "overview": "अवलोकन",
       "totalStudents": "कुल छात्र",
       "totalInternships": "कुल इंटर्नशिप",
       "activeApplications": "सक्रिय आवेदन",
-      "successRate": "सफलता दर"
+      "successRate": "सफलता दर",
+      "monitorPerformance": "पूरे भारत में पीएम इंटर्नशिप योजना के प्रदर्शन की निगरानी करें",
+      "keyMetrics": "प्रमुख मेट्रिक्स",
+      "fromLastMonth": "पिछले महीने से",
+      "activeInternships": "सक्रिय इंटर्नशिप",
+      "applicationsThisMonth": "इस महीने के आवेदन",
+      "suspendedUsers": "निलंबित उपयोगकर्ता",
+      "recentActivity": "हाल की गतिविधि",
+      "skillsGapAnalysis": "कौशल अंतर विश्लेषण",
+      "regionalDistribution": "क्षेत्रीय वितरण",
+      "internshipCategories": "इंटर्नशिप श्रेणियां",
+      "applicationTrends": "आवेदन प्रवृत्तियां"
     },
     "internships": {
       "title": "इंटर्नशिप प्रबंधन",
       "addInternship": "नई इंटर्नशिप जोड़ें",
       "editInternship": "इंटर्नशिप संपादित करें",
-      "deleteInternship": "इंटर्नशिप हटाएं"
+      "deleteInternship": "इंटर्नशिप हटाएं",
+      "category": "श्रेणी",
+      "location": "स्थान",
+      "duration": "अवधि",
+      "stipend": "वजीफा",
+      "status": "स्थिति",
+      "applications": "आवेदन",
+      "publishDate": "प्रकाशन तिथि",
+      "deadline": "अंतिम तिथि",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "draft": "ड्राफ्ट",
+      "published": "प्रकाशित",
+      "expired": "समाप्त"
     },
     "users": {
       "title": "उपयोगकर्ता प्रबंधन",
       "students": "छात्र",
       "admins": "प्रशासक",
       "addUser": "उपयोगकर्ता जोड़ें",
-      "editUser": "उपयोगकर्ता संपादित करें"
+      "editUser": "उपयोगकर्ता संपादित करें",
+      "totalUsers": "कुल उपयोगकर्ता",
+      "activeUsers": "सक्रिय उपयोगकर्ता",
+      "suspended": "निलंबित",
+      "searchUsers": "उपयोगकर्ता खोजें...",
+      "filterByRole": "भूमिका के अनुसार फ़िल्टर करें",
+      "filterByStatus": "स्थिति के अनुसार फ़िल्टर करें",
+      "all": "सभी",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "student": "छात्र",
+      "admin": "प्रशासक",
+      "name": "नाम",
+      "email": "ईमेल",
+      "role": "भूमिका",
+      "status": "स्थिति",
+      "lastActive": "अंतिम सक्रिय",
+      "actions": "कार्रवाई",
+      "viewProfile": "प्रोफ़ाइल देखें",
+      "editProfile": "प्रोफ़ाइल संपादित करें",
+      "deleteUser": "उपयोगकर्ता हटाएं",
+      "suspendUser": "उपयोगकर्ता को निलंबित करें",
+      "activateUser": "उपयोगकर्ता को सक्रिय करें"
+    },
+    "profile": {
+      "title": "एडमिन प्रोफ़ाइल",
+      "personalInfo": "व्यक्तिगत जानकारी",
+      "accountSettings": "खाता सेटिंग्स",
+      "preferences": "प्राथमिकताएँ",
+      "security": "सुरक्षा",
+      "notifications": "सूचनाएँ",
+      "activity": "हाल की गतिविधि",
+      "emailNotifications": "ईमेल सूचनाएँ",
+      "smsAlerts": "एसएमएस अलर्ट",
+      "pushNotifications": "पुश सूचनाएँ",
+      "weeklyReports": "साप्ताहिक रिपोर्ट",
+      "dashboardPreferences": "डैशबोर्ड प्राथमिकताएँ",
+      "defaultView": "डिफ़ॉल्ट दृश्य",
+      "theme": "थीम",
+      "language": "भाषा",
+      "dataRefreshRate": "डेटा रिफ्रेश दर",
+      "light": "लाइट",
+      "dark": "डार्क",
+      "auto": "ऑटो"
+    },
+    "settings": {
+      "title": "सिस्टम सेटिंग्स",
+      "general": "सामान्य सेटिंग्स",
+      "security": "सुरक्षा सेटिंग्स",
+      "notifications": "सूचना सेटिंग्स",
+      "integrations": "एकीकरण",
+      "backup": "बैकअप और रिस्टोर",
+      "logs": "सिस्टम लॉग"
+    },
+    "reports": {
+      "title": "रिपोर्ट",
+      "generateReport": "रिपोर्ट जनरेट करें",
+      "downloadReport": "रिपोर्ट डाउनलोड करें",
+      "userActivity": "उपयोगकर्ता गतिविधि रिपोर्ट",
+      "applicationStats": "आवेदन आँकड़े",
+      "internshipPerformance": "इंटर्नशिप प्रदर्शन",
+      "regionalAnalytics": "क्षेत्रीय विश्लेषण"
     }
   },
   "errors": {

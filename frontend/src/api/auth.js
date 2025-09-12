@@ -5,6 +5,11 @@ export async function login({ email, password, userType = 'student', remember = 
   return data;
 }
 
+export async function getCurrentUser() {
+  const { data } = await api.get('/auth/me');
+  return data;
+}
+
 export async function registerStudent(form) {
   const formData = new FormData();
   Object.entries(form).forEach(([key, value]) => {
