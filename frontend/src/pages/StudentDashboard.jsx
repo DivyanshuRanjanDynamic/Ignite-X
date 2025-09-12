@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import AIAgent from "../components/AIAgent";
-import WebsiteTour from "../components/WebsiteTour";
-import TourHelper from "../components/TourHelper";
+import MLStatusIndicator from "../components/MLStatusIndicator";
+// Removed WebsiteTour and TourHelper imports
 
 const navClass = ({ isActive }) =>
   `flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-200
@@ -98,7 +98,6 @@ export default function StudentDashboard() {
               to={item.to} 
               className={navClass}
               onClick={closeMobileSidebar}
-              data-tour={item.to}
             >
               <Icon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
               <span className="text-sm sm:text-base">{item.label}</span>
@@ -213,7 +212,7 @@ export default function StudentDashboard() {
         </aside>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-64 lg:w-72 bg-blue-700 text-white p-4 lg:p-6 shadow-xl" data-tour="sidebar">
+        <aside className="hidden md:block w-64 lg:w-72 bg-blue-700 text-white p-4 lg:p-6 shadow-xl">
           <SidebarContent />
         </aside>
 
@@ -234,7 +233,7 @@ export default function StudentDashboard() {
       </div>
       
       {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30" data-tour="mobile-nav">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-30">
         <div className="grid grid-cols-4 gap-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
@@ -263,16 +262,13 @@ export default function StudentDashboard() {
         </div>
       </div>
       
-      {/* AI Agent Component */}
-      <div data-tour="ai-agent">
-        <AIAgent />
+      {/* ML Status Indicator */}
+      <div className="mb-6">
+        <MLStatusIndicator />
       </div>
       
-      {/* Website Tour Component */}
-      <WebsiteTour />
-      
-      {/* Tour Helper Button */}
-      <TourHelper />
+      {/* AI Agent Component */}
+      <AIAgent />
     </div>
   );
 }

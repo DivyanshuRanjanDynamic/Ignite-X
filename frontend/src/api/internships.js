@@ -54,8 +54,20 @@ export async function updateApplicationStatus(id, status) {
 }
 
 // Get internship recommendations for student
-export async function getRecommendations() {
-  const { data } = await api.get('/internships/recommendations');
+export async function getRecommendations(filters = {}) {
+  const params = {};
+  
+  // Add filter parameters if provided
+  if (filters.location) params.location = filters.location;
+  if (filters.skills && filters.skills.length > 0) params.skills = filters.skills.join(',');
+  if (filters.domain) params.domain = filters.domain;
+  if (filters.educationLevel) params.educationLevel = filters.educationLevel;
+  if (filters.minAmount) params.minAmount = filters.minAmount;
+  if (filters.maxAmount) params.maxAmount = filters.maxAmount;
+  if (filters.workPreference) params.workPreference = filters.workPreference;
+  if (filters.duration) params.duration = filters.duration;
+  
+  const { data } = await api.get('/internships/recommendations', { params });
   return data;
 }
 
