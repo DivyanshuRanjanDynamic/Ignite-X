@@ -19,7 +19,6 @@ coverage
 /build
 dist
 dist-ssr
-public/assets
 
 # Misc
 .DS_Store
