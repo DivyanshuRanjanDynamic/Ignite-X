@@ -197,3 +197,4 @@ The system ensures that **internships shown in the student dashboard are actuall
 - `frontend/src/pages/StudentDashboard.jsx` - Added ML status indicator
 
 The system is now fully equipped to ensure real ML-powered recommendations while providing complete transparency about the data source and service status.
+

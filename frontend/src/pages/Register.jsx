@@ -43,6 +43,8 @@ function Register() {
     confirmPassword: "",
     resume: null,
     profilePhoto: null,
+    certificates: [],
+    achievements: [],
   });
 
   // Validation functions
@@ -120,7 +122,20 @@ function Register() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    const newValue = files ? files[0] : value;
+    let newValue;
+    
+    if (files) {
+      // Handle multiple file uploads for certificates and achievements
+      if (name === 'certificates' || name === 'achievements') {
+        newValue = Array.from(files);
+      } else {
+        // Single file upload for resume and profilePhoto
+        newValue = files[0];
+      }
+    } else {
+      newValue = value;
+    }
+    
     setFormData({ ...formData, [name]: newValue });
     
     // Clear error when user starts typing
@@ -1045,6 +1060,92 @@ function Register() {
                           <p className="text-sm text-gray-400">PDF, DOC, DOCX (Max 10MB)</p>
                         </label>
                       </div>
+                    </div>
+
+                    {/* Certificates Upload */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                        🏆 Upload Certificates (Optional)
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        Showcase your achievements! Upload certificates, awards, or any recognition documents.
+                      </p>
+                      <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition">
+                        <input
+                          type="file"
+                          name="certificates"
+                          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
+                          onChange={handleChange}
+                          multiple
+                          className="hidden"
+                          id="certificates-upload"
+                        />
+                        <label htmlFor="certificates-upload" className="cursor-pointer">
+                          <div className="text-gray-400 mb-2">
+                            <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                          </div>
+                          <p className="text-gray-600">Click to upload certificates</p>
+                          <p className="text-sm text-gray-400">PDF, DOC, DOCX, JPG, PNG (Max 5MB each, up to 5 files)</p>
+                        </label>
+                      </div>
+                      {formData.certificates && formData.certificates.length > 0 && (
+                        <div className="mt-3">
+                          <p className="text-sm text-gray-600 mb-2">Selected certificates:</p>
+                          <div className="space-y-1">
+                            {Array.from(formData.certificates).map((file, index) => (
+                              <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                                <span className="text-sm text-gray-700">{file.name}</span>
+                                <span className="text-xs text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Achievements Upload */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                        🎯 Upload Achievements (Optional)
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        Share your accomplishments! Upload project portfolios, competition results, or any other achievements.
+                      </p>
+                      <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition">
+                        <input
+                          type="file"
+                          name="achievements"
+                          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp"
+                          onChange={handleChange}
+                          multiple
+                          className="hidden"
+                          id="achievements-upload"
+                        />
+                        <label htmlFor="achievements-upload" className="cursor-pointer">
+                          <div className="text-gray-400 mb-2">
+                            <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                          </div>
+                          <p className="text-gray-600">Click to upload achievements</p>
+                          <p className="text-sm text-gray-400">PDF, DOC, DOCX, JPG, PNG (Max 5MB each, up to 5 files)</p>
+                        </label>
+                      </div>
+                      {formData.achievements && formData.achievements.length > 0 && (
+                        <div className="mt-3">
+                          <p className="text-sm text-gray-600 mb-2">Selected achievements:</p>
+                          <div className="space-y-1">
+                            {Array.from(formData.achievements).map((file, index) => (
+                              <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                                <span className="text-sm text-gray-700">{file.name}</span>
+                                <span className="text-xs text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div>

@@ -17,6 +17,8 @@ class UploadService {
     this.maxFileSize = {
       resume: 5 * 1024 * 1024, // 5MB for resumes
       profilePhoto: 2 * 1024 * 1024, // 2MB for profile photos
+      certificate: 5 * 1024 * 1024, // 5MB for certificates
+      achievement: 5 * 1024 * 1024, // 5MB for achievements
     };
     
     this.allowedMimeTypes = {
@@ -26,6 +28,24 @@ class UploadService {
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       ],
       profilePhoto: [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+      ],
+      certificate: [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+      ],
+      achievement: [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'image/jpeg',
         'image/jpg',
         'image/png',
@@ -51,7 +71,7 @@ class UploadService {
           {
             folder,
             resource_type: 'auto',
-            allowed_formats: folder === 'resumes' ? ['pdf', 'doc', 'docx'] : ['jpg', 'jpeg', 'png', 'webp'],
+            allowed_formats: this.getAllowedFormats(folder),
             use_filename: true,
             unique_filename: true,
             overwrite: false,
@@ -83,6 +103,26 @@ class UploadService {
   }
 
   /**
+   * Get allowed formats for Cloudinary upload based on folder
+   * @param {String} folder - Folder name
+   * @returns {Array} Allowed formats
+   */
+  getAllowedFormats(folder) {
+    switch (folder) {
+      case 'resumes':
+        return ['pdf', 'doc', 'docx'];
+      case 'certificates':
+        return ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'webp'];
+      case 'achievements':
+        return ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'webp'];
+      case 'profile-photos':
+        return ['jpg', 'jpeg', 'png', 'webp'];
+      default:
+        return ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'webp'];
+    }
+  }
+
+  /**
    * Generate unique filename
    */
   generateFilename(originalName, type) {
@@ -97,6 +137,15 @@ class UploadService {
    */
   validateFile(file, type) {
     const errors = [];
+
+    // Check if type is supported
+    if (!this.allowedMimeTypes[type]) {
+      errors.push({
+        field: type,
+        message: `Unsupported file type: ${type}`,
+      });
+      return errors;
+    }
 
     // Check file type
     if (!this.allowedMimeTypes[type].includes(file.mimetype)) {
@@ -126,7 +175,17 @@ class UploadService {
     const storage = multer.memoryStorage();
 
     const fileFilter = (req, file, cb) => {
-      const fieldType = file.fieldname === 'resume' ? 'resume' : 'profilePhoto';
+      // Map field names to types
+      const fieldTypeMap = {
+        'resume': 'resume',
+        'profilePhoto': 'profilePhoto',
+        'certificate': 'certificate',
+        'achievement': 'achievement',
+        'certificates': 'certificate',
+        'achievements': 'achievement'
+      };
+      
+      const fieldType = fieldTypeMap[file.fieldname] || 'resume';
       const errors = this.validateFile(file, fieldType);
       
       if (errors.length > 0) {
@@ -142,8 +201,13 @@ class UploadService {
       storage,
       fileFilter,
       limits: {
-        fileSize: Math.max(this.maxFileSize.resume, this.maxFileSize.profilePhoto),
-        files: 2, // resume + profile photo
+        fileSize: Math.max(
+          this.maxFileSize.resume, 
+          this.maxFileSize.profilePhoto,
+          this.maxFileSize.certificate,
+          this.maxFileSize.achievement
+        ),
+        files: 10, // Allow multiple files for certificates and achievements
       },
     });
   }
@@ -157,7 +221,18 @@ class UploadService {
     return upload.fields([
       { name: 'resume', maxCount: 1 },
       { name: 'profilePhoto', maxCount: 1 },
+      { name: 'certificates', maxCount: 5 }, // Allow up to 5 certificates
+      { name: 'achievements', maxCount: 5 }, // Allow up to 5 achievements
     ]);
+  }
+
+  /**
+   * Upload middleware for single file upload
+   */
+  getSingleUploadMiddleware() {
+    const upload = this.getMulterConfig();
+    
+    return upload.single('file');
   }
 
   /**
@@ -216,14 +291,21 @@ class UploadService {
   /**
    * Process uploaded file
    * @param {Object} file - File object from multer
-   * @param {String} type - File type ('resume' or 'profilePhoto')
+   * @param {String} type - File type ('resume', 'profilePhoto', 'certificate', 'achievement')
    * @returns {Promise<Object>} File metadata including URL
    */
   async processUpload(file, type) {
     try {
       if (!file) return null;
       
-      const folder = type === 'resume' ? 'resumes' : 'profile-photos';
+      const folderMap = {
+        'resume': 'resumes',
+        'profilePhoto': 'profile-photos',
+        'certificate': 'certificates',
+        'achievement': 'achievements'
+      };
+      
+      const folder = folderMap[type] || 'documents';
       const result = await this.uploadToCloudinary(file, folder);
       
       return {
@@ -237,6 +319,30 @@ class UploadService {
       logger.error('Failed to process upload', {
         error: error.message,
         type,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Process multiple uploaded files
+   * @param {Array} files - Array of file objects from multer
+   * @param {String} type - File type ('certificate', 'achievement')
+   * @returns {Promise<Array>} Array of file metadata including URLs
+   */
+  async processMultipleUploads(files, type) {
+    try {
+      if (!files || files.length === 0) return [];
+      
+      const uploadPromises = files.map(file => this.processUpload(file, type));
+      const results = await Promise.all(uploadPromises);
+      
+      return results.filter(result => result !== null);
+    } catch (error) {
+      logger.error('Failed to process multiple uploads', {
+        error: error.message,
+        type,
+        fileCount: files?.length || 0,
       });
       throw error;
     }

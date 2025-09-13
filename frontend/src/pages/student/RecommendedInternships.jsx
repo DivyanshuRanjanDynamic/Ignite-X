@@ -168,7 +168,7 @@ export default function RecommendedInternships() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-4 sm:space-y-0">
           <div className="flex-1">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 flex items-center">
-              <h3 className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600" />
+              <span className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 text-blue-600"></span>
               <span className="break-words">{t('recommendations.title')}</span>
             </h1>
             <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">

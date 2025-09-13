@@ -16,7 +16,9 @@
     "prisma:studio": "prisma studio",
     "seed": "node prisma/seed.js",
     "seed:admins": "node src/scripts/simpleAdminSeed.js",
-    "setup:admins": "npm run seed:admins"
+    "setup:admins": "npm run seed:admins",
+    "migrate:resume-v2": "node scripts/migrate-resume-v2.js",
+    "migrate:rollback": "node scripts/migrate-resume-v2.js rollback"
   },
   "keywords": [
     "internship",

@@ -47,6 +47,34 @@ router.post(
   userController.uploadResume
 );
 
+// File management routes
+/**
+ * @route GET /api/v1/users/files/:category?
+ * @desc Get user files by category (optional)
+ * @access Private
+ */
+router.get('/files/:category?', authenticate, userController.getUserFiles);
+
+/**
+ * @route DELETE /api/v1/users/files/:fileId
+ * @desc Delete user file
+ * @access Private
+ */
+router.delete('/files/:fileId', authenticate, userController.deleteUserFile);
+
+/**
+ * @route POST /api/v1/users/files/upload
+ * @desc Upload new file
+ * @access Private
+ */
+router.post(
+  '/files/upload',
+  authenticate,
+  uploadService.getSingleUploadMiddleware(),
+  uploadService.handleUploadError,
+  userController.uploadFile
+);
+
 // User settings and preferences
 /**
  * @route PUT /api/v1/users/settings
