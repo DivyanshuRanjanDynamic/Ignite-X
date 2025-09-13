@@ -6,6 +6,8 @@ import internshipRoutes from './internshipRoutes.js';
 import applicationRoutes from './applicationRoutes.js';
 import notificationRoutes from './notificationRoutes.js';
 import mlStatusRoutes from './mlStatusRoutes.js';
+import resumeRoutes from './resumeRoutes.js';
+import requiredSkillsRoutes from './requiredSkillsRoutes.js';
 
 const router = express.Router();
 
@@ -35,6 +37,8 @@ router.get('/', (req, res) => {
       notifications: '/api/v1/notifications',
       mlStatus: '/api/v1/ml-status',
       dashboard: '/api/v1/dashboard',
+      resumes: '/api/v1/resumes',
+      requiredSkills: '/api/v1/required-skills',
     },
     timestamp: new Date().toISOString(),
   });
@@ -48,6 +52,10 @@ router.use('/internships', internshipRoutes);
 router.use('/applications', applicationRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/ml-status', mlStatusRoutes);
+
+// V1 API routes (previously V2, now changed to match frontend)
+router.use('/resumes', resumeRoutes);
+router.use('/required-skills', requiredSkillsRoutes);
 
 // Dashboard route (import function)
 router.get('/dashboard', async (req, res, next) => {

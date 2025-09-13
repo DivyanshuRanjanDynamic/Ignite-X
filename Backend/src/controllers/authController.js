@@ -176,6 +176,8 @@ class AuthController {
       // Handle file uploads to Cloudinary
       let resumeData = null;
       let profilePhotoData = null;
+      let certificatesData = [];
+      let achievementsData = [];
 
       if (req.files) {
         if (req.files.resume && req.files.resume[0]) {
@@ -183,6 +185,12 @@ class AuthController {
         }
         if (req.files.profilePhoto && req.files.profilePhoto[0]) {
           profilePhotoData = await uploadService.processUpload(req.files.profilePhoto[0], 'profilePhoto');
+        }
+        if (req.files.certificates && req.files.certificates.length > 0) {
+          certificatesData = await uploadService.processMultipleUploads(req.files.certificates, 'certificate');
+        }
+        if (req.files.achievements && req.files.achievements.length > 0) {
+          achievementsData = await uploadService.processMultipleUploads(req.files.achievements, 'achievement');
         }
       }
 
@@ -271,6 +279,46 @@ class AuthController {
             category: 'PROFILE_PICTURE',
           },
         });
+      }
+
+      // Store certificates metadata
+      if (certificatesData.length > 0) {
+        const certificatePromises = certificatesData.map((certData, index) => {
+          const originalFile = req.files.certificates[index];
+          return database.prisma.file.create({
+            data: {
+              userId: newUser.id,
+              fileName: certData.publicId,
+              originalName: originalFile.originalname,
+              fileUrl: certData.url,
+              publicId: certData.publicId,
+              mimeType: originalFile.mimetype,
+              fileSize: certData.size,
+              category: 'CERTIFICATE',
+            },
+          });
+        });
+        await Promise.all(certificatePromises);
+      }
+
+      // Store achievements metadata
+      if (achievementsData.length > 0) {
+        const achievementPromises = achievementsData.map((achData, index) => {
+          const originalFile = req.files.achievements[index];
+          return database.prisma.file.create({
+            data: {
+              userId: newUser.id,
+              fileName: achData.publicId,
+              originalName: originalFile.originalname,
+              fileUrl: achData.url,
+              publicId: achData.publicId,
+              mimeType: originalFile.mimetype,
+              fileSize: achData.size,
+              category: 'ACHIEVEMENT',
+            },
+          });
+        });
+        await Promise.all(achievementPromises);
       }
 
       // Generate email verification token after user creation

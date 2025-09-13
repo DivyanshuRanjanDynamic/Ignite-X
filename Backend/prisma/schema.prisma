@@ -45,6 +45,8 @@ model User {
   applications  Application[]
   refreshTokens RefreshToken[]
   files         File[]
+  resumes       Resume[]
+  reviewRequests ReviewRequest[]
   notifications Notification[]
   auditLogs     AuditLog[]
   savedInternships SavedInternship[]
@@ -244,6 +246,55 @@ model File {
   @@map("files")
 }
 
+// Resume model - Enhanced resume management with ATS scoring
+model Resume {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  filename      String
+  originalName  String
+  storageUrl    String   // Cloudinary URL
+  previewUrl    String?  // Preview URL for inline viewing
+  publicId      String?  // Cloudinary public ID
+  mimeType      String
+  fileSize      Int
+  atsScore      Float?   // Overall ATS score (0-100)
+  skillScores   Json?    // Map of skill -> score (0-100)
+  extractedText String?  // Extracted text for ATS analysis
+  atsStatus     ATSStatus @default(PENDING)
+  metadata      Json?    // Additional metadata
+  isActive      Boolean  @default(true)
+  uploadedAt    DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewRequests ReviewRequest[]
+
+  @@map("resumes")
+}
+
+// Review Request model - Professional review workflow
+model ReviewRequest {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  resumeId      String   @db.ObjectId
+  userId        String   @db.ObjectId
+  status        ReviewStatus @default(PENDING)
+  priority      Int @default(0)
+  requestedAt   DateTime @default(now())
+  reviewedAt    DateTime?
+  reviewerId    String?  @db.ObjectId
+  reviewNotes   String?
+  rating        Int?     // 1-5 star rating
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  resume        Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  user          User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("review_requests")
+}
+
 // Notification model - User notifications
 model Notification {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -354,6 +405,7 @@ enum FileCategory {
   PROFILE_PICTURE
   COVER_LETTER
   CERTIFICATE
+  ACHIEVEMENT
   PORTFOLIO
   OTHER
 }
@@ -366,4 +418,19 @@ enum NotificationType {
   PROFILE_UPDATE
   SECURITY_ALERT
   GENERAL
+}
+
+enum ATSStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  ERROR
+}
+
+enum ReviewStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }

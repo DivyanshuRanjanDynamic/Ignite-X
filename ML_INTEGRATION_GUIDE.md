@@ -244,3 +244,4 @@ When everything is working correctly:
 - Backend logs show **successful ML service calls**
 
 The system will seamlessly switch between ML-powered and fallback recommendations based on service availability, ensuring students always get quality recommendations while maintaining transparency about the data source.
+

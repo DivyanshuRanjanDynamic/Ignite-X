@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Axios instance with base URL from Vite env
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
   withCredentials: true, // include cookies for refresh tokens if needed
   headers: {
     'Accept': 'application/json'
@@ -44,31 +44,48 @@ api.interceptors.response.use(
           const refreshToken = localStorage.getItem('refreshToken');
           if (!refreshToken) throw new Error('No refresh token');
 
-          const { data } = await api.post('/auth/refresh-token', { refreshToken });
+          const { data } = await api.post('/api/v1/auth/refresh-token', { refreshToken });
           const newAccess = data?.data?.accessToken || data?.accessToken;
           if (!newAccess) throw new Error('No new access token');
 
+          // Update tokens in localStorage
           localStorage.setItem('accessToken', newAccess);
+          if (data?.data?.refreshToken || data?.refreshToken) {
+            localStorage.setItem('refreshToken', data?.data?.refreshToken || data?.refreshToken);
+          }
+
+          // Update auth header for original request
+          api.defaults.headers.common['Authorization'] = `Bearer ${newAccess}`;
+          originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+
+          // Process pending requests
           onRefreshed(newAccess);
+
+          // Retry original request
           return api(originalRequest);
-        } catch (refreshErr) {
-          // Clear tokens and propagate error
+        } catch (err) {
+          // Clear tokens on refresh failure
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
-          window.dispatchEvent(new CustomEvent('authStateChanged', { detail: { isAuthenticated: false } }));
-          return Promise.reject(refreshErr);
+          
+          // Dispatch auth state change if available
+          if (window.dispatchEvent) {
+            window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { isAuthenticated: false } }));
+          }
+          
+          return Promise.reject(err);
         } finally {
           isRefreshing = false;
         }
-      }
-
-      // Queue requests while refreshing
-      return new Promise((resolve) => {
-        pendingRequests.push((newToken) => {
-          if (newToken) originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          resolve(api(originalRequest));
+      } else {
+        // Queue requests while refreshing
+        return new Promise(resolve => {
+          pendingRequests.push(token => {
+            originalRequest.headers['Authorization'] = `Bearer ${token}`;
+            resolve(api(originalRequest));
+          });
         });
-      });
+      }
     }
 
     return Promise.reject(error);

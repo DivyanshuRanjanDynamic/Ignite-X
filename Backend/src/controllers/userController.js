@@ -293,6 +293,229 @@ class UserController {
   }
 
   /**
+   * Get user files by category
+   * GET /api/v1/users/files/:category?
+   */
+  async getUserFiles(req, res) {
+    try {
+      const userId = req.user.id;
+      const { category } = req.params;
+      
+      const whereClause = {
+        userId,
+        isActive: true
+      };
+      
+      if (category) {
+        whereClause.category = category.toUpperCase();
+      }
+      
+      const files = await database.prisma.file.findMany({
+        where: whereClause,
+        select: {
+          id: true,
+          fileName: true,
+          originalName: true,
+          fileUrl: true,
+          mimeType: true,
+          fileSize: true,
+          category: true,
+          createdAt: true,
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+      
+      res.json({
+        success: true,
+        data: {
+          files,
+          totalCount: files.length
+        },
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      logger.error('Failed to get user files', {
+        error: error.message,
+        userId: req.user.id,
+        category: req.params.category
+      });
+      
+      res.status(500).json({
+        success: false,
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: 'Failed to retrieve files'
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  /**
+   * Delete user file
+   * DELETE /api/v1/users/files/:fileId
+   */
+  async deleteUserFile(req, res) {
+    try {
+      const { fileId } = req.params;
+      const userId = req.user.id;
+      
+      // Find the file and verify ownership
+      const file = await database.prisma.file.findFirst({
+        where: {
+          id: fileId,
+          userId,
+          isActive: true
+        }
+      });
+      
+      if (!file) {
+        return res.status(404).json({
+          success: false,
+          error: {
+            code: 'FILE_NOT_FOUND',
+            message: 'File not found or you do not have permission to delete it'
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Delete from Cloudinary
+      if (file.publicId) {
+        await uploadService.deleteFile(file.publicId);
+      }
+      
+      // Mark as inactive in database
+      await database.prisma.file.update({
+        where: { id: fileId },
+        data: { isActive: false }
+      });
+      
+      logger.info('File deleted successfully', {
+        fileId,
+        userId,
+        fileName: file.fileName
+      });
+      
+      res.json({
+        success: true,
+        message: 'File deleted successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      logger.error('Failed to delete file', {
+        error: error.message,
+        fileId: req.params.fileId,
+        userId: req.user.id
+      });
+      
+      res.status(500).json({
+        success: false,
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: 'Failed to delete file'
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  /**
+   * Upload new file
+   * POST /api/v1/users/files/upload
+   */
+  async uploadFile(req, res) {
+    try {
+      const userId = req.user.id;
+      const { category } = req.body;
+      
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          error: {
+            code: 'NO_FILE_UPLOADED',
+            message: 'No file uploaded'
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      const file = req.file;
+      const fileType = category || 'OTHER';
+      
+      // Process upload
+      const uploadData = await uploadService.processUpload(file, fileType.toLowerCase());
+      
+      if (!uploadData) {
+        return res.status(500).json({
+          success: false,
+          error: {
+            code: 'UPLOAD_FAILED',
+            message: 'Failed to upload file'
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Save file metadata to database
+      const savedFile = await database.prisma.file.create({
+        data: {
+          userId,
+          fileName: uploadData.publicId,
+          originalName: file.originalname,
+          fileUrl: uploadData.url,
+          publicId: uploadData.publicId,
+          mimeType: file.mimetype,
+          fileSize: uploadData.size,
+          category: fileType.toUpperCase(),
+        },
+      });
+      
+      logger.info('File uploaded successfully', {
+        fileId: savedFile.id,
+        userId,
+        fileName: file.originalname,
+        category: fileType
+      });
+      
+      res.json({
+        success: true,
+        data: {
+          file: {
+            id: savedFile.id,
+            fileName: savedFile.fileName,
+            originalName: savedFile.originalName,
+            fileUrl: savedFile.fileUrl,
+            mimeType: savedFile.mimeType,
+            fileSize: savedFile.fileSize,
+            category: savedFile.category,
+            createdAt: savedFile.createdAt,
+          }
+        },
+        message: 'File uploaded successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      logger.error('Failed to upload file', {
+        error: error.message,
+        userId: req.user.id,
+        category: req.body.category
+      });
+      
+      res.status(500).json({
+        success: false,
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: 'Failed to upload file'
+        },
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  /**
    * Get dashboard data
    * GET /api/v1/dashboard
    */
