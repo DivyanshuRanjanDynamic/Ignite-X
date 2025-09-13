@@ -7,11 +7,11 @@ import logger from '../config/logger.js';
 
 class UploadService {
   constructor() {
-    // Configure Cloudinary
+    // Configure Cloudinary with fallback values
     cloudinary.v2.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'demo_cloud',
+      api_key: process.env.CLOUDINARY_API_KEY || 'demo_key',
+      api_secret: process.env.CLOUDINARY_API_SECRET || 'demo_secret',
     });
     
     this.maxFileSize = {
@@ -298,6 +298,18 @@ class UploadService {
     try {
       if (!file) return null;
       
+      // Check if Cloudinary is properly configured
+      if (!process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME === 'demo_cloud') {
+        logger.warn('Cloudinary not configured, using mock upload for development');
+        return {
+          url: `https://demo-cloudinary.com/mock-${type}-${Date.now()}.pdf`,
+          publicId: `mock-${type}-${Date.now()}`,
+          format: 'pdf',
+          size: file.size,
+          createdAt: new Date(),
+        };
+      }
+      
       const folderMap = {
         'resume': 'resumes',
         'profilePhoto': 'profile-photos',
@@ -319,6 +331,7 @@ class UploadService {
       logger.error('Failed to process upload', {
         error: error.message,
         type,
+        stack: error.stack
       });
       throw error;
     }

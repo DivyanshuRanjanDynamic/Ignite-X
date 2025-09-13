@@ -19,11 +19,11 @@ export class FeatureFlagService {
    * Load default feature flags from environment
    */
   loadDefaultFlags() {
-    // Resume V2 feature flag
+    // Resume V2 feature flag - Enable by default for development
     this.flags.set('resume_v2', {
-      enabled: process.env.FEATURE_RESUME_V2 === 'true',
+      enabled: process.env.FEATURE_RESUME_V2 === 'true' || process.env.NODE_ENV === 'development',
       description: 'Enhanced resume upload with ATS scoring',
-      rolloutPercentage: parseInt(process.env.FEATURE_RESUME_V2_ROLLOUT || '0'),
+      rolloutPercentage: parseInt(process.env.FEATURE_RESUME_V2_ROLLOUT || '100'),
       targetUsers: process.env.FEATURE_RESUME_V2_USERS?.split(',') || [],
       targetRoles: process.env.FEATURE_RESUME_V2_ROLES?.split(',') || ['STUDENT']
     });

@@ -13,20 +13,33 @@ import featureFlagService from '../services/featureFlagService.js';
 
 class ResumeController {
   constructor() {
-    // Initialize storage adapter
-    this.storageAdapter = StorageAdapterFactory.create({
-      type: 'cloudinary',
-      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-      apiKey: process.env.CLOUDINARY_API_KEY,
-      apiSecret: process.env.CLOUDINARY_API_SECRET
-    });
+    try {
+      // Initialize storage adapter with proper error handling
+      this.storageAdapter = StorageAdapterFactory.create({
+        type: 'cloudinary',
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME || 'demo_cloud',
+        apiKey: process.env.CLOUDINARY_API_KEY || 'demo_key',
+        apiSecret: process.env.CLOUDINARY_API_SECRET || 'demo_secret'
+      });
 
-    // Initialize ATS adapter
-    this.atsAdapter = ATSAdapterFactory.create({
-      type: process.env.ATS_ADAPTER_TYPE || 'rule-based',
-      mlServiceUrl: process.env.ML_SERVICE_URL,
-      apiKey: process.env.ML_SERVICE_API_KEY
-    });
+      // Initialize ATS adapter
+      this.atsAdapter = ATSAdapterFactory.create({
+        type: process.env.ATS_ADAPTER_TYPE || 'rule-based',
+        mlServiceUrl: process.env.ML_SERVICE_URL || 'http://localhost:8000',
+        apiKey: process.env.ML_SERVICE_API_KEY || 'demo_ml_key'
+      });
+
+      logger.info('ResumeController initialized successfully', {
+        storageType: 'cloudinary',
+        atsType: process.env.ATS_ADAPTER_TYPE || 'rule-based'
+      });
+    } catch (error) {
+      logger.error('Failed to initialize ResumeController', {
+        error: error.message,
+        stack: error.stack
+      });
+      throw error;
+    }
   }
 
   /**
@@ -35,6 +48,19 @@ class ResumeController {
    */
   async uploadResume(req, res) {
     try {
+      // Check if storage adapter is properly initialized
+      if (!this.storageAdapter) {
+        logger.error('Storage adapter not initialized');
+        return res.status(500).json({
+          success: false,
+          error: {
+            code: 'STORAGE_ADAPTER_ERROR',
+            message: 'Storage service not available'
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+
       // Check feature flag
       if (!req.featureFlags.isEnabled('resume_v2')) {
         return res.status(404).json({
