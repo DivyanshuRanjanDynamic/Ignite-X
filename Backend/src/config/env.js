@@ -67,9 +67,9 @@ const envSchema = Joi.object({
   FROM_NAME: Joi.string().default('PM Internship Platform'),
 
   // File Storage (Cloudinary)
-  CLOUDINARY_CLOUD_NAME: Joi.string().default('your_cloud_name'),
-  CLOUDINARY_API_KEY: Joi.string().default('your_api_key'),
-  CLOUDINARY_API_SECRET: Joi.string().default('your_api_secret'),
+  CLOUDINARY_CLOUD_NAME: Joi.string().default('demo_cloud'),
+  CLOUDINARY_API_KEY: Joi.string().default('demo_key'),
+  CLOUDINARY_API_SECRET: Joi.string().default('demo_secret'),
 
   // OAuth (Optional)
   GOOGLE_CLIENT_ID: Joi.string().default(''),
@@ -79,6 +79,8 @@ const envSchema = Joi.object({
 
   // ML Model API
   ML_API_URL: Joi.string().uri().default('http://localhost:8000'),
+  ML_SERVICE_URL: Joi.string().uri().default('http://localhost:8000'),
+  ML_SERVICE_API_KEY: Joi.string().default('demo_ml_key'),
 
   // Redis (Optional)
   REDIS_URL: Joi.string().default('redis://localhost:6379'),
@@ -100,6 +102,24 @@ const envSchema = Joi.object({
   ENABLE_EMAIL_NOTIFICATIONS: Joi.boolean().default(true),
   ENABLE_FILE_UPLOADS: Joi.boolean().default(true),
   ENABLE_SWAGGER: Joi.boolean().default(true),
+  
+  // Resume V2 Feature Flags
+  FEATURE_RESUME_V2: Joi.boolean().default(true),
+  FEATURE_RESUME_V2_ROLLOUT: Joi.number().default(100),
+  FEATURE_RESUME_V2_USERS: Joi.string().default(''),
+  FEATURE_RESUME_V2_ROLES: Joi.string().default('STUDENT,ADMIN'),
+  
+  // ATS ML Service Feature Flags
+  FEATURE_ATS_ML_SERVICE: Joi.boolean().default(true),
+  FEATURE_ATS_ML_SERVICE_ROLLOUT: Joi.number().default(100),
+  
+  // YouTube Integration Feature Flags
+  FEATURE_YOUTUBE_INTEGRATION: Joi.boolean().default(true),
+  FEATURE_YOUTUBE_INTEGRATION_ROLLOUT: Joi.number().default(100),
+  FEATURE_YOUTUBE_INTEGRATION_ROLES: Joi.string().default('STUDENT'),
+  
+  // ATS Adapter Configuration
+  ATS_ADAPTER_TYPE: Joi.string().default('rule-based'),
 
   // File Upload Settings
   MAX_FILE_SIZE: Joi.number().default(5242880), // 5MB
@@ -211,6 +231,8 @@ const config = {
   // ML Model API
   ml: {
     apiUrl: envVars.ML_API_URL,
+    serviceUrl: envVars.ML_SERVICE_URL,
+    apiKey: envVars.ML_SERVICE_API_KEY,
   },
 
   // Redis
@@ -242,6 +264,24 @@ const config = {
     emailNotifications: envVars.ENABLE_EMAIL_NOTIFICATIONS,
     fileUploads: envVars.ENABLE_FILE_UPLOADS,
     swagger: envVars.ENABLE_SWAGGER,
+    resumeV2: envVars.FEATURE_RESUME_V2,
+    atsMlService: envVars.FEATURE_ATS_ML_SERVICE,
+    youtubeIntegration: envVars.FEATURE_YOUTUBE_INTEGRATION,
+  },
+
+  // Resume V2 Feature Flags
+  resumeV2: {
+    enabled: envVars.FEATURE_RESUME_V2,
+    rolloutPercentage: envVars.FEATURE_RESUME_V2_ROLLOUT,
+    targetUsers: envVars.FEATURE_RESUME_V2_USERS.split(',').filter(u => u.trim()),
+    targetRoles: envVars.FEATURE_RESUME_V2_ROLES.split(',').filter(r => r.trim()),
+  },
+
+  // ATS Configuration
+  ats: {
+    adapterType: envVars.ATS_ADAPTER_TYPE,
+    mlServiceUrl: envVars.ML_SERVICE_URL,
+    mlServiceApiKey: envVars.ML_SERVICE_API_KEY,
   },
 
   // File Upload

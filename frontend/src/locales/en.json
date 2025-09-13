@@ -25,6 +25,7 @@
   "navigation": {
     "home": "Home",
     "dashboard": "Dashboard",
+    "student": "Student Dashboard",
     "profile": "My Profile",
     "settings": "Settings",
     "logout": "Logout",

@@ -81,6 +81,25 @@ export class CloudinaryStorageAdapter extends IStorageAdapter {
    */
   async upload(fileBuffer, filename, options = {}) {
     try {
+      // Check if Cloudinary is properly configured
+      if (!this.config.cloudName || this.config.cloudName === 'demo_cloud') {
+        logger.warn('Cloudinary not configured, using mock upload for development');
+        return {
+          url: `https://demo-cloudinary.com/mock-${filename}`,
+          publicId: `mock-${Date.now()}-${filename}`,
+          format: filename.split('.').pop() || 'pdf',
+          size: fileBuffer.length,
+          width: 800,
+          height: 1000,
+          createdAt: new Date(),
+          metadata: {
+            originalFilename: filename,
+            folder: options.folder || 'resumes',
+            tags: options.tags || ['resume-v2']
+          }
+        };
+      }
+
       const {
         folder = 'resumes',
         resourceType = 'auto',

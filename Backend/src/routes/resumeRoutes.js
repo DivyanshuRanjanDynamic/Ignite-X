@@ -24,7 +24,7 @@ router.post(
   authenticate,
   uploadService.getSingleUploadMiddleware(),
   uploadService.handleUploadError,
-  resumeController.uploadResume
+  resumeController.uploadResume.bind(resumeController)
 );
 
 /**
@@ -35,7 +35,7 @@ router.post(
 router.get(
   '/:id/preview',
   authenticate,
-  resumeController.getResumePreview
+  resumeController.getResumePreview.bind(resumeController)
 );
 
 /**
@@ -46,7 +46,7 @@ router.get(
 router.get(
   '/:id/download',
   authenticate,
-  resumeController.downloadResume
+  resumeController.downloadResume.bind(resumeController)
 );
 
 /**
@@ -57,7 +57,7 @@ router.get(
 router.get(
   '/:id/analytics',
   authenticate,
-  resumeController.getResumeAnalytics
+  resumeController.getResumeAnalytics.bind(resumeController)
 );
 
 /**
@@ -68,7 +68,7 @@ router.get(
 router.post(
   '/:id/request_review',
   authenticate,
-  resumeController.requestReview
+  resumeController.requestReview.bind(resumeController)
 );
 
 /**
@@ -79,7 +79,7 @@ router.post(
 router.get(
   '/compare',
   authenticate,
-  resumeController.compareResumes
+  resumeController.compareResumes.bind(resumeController)
 );
 
 export default router;

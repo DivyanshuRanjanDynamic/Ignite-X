@@ -281,7 +281,7 @@ export default function ResumeUpload() {
               <div>
                 <p className="text-gray-600 text-sm">Resumes Uploaded</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {userFiles.filter(f => f.category === 'RESUME').length}
+                  {userFiles ? userFiles.filter(f => f.category === 'RESUME').length : 0}
                 </p>
               </div>
               <FileText className="w-8 h-8 text-blue-600" />
@@ -292,7 +292,7 @@ export default function ResumeUpload() {
               <div>
                 <p className="text-gray-600 text-sm">Certificates</p>
                 <p className="text-2xl font-bold text-yellow-600">
-                  {userFiles.filter(f => f.category === 'CERTIFICATE').length}
+                  {userFiles ? userFiles.filter(f => f.category === 'CERTIFICATE').length : 0}
                 </p>
               </div>
               <Award className="w-8 h-8 text-yellow-600" />
@@ -303,7 +303,7 @@ export default function ResumeUpload() {
               <div>
                 <p className="text-gray-600 text-sm">Achievements</p>
                 <p className="text-2xl font-bold text-purple-600">
-                  {userFiles.filter(f => f.category === 'ACHIEVEMENT').length}
+                  {userFiles ? userFiles.filter(f => f.category === 'ACHIEVEMENT').length : 0}
                 </p>
               </div>
               <Star className="w-8 h-8 text-purple-600" />
@@ -313,7 +313,7 @@ export default function ResumeUpload() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Total Files</p>
-                <p className="text-2xl font-bold text-green-600">{userFiles.length}</p>
+                <p className="text-2xl font-bold text-green-600">{userFiles ? userFiles.length : 0}</p>
               </div>
               <HardDrive className="w-8 h-8 text-green-600" />
             </div>
@@ -403,25 +403,31 @@ export default function ResumeUpload() {
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-gray-900">ATS Analysis Results</h3>
-                <div className={`px-4 py-2 rounded-full text-lg font-bold ${getScoreBgColor(atsScore.overallScore)} ${getScoreColor(atsScore.overallScore)}`}>
-                  {atsScore.overallScore}%
+                <div className={`px-4 py-2 rounded-full text-lg font-bold ${getScoreBgColor(atsScore.overallScore || 0)} ${getScoreColor(atsScore.overallScore || 0)}`}>
+                  {atsScore.overallScore || 0}%
                 </div>
               </div>
 
               <div className="space-y-4">
-                {atsScore.sections.map((section, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      {getStatusIcon(section.status)}
-                      <span className="font-medium text-gray-900">{section.name}</span>
+                {atsScore.sections && atsScore.sections.length > 0 ? (
+                  atsScore.sections.map((section, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        {getStatusIcon(section.status)}
+                        <span className="font-medium text-gray-900">{section.name}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className={`font-bold ${getScoreColor(section.score)}`}>
+                          {section.score}%
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <span className={`font-bold ${getScoreColor(section.score)}`}>
-                        {section.score}%
-                      </span>
-                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    No detailed analysis available
                   </div>
-                ))}
+                )}
               </div>
             </motion.div>
           )}
@@ -499,12 +505,18 @@ export default function ResumeUpload() {
                 Improvement Suggestions
               </h3>
               <div className="space-y-3">
-                {atsScore.suggestions.map((suggestion, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-yellow-600 mt-1" />
-                    <p className="text-sm text-gray-700">{suggestion}</p>
+                {atsScore.suggestions && atsScore.suggestions.length > 0 ? (
+                  atsScore.suggestions.map((suggestion, index) => (
+                    <div key={index} className="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg">
+                      <AlertCircle className="w-5 h-5 text-yellow-600 mt-1" />
+                      <p className="text-sm text-gray-700">{suggestion}</p>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    No suggestions available
                   </div>
-                ))}
+                )}
               </div>
             </motion.div>
           )}
@@ -595,9 +607,10 @@ export default function ResumeUpload() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userFiles
-              .filter(file => activeTab === 'all' || file.category.toLowerCase() === activeTab)
-              .map((file) => (
+            {userFiles && userFiles.length > 0 ? (
+              userFiles
+                .filter(file => activeTab === 'all' || file.category.toLowerCase() === activeTab)
+                .map((file) => (
                 <div key={file.id} className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
                   <div className="flex items-center justify-between mb-4">
                     {getFileIcon(file.mimeType)}
@@ -647,7 +660,16 @@ export default function ResumeUpload() {
                     </button>
                   </div>
                 </div>
-              ))}
+                ))
+              ) : (
+                <div className="col-span-full text-center py-12">
+                  <div className="w-16 h-16 mx-auto mb-4 text-gray-400">
+                    <File className="w-full h-full" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">No files found</h4>
+                  <p className="text-gray-600">Upload some files to get started</p>
+                </div>
+              )}
           </div>
         )}
 
@@ -665,13 +687,13 @@ export default function ResumeUpload() {
         {activeTab === 'compare' && (
           <div className="bg-white rounded-2xl p-6 shadow-lg">
             <ResumeComparison 
-              userResumes={userFiles.filter(file => file.category === 'RESUME')} 
+              userResumes={userFiles ? userFiles.filter(file => file.category === 'RESUME') : []} 
             />
           </div>
         )}
         
         {/* Empty State */}
-        {!loading && activeTab !== 'keywords' && activeTab !== 'compare' && userFiles.filter(file => activeTab === 'all' || file.category.toLowerCase() === activeTab).length === 0 && (
+        {!loading && activeTab !== 'keywords' && activeTab !== 'compare' && (!userFiles || userFiles.filter(file => activeTab === 'all' || file.category.toLowerCase() === activeTab).length === 0) && (
           <div className="text-center py-12">
             <div className="w-16 h-16 mx-auto mb-4 text-gray-400">
               {activeTab === 'resume' ? <FileText className="w-full h-full" /> :
