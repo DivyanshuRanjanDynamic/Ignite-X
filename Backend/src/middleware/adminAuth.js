@@ -4,7 +4,7 @@ import logger from '../config/logger.js';
 const AUTHORIZED_ADMIN_EMAILS = [
   'divyanshuchannel2@gmail.com',
   'singhmanvi5983@gmail.com', 
-  'analyst@pminternship.gov.in',
+  'ashishalways45@gmail.com',
   'operations@pminternship.gov.in'
 ];
 

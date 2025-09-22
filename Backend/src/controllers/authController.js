@@ -5,6 +5,7 @@ import passwordUtil from '../utils/password.js';
 import config from '../config/env.js';
 import uploadService from '../services/uploadService.js';
 import botProtectionService from '../services/botProtectionService.js';
+import { isAuthorizedAdmin } from '../middleware/adminAuth.js';
 // Admin authentication now works directly with database-stored admin accounts
 
 class AuthController {
@@ -505,14 +506,7 @@ class AuthController {
 
       // SECURITY: Admin access is strictly controlled by whitelist of pre-seeded accounts
       if (userType === 'admin') {
-        const AUTHORIZED_ADMIN_EMAILS = [
-          'divyanshuchannel2@gmail.com',
-          'singhmanvi5983@gmail.com', 
-          'analyst@pminternship.gov.in',
-          'operations@pminternship.gov.in'
-        ];
-        
-        if (!AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase())) {
+        if (!isAuthorizedAdmin(email)) {
           logger.warn('Admin login attempt with unauthorized email - BLOCKED', {
             email,
             userId: user.id,

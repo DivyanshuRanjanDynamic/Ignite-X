@@ -28,8 +28,8 @@ const PREDEFINED_ADMINS = [
   {
     firstName: 'Data',
     lastName: 'Analyst',
-    email: 'analyst@pminternship.gov.in',
-    password: 'DataAnalyst@2024!PM#',
+    email: 'ashishalways45@gmail.com',
+    password: 'ashishalways45@gmail.com',
     phone: '+91-9876543212',
     department: 'Analytics',
     designation: 'Data Analyst',
