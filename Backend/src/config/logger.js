@@ -7,9 +7,9 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Create logs directory if it doesn't exist
+// Create logs directory if it doesn't exist (skip on Vercel as it is read-only)
 const logsDir = join(__dirname, '../../logs');
-if (!fs.existsSync(logsDir)) {
+if (!process.env.VERCEL && !fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
 
@@ -67,8 +67,8 @@ transports.push(
   })
 );
 
-// File transports (only in non-test environment)
-if (process.env.NODE_ENV !== 'test') {
+// File transports (only in non-test and non-Vercel environment)
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   // Error logs - separate file for errors only
   transports.push(
     new DailyRotateFile({

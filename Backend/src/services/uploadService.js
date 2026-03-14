@@ -13,14 +13,14 @@ class UploadService {
       api_key: process.env.CLOUDINARY_API_KEY || 'demo_key',
       api_secret: process.env.CLOUDINARY_API_SECRET || 'demo_secret',
     });
-    
+
     this.maxFileSize = {
       resume: 5 * 1024 * 1024, // 5MB for resumes
       profilePhoto: 2 * 1024 * 1024, // 2MB for profile photos
       certificate: 5 * 1024 * 1024, // 5MB for certificates
       achievement: 5 * 1024 * 1024, // 5MB for achievements
     };
-    
+
     this.allowedMimeTypes = {
       resume: [
         'application/pdf',
@@ -52,7 +52,7 @@ class UploadService {
         'image/webp',
       ],
     };
-    
+
     logger.info('Cloudinary upload service initialized', {
       cloudName: process.env.CLOUDINARY_CLOUD_NAME,
     });
@@ -82,16 +82,16 @@ class UploadService {
             resolve(result);
           }
         );
-        
+
         uploadStream.end(file.buffer);
       });
-      
+
       logger.info(`File uploaded to Cloudinary successfully`, {
         publicId: result.public_id,
         url: result.secure_url,
         folder,
       });
-      
+
       return result;
     } catch (error) {
       logger.error('Failed to upload file to Cloudinary', {
@@ -184,16 +184,16 @@ class UploadService {
         'certificates': 'certificate',
         'achievements': 'achievement'
       };
-      
+
       const fieldType = fieldTypeMap[file.fieldname] || 'resume';
       const errors = this.validateFile(file, fieldType);
-      
+
       if (errors.length > 0) {
         const error = new Error(errors[0].message);
         error.field = fieldType;
         return cb(error, false);
       }
-      
+
       cb(null, true);
     };
 
@@ -202,7 +202,7 @@ class UploadService {
       fileFilter,
       limits: {
         fileSize: Math.max(
-          this.maxFileSize.resume, 
+          this.maxFileSize.resume,
           this.maxFileSize.profilePhoto,
           this.maxFileSize.certificate,
           this.maxFileSize.achievement
@@ -217,7 +217,7 @@ class UploadService {
    */
   getUploadMiddleware() {
     const upload = this.getMulterConfig();
-    
+
     return upload.fields([
       { name: 'resume', maxCount: 1 },
       { name: 'profilePhoto', maxCount: 1 },
@@ -231,7 +231,7 @@ class UploadService {
    */
   getSingleUploadMiddleware() {
     const upload = this.getMulterConfig();
-    
+
     return upload.single('file');
   }
 
@@ -247,7 +247,7 @@ class UploadService {
 
     if (error instanceof multer.MulterError) {
       let message = 'File upload error';
-      
+
       switch (error.code) {
         case 'LIMIT_FILE_SIZE':
           message = 'File size too large';
@@ -297,7 +297,7 @@ class UploadService {
   async processUpload(file, type) {
     try {
       if (!file) return null;
-      
+
       // Check if Cloudinary is properly configured
       if (!process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME === 'demo_cloud') {
         logger.warn('Cloudinary not configured, using mock upload for development');
@@ -309,17 +309,17 @@ class UploadService {
           createdAt: new Date(),
         };
       }
-      
+
       const folderMap = {
         'resume': 'resumes',
         'profilePhoto': 'profile-photos',
         'certificate': 'certificates',
         'achievement': 'achievements'
       };
-      
+
       const folder = folderMap[type] || 'documents';
       const result = await this.uploadToCloudinary(file, folder);
-      
+
       return {
         url: result.secure_url,
         publicId: result.public_id,
@@ -346,10 +346,10 @@ class UploadService {
   async processMultipleUploads(files, type) {
     try {
       if (!files || files.length === 0) return [];
-      
+
       const uploadPromises = files.map(file => this.processUpload(file, type));
       const results = await Promise.all(uploadPromises);
-      
+
       return results.filter(result => result !== null);
     } catch (error) {
       logger.error('Failed to process multiple uploads', {
@@ -369,13 +369,13 @@ class UploadService {
   async deleteFile(publicId) {
     try {
       if (!publicId) return false;
-      
+
       const result = await cloudinary.v2.uploader.destroy(publicId);
-      
+
       logger.info(`Deleted file from Cloudinary: ${publicId}`, {
         result,
       });
-      
+
       return result.result === 'ok';
     } catch (error) {
       logger.error('Failed to delete file from Cloudinary', {
@@ -394,7 +394,7 @@ class UploadService {
   async getResourceInfo(publicId) {
     try {
       if (!publicId) return null;
-      
+
       const result = await cloudinary.v2.api.resource(publicId);
       return result;
     } catch (error) {
@@ -405,7 +405,7 @@ class UploadService {
       return null;
     }
   }
-  
+
   /**
    * Get resource usage statistics
    * @returns {Promise<Object>} Cloudinary usage statistics
