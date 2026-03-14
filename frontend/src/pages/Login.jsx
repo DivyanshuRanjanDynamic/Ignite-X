@@ -61,7 +61,14 @@ function Login() {
   }, [searchParams]);
 
   const handleOAuthLogin = (provider) => {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+    let baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+    
+    // Safety check: Ensure baseUrl ends with /api/v1 if running in production
+    // (Vercel deployment variables sometimes miss the trailing path)
+    if (!baseUrl.includes('/api/v')) {
+       baseUrl = baseUrl.replace(/\/$/, '') + '/api/v1';
+    }
+
     const oauthUrl = `${baseUrl}/auth/oauth/${provider}?userType=${userType}`;
     window.location.href = oauthUrl;
   };
