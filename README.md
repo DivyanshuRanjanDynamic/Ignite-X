@@ -25,29 +25,25 @@ The **PM Internship AI Platform** is a comprehensive, government-initiative plat
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Design
 
-### **Frontend** (React 19 + Vite)
-- **Modern React** with Hooks and Context API
-- **TailwindCSS** for responsive styling
-- **Multi-language** support with i18next
-- **Interactive Tour** system for user onboarding
-- **Real-time** state management
-- **Mobile-optimized** interface
+The platform follows a layered architecture to ensure high scalability and rapid iteration:
 
-### **Backend** (Node.js + Express)
-- **RESTful API** with comprehensive endpoints
-- **JWT Authentication** with refresh tokens
-- **OAuth Integration** (Google, GitHub)
-- **Advanced Bot Protection** with ML-based detection
-- **File Upload System** with Cloudinary
-- **Comprehensive Logging** with Winston
+- **Presentation Layer**: React 19 + Vite frontend delivering high-fidelity interfaces and interactive tours.
+- **Application Layer**: Node.js + Express backend managing complex business logic, JWT authentication, and request orchestration.
+- **Data Layer**: MongoDB Atlas managed through Prisma ORM for stringent relational data integrity and blazing fast queries.
+- **Infrastructure Layer**: Edge-deployed serverless structures bridging backend API nodes and Python ML microservices securely via CDN.
 
-### **Database** (MongoDB Atlas)
-- **Scalable** cloud database solution
-- **Optimized** queries with Prisma ORM
-- **Data Integrity** with proper relationships
-- **Performance** indexing and caching
+### Architecture Diagram
+
+```mermaid
+graph LR
+    User([User]) --> CDN[Cloud CDN]
+    CDN --> LB{Load Balancer}
+    LB --> BE[Backend Services]
+    BE --> DB[(Database)]
+    LB --> ML[ML Microservice]
+```
 
 ---
 
@@ -78,6 +74,21 @@ The **PM Internship AI Platform** is a comprehensive, government-initiative plat
 - **Skill Matching** - Intelligent skill gap analysis
 - **Bot Protection** - Advanced anti-bot security measures
 - **Auto-categorization** - Smart internship categorization
+
+---
+
+## 📸 Product Screenshots
+
+Recruiters love visual proof. Here is a glimpse into the Ignite-X ecosystem:
+
+### Homepage
+![Homepage Overview](/docs/images/homepage.png)
+
+### Product Page
+![Internship Product Page](/docs/images/product-page.png)
+
+### Candidate Dashboard
+![Dashboard Analytics](/docs/images/dashboard.png)
 
 ---
 
@@ -372,52 +383,32 @@ curl http://localhost:5000/api/v1
 
 ---
 
-## 🚀 Deployment
+## ☁️ Deployment
 
-### Production Build
-```bash
-# Backend
-cd Backend
-npm run build
-npm start
+The Ignite-X stack is natively configured for zero-ops Edge deployment.
 
-# Frontend
-cd frontend
-npm run build
-npm run preview
-```
+### 1. ML Model 
+Deploy the `/Ignite-X-ML-Model/Newfolder` repository as a standalone Vercel Python Serverless project.
 
-### Environment Setup
-1. **Database**: Set up MongoDB Atlas cluster
-2. **File Storage**: Configure Cloudinary account
-3. **Email**: Set up Gmail App Password
-4. **OAuth**: Configure Google/GitHub OAuth apps
-5. **Domain**: Update CORS and frontend URLs
-6. **SSL**: Configure HTTPS certificates
+### 2. Backend Services
+Deploy the `/Backend` directory natively to Vercel. 
+- Map the backend `DATABASE_URL` accurately in your environment variables.
+- Provide the new `ML_API_URL` variable pointing to your deployed inference engine.
 
-### Deployment Platforms
-- **Backend**: Railway, Render, or AWS
-- **Frontend**: Vercel, Netlify, or AWS S3
-- **Database**: MongoDB Atlas (managed)
-- **Files**: Cloudinary (managed)
+### 3. Frontend App
+Host the `/frontend` directory via Vercel. 
+- Create a `VITE_API_BASE_URL` pointing strictly to the live Backend service you generated in step 2.
 
 ---
 
-## 📊 Performance
+## 🏎️ Performance
 
-### Metrics
-- **API Response Time**: <100ms average
-- **Page Load Time**: <3 seconds
-- **Database Queries**: <50ms average
-- **File Upload**: <2 seconds for resumes
-- **Mobile Performance**: 90+ Lighthouse score
+Sub-200ms latency is maintained globally via strict operational optimization:
 
-### Optimizations
-- **Code Splitting** for faster initial loads
-- **Image Optimization** with Cloudinary
-- **Database Indexing** for query performance
-- **Caching Strategies** for frequently accessed data
-- **Bundle Analysis** and optimization
+- **Redis caching**
+- **Image CDN**
+- **Optimized queries**
+- **Pagination for large catalogs**
 
 ---
 
