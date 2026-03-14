@@ -18,15 +18,6 @@ import apiRoutes from './routes/index.js';
 
 const app = express();
 
-// !!! DIAGNOSTIC LOGGING !!!
-console.log('🏁 Backend: Express app instance created');
-
-// Simple diagnostic middleware at the very top
-app.use((req, res, next) => {
-  console.log(`📡 [Incoming Request]: ${req.method} ${req.url} (Origin: ${req.get('origin') || 'none'})`);
-  next();
-});
-
 logger.info('🚀 Configuring PM Internship Platform Server...');
 
 // ============================================
@@ -59,7 +50,13 @@ logger.info('🚀 Configuring PM Internship Platform Server...');
         // Allow requests with no origin (mobile apps, Postman, etc.)
         if (!origin) return callback(null, true);
         
-        if (config.security.corsOrigins.indexOf(origin) !== -1) {
+        // Check if origin is in the allowed list
+        const isAllowed = config.security.corsOrigins.indexOf(origin) !== -1;
+        
+        // Also allow any Vercel deployment origin
+        const isVercelOrigin = origin.endsWith('.vercel.app');
+
+        if (isAllowed || isVercelOrigin) {
           callback(null, true);
         } else {
           logger.warn('CORS Policy Violation', { origin, allowedOrigins: config.security.corsOrigins });
@@ -75,12 +72,14 @@ logger.info('🚀 Configuring PM Internship Platform Server...');
         'Accept',
         'Authorization',
         'X-API-Key',
+        'X-Auth-Token',
       ],
       exposedHeaders: [
         'X-Total-Count',
         'X-Page-Count',
         'X-Rate-Limit-Remaining',
         'X-Rate-Limit-Reset',
+        'Set-Cookie',
       ],
     };
 

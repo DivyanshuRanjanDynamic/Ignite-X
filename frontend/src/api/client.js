@@ -11,12 +11,31 @@ const api = axios.create({
 
 // Attach Authorization header if token is present
 api.interceptors.request.use((config) => {
+  // Fix: If baseURL has a path (e.g. /api/v1) and url starts with /, 
+  // Axios will join them as domain + url, stripping the /api/v1 prefix.
+  // We strip the leading slash from the url to ensure it appends to the baseURL path.
+  if (config.url && config.url.startsWith('/') && config.baseURL) {
+    try {
+      // Check if baseURL actually has a path beyond just '/'
+      const baseUrlFull = config.baseURL.startsWith('http') ? config.baseURL : `http://localhost${config.baseURL}`;
+      const urlObj = new URL(baseUrlFull);
+      if (urlObj.pathname !== '/' && urlObj.pathname !== '') {
+        config.url = config.url.substring(1);
+      }
+    } catch (e) {
+      // Fallback: if it contains a slash after the protocol, it likely has a path
+      if (config.baseURL.replace(/https?:\/\//, '').includes('/')) {
+        config.url = config.url.substring(1);
+      }
+    }
+  }
+
   try {
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-  } catch {}
+  } catch { }
   return config;
 });
 
@@ -67,12 +86,12 @@ api.interceptors.response.use(
           // Clear tokens on refresh failure
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
-          
+
           // Dispatch auth state change if available
           if (window.dispatchEvent) {
             window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { isAuthenticated: false } }));
           }
-          
+
           return Promise.reject(err);
         } finally {
           isRefreshing = false;
