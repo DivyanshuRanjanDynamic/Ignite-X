@@ -4,9 +4,9 @@
  */
 
 import request from 'supertest';
-import { app } from '../src/server.js';
+import app from '../src/server.js';
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
+import jwtUtil from '../src/utils/jwt.js';
 
 const prisma = new PrismaClient();
 
@@ -22,16 +22,14 @@ describe('Resume V2 API', () => {
         email: 'test@example.com',
         password: 'hashedpassword',
         role: 'STUDENT',
-        isEmailVerified: true
+        isVerified: true,
+        firstName: 'Test',
+        lastName: 'User'
       }
     });
 
     // Generate auth token
-    authToken = jwt.sign(
-      { userId: testUser.id, role: testUser.role },
-      process.env.JWT_ACCESS_SECRET,
-      { expiresIn: '1h' }
-    );
+    authToken = jwtUtil.generateAccessToken(testUser);
   });
 
   afterAll(async () => {
@@ -45,10 +43,10 @@ describe('Resume V2 API', () => {
     await prisma.$disconnect();
   });
 
-  describe('POST /api/v2/resumes/upload', () => {
+  describe('POST /api/v1/resumes/upload', () => {
     it('should upload resume successfully', async () => {
       const response = await request(app)
-        .post('/api/v2/resumes/upload')
+        .post('/api/v1/resumes/upload')
         .set('Authorization', `Bearer ${authToken}`)
         .attach('file', Buffer.from('fake pdf content'), 'test-resume.pdf')
         .expect(200);
@@ -63,7 +61,7 @@ describe('Resume V2 API', () => {
 
     it('should reject unsupported file types', async () => {
       const response = await request(app)
-        .post('/api/v2/resumes/upload')
+        .post('/api/v1/resumes/upload')
         .set('Authorization', `Bearer ${authToken}`)
         .attach('file', Buffer.from('fake content'), 'test.txt')
         .expect(400);
@@ -74,7 +72,7 @@ describe('Resume V2 API', () => {
 
     it('should require authentication', async () => {
       const response = await request(app)
-        .post('/api/v2/resumes/upload')
+        .post('/api/v1/resumes/upload')
         .attach('file', Buffer.from('fake pdf content'), 'test-resume.pdf')
         .expect(401);
 
@@ -82,10 +80,10 @@ describe('Resume V2 API', () => {
     });
   });
 
-  describe('GET /api/v2/resumes/:id/preview', () => {
+  describe('GET /api/v1/resumes/:id/preview', () => {
     it('should return preview URL', async () => {
       const response = await request(app)
-        .get(`/api/v2/resumes/${testResume.resumeId}/preview`)
+        .get(`/api/v1/resumes/${testResume.resumeId}/preview`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
@@ -95,7 +93,7 @@ describe('Resume V2 API', () => {
 
     it('should return 404 for non-existent resume', async () => {
       const response = await request(app)
-        .get('/api/v2/resumes/nonexistent/preview')
+        .get('/api/v1/resumes/nonexistent/preview')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(404);
 
@@ -103,10 +101,10 @@ describe('Resume V2 API', () => {
     });
   });
 
-  describe('GET /api/v2/resumes/:id/download', () => {
+  describe('GET /api/v1/resumes/:id/download', () => {
     it('should redirect to download URL', async () => {
       const response = await request(app)
-        .get(`/api/v2/resumes/${testResume.resumeId}/download`)
+        .get(`/api/v1/resumes/${testResume.resumeId}/download`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(302);
 
@@ -115,7 +113,7 @@ describe('Resume V2 API', () => {
 
     it('should handle ATS template download', async () => {
       const response = await request(app)
-        .get(`/api/v2/resumes/${testResume.resumeId}/download?type=ats_template`)
+        .get(`/api/v1/resumes/${testResume.resumeId}/download?type=ats_template`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(302);
 
@@ -123,10 +121,10 @@ describe('Resume V2 API', () => {
     });
   });
 
-  describe('GET /api/v2/resumes/:id/analytics', () => {
+  describe('GET /api/v1/resumes/:id/analytics', () => {
     it('should return analytics data', async () => {
       const response = await request(app)
-        .get(`/api/v2/resumes/${testResume.resumeId}/analytics`)
+        .get(`/api/v1/resumes/${testResume.resumeId}/analytics`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
@@ -137,10 +135,10 @@ describe('Resume V2 API', () => {
     });
   });
 
-  describe('POST /api/v2/resumes/:id/request_review', () => {
+  describe('POST /api/v1/resumes/:id/request_review', () => {
     it('should create review request', async () => {
       const response = await request(app)
-        .post(`/api/v2/resumes/${testResume.resumeId}/request_review`)
+        .post(`/api/v1/resumes/${testResume.resumeId}/request_review`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
@@ -162,7 +160,9 @@ describe('Required Skills API', () => {
         email: 'skills-test@example.com',
         password: 'hashedpassword',
         role: 'STUDENT',
-        isEmailVerified: true
+        isVerified: true,
+        firstName: 'SkillsTest',
+        lastName: 'User'
       }
     });
 
@@ -185,11 +185,7 @@ describe('Required Skills API', () => {
       }
     });
 
-    authToken = jwt.sign(
-      { userId: testUser.id, role: testUser.role },
-      process.env.JWT_ACCESS_SECRET,
-      { expiresIn: '1h' }
-    );
+    authToken = jwtUtil.generateAccessToken(testUser);
   });
 
   afterAll(async () => {
@@ -202,10 +198,10 @@ describe('Required Skills API', () => {
     await prisma.$disconnect();
   });
 
-  describe('GET /api/v2/required-skills', () => {
+  describe('GET /api/v1/required-skills', () => {
     it('should return weak skills', async () => {
       const response = await request(app)
-        .get('/api/v2/required-skills')
+        .get('/api/v1/required-skills')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
@@ -232,7 +228,7 @@ describe('Required Skills API', () => {
       });
 
       const response = await request(app)
-        .get('/api/v2/required-skills')
+        .get('/api/v1/required-skills')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
@@ -248,7 +244,7 @@ describe('Feature Flag Integration', () => {
     process.env.FEATURE_RESUME_V2 = 'false';
 
     const response = await request(app)
-      .post('/api/v2/resumes/upload')
+      .post('/api/v1/resumes/upload')
       .set('Authorization', `Bearer ${authToken}`)
       .attach('file', Buffer.from('fake pdf content'), 'test-resume.pdf')
       .expect(404);

@@ -18,15 +18,10 @@ import apiRoutes from './routes/index.js';
 
 const app = express();
 
-// ============================================
-// 🚀 STARTUP FUNCTION
-// ============================================
-async function startServer() {
-  try {
-    logger.info('🚀 Starting PM Internship Platform Server...');
+logger.info('🚀 Configuring PM Internship Platform Server...');
 
-    // ============================================
-    // 📊 TRUST PROXY (for accurate IP addresses)
+// ============================================
+// 📊 TRUST PROXY (for accurate IP addresses)
     // ============================================
     app.set('trust proxy', 1);
 
@@ -106,13 +101,6 @@ async function startServer() {
         }
       }));
     }
-
-    // ============================================
-    // 🗄️ DATABASE CONNECTION
-    // ============================================
-    
-    logger.info('🔗 Connecting to database...');
-    await database.connect();
 
     // ============================================
     // 🧪 HEALTH CHECK ENDPOINT
@@ -234,6 +222,18 @@ async function startServer() {
       });
     });
 
+// ============================================
+// 🚀 STARTUP FUNCTION
+// ============================================
+async function startServer() {
+  try {
+    // ============================================
+    // 🗄️ DATABASE CONNECTION
+    // ============================================
+    
+    logger.info('🔗 Connecting to database...');
+    await database.connect();
+
     // ============================================
     // 🚀 START SERVER
     // ============================================
@@ -302,7 +302,9 @@ async function startServer() {
   }
 }
 
-// Start the server
-startServer();
+// Start the server if not running in Vercel or test environment
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
+  startServer();
+}
 
 export default app;
