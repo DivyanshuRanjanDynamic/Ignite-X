@@ -142,7 +142,9 @@ if (error) {
   console.error('4. Set up MongoDB connection string');
   console.error('5. Configure email settings (Gmail App Password)');
   
-  process.exit(1);
+  if (!process.env.VERCEL) {
+    process.exit(1);
+  }
 }
 
 // Configuration object
