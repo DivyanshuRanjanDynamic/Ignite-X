@@ -76,22 +76,6 @@ graph LR
 - **Auto-categorization** - Smart internship categorization
 
 ---
-
-## 📸 Product Screenshots
-
-Recruiters love visual proof. Here is a glimpse into the Ignite-X ecosystem:
-
-### Homepage
-![Homepage Overview](/docs/images/homepage.png)
-
-### Product Page
-![Internship Product Page](/docs/images/product-page.png)
-
-### Candidate Dashboard
-![Dashboard Analytics](/docs/images/dashboard.png)
-
----
-
 ## 🚀 Quick Start
 
 ### Prerequisites
