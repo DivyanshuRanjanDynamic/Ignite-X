@@ -18,6 +18,15 @@ import apiRoutes from './routes/index.js';
 
 const app = express();
 
+// !!! DIAGNOSTIC LOGGING !!!
+console.log('🏁 Backend: Express app instance created');
+
+// Simple diagnostic middleware at the very top
+app.use((req, res, next) => {
+  console.log(`📡 [Incoming Request]: ${req.method} ${req.url} (Origin: ${req.get('origin') || 'none'})`);
+  next();
+});
+
 logger.info('🚀 Configuring PM Internship Platform Server...');
 
 // ============================================
@@ -197,6 +206,15 @@ logger.info('🚀 Configuring PM Internship Platform Server...');
 
     // Global error handler (basic for now)
     app.use((error, req, res, next) => {
+      // Direct console error for Vercel logs (more reliable during crashes)
+      console.error('💥 [Unhandled Application Error]:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        path: req.url,
+        method: req.method
+      });
+
       logger.error('Unhandled application error', {
         error: {
           name: error.name,
@@ -207,7 +225,6 @@ logger.info('🚀 Configuring PM Internship Platform Server...');
           method: req.method,
           url: req.url,
           headers: req.headers,
-          body: req.body,
         },
       });
 
@@ -215,8 +232,9 @@ logger.info('🚀 Configuring PM Internship Platform Server...');
         success: false,
         error: {
           code: error.code || 'INTERNAL_ERROR',
-          message: config.app.isDevelopment ? error.message : 'Something went wrong',
-          ...(config.app.isDevelopment && { stack: error.stack }),
+          message: 'Something went wrong on the server',
+          // Show error message if not in production to help debugging
+          details: (process.env.NODE_ENV !== 'production' || process.env.DEBUG_MODE === 'true') ? error.message : undefined
         },
         timestamp: new Date().toISOString(),
       });
@@ -306,5 +324,7 @@ async function startServer() {
 if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
   startServer();
 }
+
+console.log('✅ Backend: Module loading complete');
 
 export default app;
