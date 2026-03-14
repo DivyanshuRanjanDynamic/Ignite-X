@@ -32,9 +32,6 @@ dist-ssr
 # Cursor extension build files, config stores, etc.
 .config/
 .cursor/
-*.json
-*.txt
-*.md
 
 # Node dependencies
 node_modules/
