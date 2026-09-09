@@ -466,8 +466,8 @@ Sub-200ms latency is maintained globally via strict operational optimization:
 - **Backend Fixes**: `Backend/BACKEND_FIXES_SUMMARY.md`
 
 ### Contact
-- **Developer**: Divyanshu Mishra
-- **Email**: divyanshumishra@gov.in
+- **Developer**: Divyanshu Ranjan
+- **Email**: divyanshu.work914214@gmail.com
 - **GitHub**: [@divyanshu](https://github.com/divyanshu)
 - **Platform**: PM Internship Scheme Initiative
 
