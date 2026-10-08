@@ -9,6 +9,9 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow)](#license)
 
 ---
+## System Architecture
+![System Architecture](./frontend/public/assets/diagram-export-10-9-2026-12_59_17-AM.png)
+
 
 ## 🌟 Overview
 
