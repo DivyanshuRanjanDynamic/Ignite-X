@@ -16,5 +16,10 @@ export default defineConfig({
         secure: false,
       }
     }
-  }
+  },
+  build: {
+    rollupOptions: {
+      input: 'path/to/your/index.html',
+    },
+  },
 })
